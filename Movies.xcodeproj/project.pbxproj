@@ -21,6 +21,7 @@
 		3750D2DF2714699D0016F1B5 /* Enums.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3750D2DE2714699D0016F1B5 /* Enums.swift */; };
 		3750D2EB271488E20016F1B5 /* MainApi.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3750D2EA271488E20016F1B5 /* MainApi.swift */; };
 		3750D2EF27148CED0016F1B5 /* DetailApi.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3750D2EE27148CED0016F1B5 /* DetailApi.swift */; };
+		3750D2F7271498140016F1B5 /* URLSession+Rx.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3750D2F6271498140016F1B5 /* URLSession+Rx.swift */; };
 		80238DAAB6C634A1DCAA9C92 /* Pods_MoviesTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 17130A0665245C1ECEEBE7A5 /* Pods_MoviesTests.framework */; };
 		89FD58596B5D1B4203116C6A /* Pods_Movies_MoviesUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B25EC537BD2689B2DCD6C790 /* Pods_Movies_MoviesUITests.framework */; };
 		EF04F8112C75D13032455F90 /* Pods_Movies.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 17B6A4F3BCB31A25FB53850E /* Pods_Movies.framework */; };
@@ -68,6 +69,7 @@
 		3750D2DE2714699D0016F1B5 /* Enums.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Enums.swift; sourceTree = "<group>"; };
 		3750D2EA271488E20016F1B5 /* MainApi.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainApi.swift; sourceTree = "<group>"; };
 		3750D2EE27148CED0016F1B5 /* DetailApi.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailApi.swift; sourceTree = "<group>"; };
+		3750D2F6271498140016F1B5 /* URLSession+Rx.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "URLSession+Rx.swift"; path = "../../../../../URLSession+Rx.swift"; sourceTree = "<group>"; };
 		B25EC537BD2689B2DCD6C790 /* Pods_Movies_MoviesUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Movies_MoviesUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D70E538C2F63691BD42F8220 /* Pods-Movies-MoviesUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Movies-MoviesUITests.release.xcconfig"; path = "Target Support Files/Pods-Movies-MoviesUITests/Pods-Movies-MoviesUITests.release.xcconfig"; sourceTree = "<group>"; };
 		DB10D121ED4763402A4A0E81 /* Pods-Movies.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Movies.release.xcconfig"; path = "Target Support Files/Pods-Movies/Pods-Movies.release.xcconfig"; sourceTree = "<group>"; };
@@ -186,6 +188,7 @@
 		3750D2DD271469930016F1B5 /* Service */ = {
 			isa = PBXGroup;
 			children = (
+				3750D2F5271497F10016F1B5 /* Extensions */,
 				3750D2D627145C1F0016F1B5 /* DTOs */,
 			);
 			path = Service;
@@ -222,6 +225,14 @@
 				3750D2EE27148CED0016F1B5 /* DetailApi.swift */,
 			);
 			path = API;
+			sourceTree = "<group>";
+		};
+		3750D2F5271497F10016F1B5 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				3750D2F6271498140016F1B5 /* URLSession+Rx.swift */,
+			);
+			path = Extensions;
 			sourceTree = "<group>";
 		};
 		50DAEA7D601C0E50F6F58D4E /* Frameworks */ = {
@@ -476,6 +487,7 @@
 				3750D29727141FA20016F1B5 /* AppDelegate.swift in Sources */,
 				3750D29927141FA20016F1B5 /* SceneDelegate.swift in Sources */,
 				3750D2DC271464490016F1B5 /* ActorDetail.swift in Sources */,
+				3750D2F7271498140016F1B5 /* URLSession+Rx.swift in Sources */,
 				3750D2DA2714643C0016F1B5 /* Actors.swift in Sources */,
 				3750D2EF27148CED0016F1B5 /* DetailApi.swift in Sources */,
 				3750D2DF2714699D0016F1B5 /* Enums.swift in Sources */,

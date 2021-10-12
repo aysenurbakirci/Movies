@@ -12,7 +12,6 @@ public enum RxURLSessionError: Error {
   case unknown
   case invalidResponse(response: URLResponse)
   case requestFailed(response: HTTPURLResponse, data: Data?)
-  case deserializationFailed
 }
 
 extension Reactive where Base: URLSession {

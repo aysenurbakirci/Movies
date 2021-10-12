@@ -109,7 +109,7 @@ class TitleAndSubtitlesView: UIView {
             return
         }
         
-        subtitleOne.text = subtitle.title
+        subtitleTwo.text = secondSubtitle.title
 
         if let subtitleFont = secondSubtitle.titleFont {
             subtitleTwo.font = subtitleFont

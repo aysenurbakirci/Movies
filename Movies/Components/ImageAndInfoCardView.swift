@@ -8,6 +8,11 @@
 import Foundation
 import UIKit
 
+struct ImageInfo {
+    let urlString: String
+    let width: Int
+}
+
 class ImageAndInfoCardView: UIView {
     
     private let titleAndSubtitle = TitleAndSubtitlesView()
@@ -40,14 +45,14 @@ class ImageAndInfoCardView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func apply(stackAxis: NSLayoutConstraint.Axis, image: UIImage?, title: TextConfiguration, subtitle: TextConfiguration? = nil, secondSubtitle: TextConfiguration? = nil) {
+    func apply(stackAxis: NSLayoutConstraint.Axis, imageInfo: ImageInfo?, title: TextConfiguration, subtitle: TextConfiguration? = nil, secondSubtitle: TextConfiguration? = nil) {
         
         stack.axis = stackAxis
 
         titleAndSubtitle.apply(title: title, subtitle: subtitle, secondSubtitle: secondSubtitle)
         
-        if let image = image {
-            self.image.image = image
+        if let imageInfo = imageInfo {
+            self.image.downloadImage(imageURL: imageInfo.urlString, width: imageInfo.width)
         } else {
             self.image.image = UIImage(named: "emptyImage")
         }

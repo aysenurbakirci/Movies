@@ -9,7 +9,7 @@ import UIKit
 
 class MainTableViewCell: UITableViewCell {
     
-    static let reuseIdentifier: String = "movieCellRID"
+    static let reuseIdentifier: String = "mainTableViewCellID"
     
     private let cellView = ImageAndInfoCardView()
     

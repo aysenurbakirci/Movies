@@ -27,4 +27,28 @@ struct Movie: Codable {
         case title
         case voteAverage = "vote_average"
     }
+    
+    init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        id = try container.decode(Int.self, forKey: .id)
+        posterPath = try container.decode(String.self, forKey: .posterPath)
+        let date = try container.decode(String.self, forKey: .releaseDate)
+        releaseDate = dateFormatter(input: date)
+        title = try container.decode(String.self, forKey: .title)
+        voteAverage = try container.decode(Double.self, forKey: .voteAverage)
+        
+        func dateFormatter(input: String) -> String{
+            let dateFormatterGet = DateFormatter()
+            dateFormatterGet.dateFormat = "yyyy-MM-dd"
+            let dateFormatterSet = DateFormatter()
+            dateFormatterSet.dateFormat = "dd MMM yyyy"
+            if let date = dateFormatterGet.date(from: input) {
+                return dateFormatterSet.string(from: date)
+            } else {
+               return ""
+            }
+        }
+    }
 }
+
+

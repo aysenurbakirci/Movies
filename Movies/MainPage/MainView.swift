@@ -8,7 +8,7 @@
 import Foundation
 import UIKit
 
-class MovieView: UIView {
+class MainView: UIView {
     
     let tableView = UITableView()
     

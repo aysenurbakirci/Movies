@@ -18,6 +18,7 @@ class MovieView: UIView {
         addSubview(tableView)
         tableView.fillSuperView()
         
+        tableView.register(MainTableViewCell.self, forCellReuseIdentifier: MainTableViewCell.reuseIdentifier)
     }
     
     required init?(coder: NSCoder) {

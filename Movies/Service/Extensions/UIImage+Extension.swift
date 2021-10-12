@@ -10,9 +10,9 @@ import Kingfisher
 
 extension UIImageView {
     
-    func downloadImage(imageURL: String, width: Int){
+    func downloadImage(imageURL: String, width: Int?){
         
-        let urlString = baseImageURL + "w\(width)" + imageURL
+        let urlString = baseImageURL + "w\(width ?? 500)" + imageURL
         let url = URL(string: urlString)
         let placeholderImage = UIImage(named: "emptyImage")
         let activityInd = UIActivityIndicatorView()

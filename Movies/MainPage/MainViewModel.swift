@@ -23,7 +23,7 @@ enum Section {
 }
 
 protocol MainViewModelProtocol {
-    func getPopularMovies(page: Int)
+    func getPopularMovies()
     func searchMovieAndPerson(searchQuery: String)
 }
 
@@ -36,18 +36,24 @@ final class MainViewModel: MainViewModelProtocol {
     private let disposeBag = DisposeBag()
     private let mainViewService: MainApiProtocol
     
+    private var currentPage = 1
+    var isFetching = false
+    
     init(mainViewService: MainApiProtocol) {
         self.mainViewService = mainViewService
     }
     
-    func getPopularMovies(page: Int) {
-        
+    func getPopularMovies() {
+        isFetching = true
         mainViewService
-            .getPopularMovies(page: page)
+            .getPopularMovies(page: currentPage)
             .subscribe(onNext: { [weak self] movieList in
                 guard let self = self else { return }
                 self.popularMovies += movieList
                 self.data.accept([.movie(self.popularMovies)])
+                print("PAGE: \(self.currentPage)")
+                self.isFetching = false
+                self.currentPage += 1
             }).disposed(by: disposeBag)
     }
     

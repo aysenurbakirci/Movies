@@ -14,13 +14,13 @@ class MainViewController: UIViewController {
         var view = MainView()
         view.tableView.dataSource = self
         view.tableView.delegate = self
+        view.tableView.prefetchDataSource = self
         return view
     }()
     
     var mainViewModel: MainViewModel!
     
     private let disposeBag = DisposeBag()
-
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -29,7 +29,7 @@ class MainViewController: UIViewController {
         navigationController?.navigationBar.prefersLargeTitles = true
         navigationItem.titleView = mainView.searchBar
         setupBindings()
-        mainViewModel.getPopularMovies(page: 1)
+        mainViewModel.getPopularMovies()
     }
 }
 
@@ -72,5 +72,16 @@ extension MainViewController: UITableViewDelegate, UITableViewDataSource {
         }
         cell.cellConfig(withViewModel: mainViewModel.createCellViewModel(for: indexPath))
         return cell
+    }
+}
+
+extension MainViewController: UITableViewDataSourcePrefetching {
+    func tableView(_ tableView: UITableView, prefetchRowsAt indexPaths: [IndexPath]) {
+        for index in indexPaths {
+            if index.row >= mainViewModel.data.value[0].numberOfItems - 2 && !mainViewModel.isFetching{
+                mainViewModel.getPopularMovies()
+                break
+            }
+        }
     }
 }

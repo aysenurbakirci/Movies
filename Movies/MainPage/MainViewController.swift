@@ -18,7 +18,8 @@ class MainViewController: UIViewController {
     }()
     
     private lazy var movieList: [Movie] = []
-    private lazy var mainViewModel = MainViewModel()
+    var mainViewModel: MainViewModel!
+    
     private let disposeBag = DisposeBag()
 
     override func viewDidLoad() {
@@ -31,7 +32,13 @@ class MainViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        getPopularMovies()
+
+        mainViewModel
+            .popularMoviesRelay
+            .observe(on: MainScheduler.instance)
+            .subscribe(onNext: { [weak self] data in
+                self?.movieList = data
+            }).dispose()
     }
 }
 
@@ -61,16 +68,4 @@ extension MainViewController: UITableViewDelegate, UITableViewDataSource {
         return UITableViewCell()
     }
     
-}
-
-extension MainViewController {
-    func getPopularMovies() {
-        mainViewModel.getPopularMovies()
-            .observe(on: MainScheduler.instance)
-            .subscribe(onNext: { [weak self] movies in
-                guard let self = self else { return }
-                self.movieList = movies
-                self.mainView.tableView.reloadData()
-            }).disposed(by: disposeBag)
-    }
 }

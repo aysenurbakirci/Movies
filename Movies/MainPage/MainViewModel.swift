@@ -7,37 +7,39 @@
 
 import Foundation
 import RxSwift
+import RxCocoa
 
-final class MainViewModel: MainApi {
+protocol MainViewModelProtocol {
+    func getPopularMovies()
+    func searchMovieAndActor(searchQuery: String)
+}
+
+final class MainViewModel {
     
-    func getPopularMovies(page: Int = 1) -> Observable<[Movie]> {
-        
-        guard let request = generatePopularMovieRequest(page: page) else {
-            return Observable<[Movie]>.empty()
-        }
-        
-        return URLSession.shared.rx
-            .decodable(request: request, type: Movies.self)
-            .map(\.results)
+    let popularMoviesRelay = BehaviorRelay<[Movie]>(value: [])
+    let searchMovieAndActorRelay = BehaviorRelay<(movies: [Movie], persons: [Actor])>(value: (movies: [], persons: []))
+    
+    private let disposeBag = DisposeBag()
+    
+    private let mainViewService: MainApiProtocol
+    
+    init(mainViewService: MainApiProtocol) {
+        self.mainViewService = mainViewService
     }
     
-    func searchMovieAndActor(searchQuery: String) -> Observable<(movies: [Movie], actors: [Actor])>  {
-        
-        guard let searchMovieRequest = generateSearchRequest(type: .movie, query: searchQuery),
-              let searchActorRequest = generateSearchRequest(type: .person, query: searchQuery) else {
-            return Observable<(movies: [Movie], actors: [Actor])>.empty()
-        }
-        
-        let searchMovieObservable = URLSession.shared.rx
-            .decodable(request: searchMovieRequest, type: Movies.self)
-            .map(\.results)
-        
-        let searchActorObservable = URLSession.shared.rx
-            .decodable(request: searchActorRequest, type: Actors.self)
-            .map(\.results)
-        
-        return Observable
-            .zip(searchMovieObservable, searchActorObservable)
-            .map { (movies: $0, actors: $1) }
+    func getPopularMovies() {
+        mainViewService.getPopularMovies()
+            .subscribe(onNext: { [weak self] movieList in
+                guard let self = self else { return }
+                self.popularMoviesRelay.accept(movieList)
+            }).disposed(by: disposeBag)
+    }
+    
+    func searchMovieAndActor(searchQuery: String) {
+        mainViewService.searchMoviesAndPersons(query: searchQuery)
+            .subscribe(onNext: { [weak self] searchedData in
+                guard let self = self else { return }
+                self.searchMovieAndActorRelay.accept(searchedData)
+            }).disposed(by: disposeBag)
     }
 }

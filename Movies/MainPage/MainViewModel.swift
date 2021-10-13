@@ -14,7 +14,7 @@ protocol MainViewModelProtocol {
     func searchMovieAndActor(searchQuery: String)
 }
 
-final class MainViewModel {
+final class MainViewModel: MainViewModelProtocol {
     
     let popularMoviesRelay = BehaviorRelay<[Movie]>(value: [])
     let searchMovieAndActorRelay = BehaviorRelay<(movies: [Movie], persons: [Actor])>(value: (movies: [], persons: []))

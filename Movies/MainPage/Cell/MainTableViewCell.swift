@@ -21,9 +21,9 @@ class MainTableViewCell: UITableViewCell {
         
     }
     
-    func cellConfiguration(imageInfo: ImageInfo?, title: TextConfiguration, subtitle: TextConfiguration?, secondSubtitle: TextConfiguration?) {
+    func cellConfig(withViewModel viewModel: MainTableViewCellProtocol) {
         
-        cellView.apply(stackAxis: .horizontal, imageInfo: imageInfo, title: title, subtitle: subtitle, secondSubtitle: secondSubtitle)
+        cellView.apply(stackAxis: .horizontal, imageInfo: viewModel.image, title: viewModel.title, subtitle: viewModel.subtitle, secondSubtitle: viewModel.secondSubtitle)
     }
     
     required init?(coder: NSCoder) {

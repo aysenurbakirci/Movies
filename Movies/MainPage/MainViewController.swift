@@ -60,11 +60,9 @@ extension MainViewController: UITableViewDelegate, UITableViewDataSource {
             if movieList.count > 0 {
                 
                 let movie = movieList[indexPath.row]
-                let imageInfo = ImageInfo(urlString: movie.posterPath, width: 500)
-                let title = TextConfiguration(title: movie.title, titleFont: nil, titleColor: nil)
-                let releaseDate = TextConfiguration(title: movie.releaseDate, titleFont: nil, titleColor: nil)
-                let averageVote = TextConfiguration(title: String(movie.voteAverage), titleFont: nil, titleColor: nil)
-                cell.cellConfiguration(imageInfo: imageInfo, title: title, subtitle: releaseDate, secondSubtitle: averageVote)
+                let cellViewModel = MovieCellViewModel(movie: movie)
+                
+                cell.cellConfig(withViewModel: cellViewModel)
                 
                 return cell
             }

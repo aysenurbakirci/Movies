@@ -10,15 +10,15 @@ import RxSwift
 
 protocol MainApiProtocol {
     
-    func getPopularMovies() -> Observable<[Movie]>
+    func getPopularMovies(page: Int) -> Observable<[Movie]>
     func searchMoviesAndPeople(query: String) -> Observable<(movies: [Movie], people: [Person])>
 }
 
 struct MainApi: MainApiProtocol {
     
-    func getPopularMovies() -> Observable<[Movie]> {
+    func getPopularMovies(page: Int) -> Observable<[Movie]> {
         
-        let urlString = baseURL + "movie/popular?api_key=\(🔑)&language=\(appLanguage)"
+        let urlString = baseURL + "movie/popular?api_key=\(🔑)&language=\(appLanguage)&page=\(page)"
         
         guard let url = URL(string: urlString) else {
             return Observable<[Movie]>.empty()

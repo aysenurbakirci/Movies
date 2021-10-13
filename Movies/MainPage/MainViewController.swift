@@ -29,7 +29,7 @@ class MainViewController: UIViewController {
         navigationController?.navigationBar.prefersLargeTitles = true
         navigationItem.titleView = mainView.searchBar
         setupBindings()
-        mainViewModel.getPopularMovies()
+        mainViewModel.getPopularMovies(page: 1)
     }
 }
 
@@ -70,7 +70,7 @@ extension MainViewController: UITableViewDelegate, UITableViewDataSource {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: MainTableViewCell.reuseIdentifier, for: indexPath) as? MainTableViewCell else {
             return UITableViewCell()
         }
-        cell.cellConfig(withViewModel: mainViewModel.viewModel(for: indexPath))
+        cell.cellConfig(withViewModel: mainViewModel.createCellViewModel(for: indexPath))
         return cell
     }
 }

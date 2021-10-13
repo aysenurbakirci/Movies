@@ -23,7 +23,7 @@ enum Section {
 }
 
 protocol MainViewModelProtocol {
-    func getPopularMovies()
+    func getPopularMovies(page: Int)
     func searchMovieAndPerson(searchQuery: String)
 }
 
@@ -40,14 +40,14 @@ final class MainViewModel: MainViewModelProtocol {
         self.mainViewService = mainViewService
     }
     
-    func getPopularMovies() {
+    func getPopularMovies(page: Int) {
         
         mainViewService
-            .getPopularMovies()
+            .getPopularMovies(page: page)
             .subscribe(onNext: { [weak self] movieList in
                 guard let self = self else { return }
-                self.popularMovies = movieList
-                self.data.accept([.movie(movieList)])
+                self.popularMovies += movieList
+                self.data.accept([.movie(self.popularMovies)])
             }).disposed(by: disposeBag)
     }
     
@@ -66,7 +66,7 @@ final class MainViewModel: MainViewModelProtocol {
             }).disposed(by: disposeBag)
     }
     
-    func viewModel(for indexPath: IndexPath) -> MainTableViewCellProtocol {
+    func createCellViewModel(for indexPath: IndexPath) -> MainTableViewCellProtocol {
         
         let section = data.value[indexPath.section]
         switch section {
@@ -75,7 +75,7 @@ final class MainViewModel: MainViewModelProtocol {
             return MovieCellViewModel(movie: movie)
         case .person(let people):
             let person = people[indexPath.row]
-            return MovieCellViewModel(person: person)
+            return PersonCellViewModel(person: person)
         }
     }
 }

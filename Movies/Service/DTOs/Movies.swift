@@ -7,12 +7,18 @@
 
 import Foundation
 
-// MARK: - Movie List
 struct Movies: Codable {
     let results: [Movie]
+    let totalPages: Int
+    let totalResults: Int
+    
+    enum CodingKeys: String, CodingKey {
+        case results
+        case totalPages = "total_pages"
+        case totalResults = "total_results"
+    }
 }
 
-// MARK: - Movie
 struct Movie: Codable {
     let id: Int
     let posterPath: String?

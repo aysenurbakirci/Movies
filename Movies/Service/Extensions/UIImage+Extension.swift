@@ -19,6 +19,7 @@ extension UIImageView {
         
         activityInd.center = CGPoint(x: self.frame.size.width  / 2, y: self.frame.size.height / 2)
         activityInd.color = .white
+        self.backgroundColor = .lightGray
         self.addSubview(activityInd)
         activityInd.startAnimating()
         self.kf.setImage(with: url, placeholder: placeholderImage, options: nil, progressBlock: nil) { result in

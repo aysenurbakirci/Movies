@@ -17,7 +17,6 @@ class MainViewController: UIViewController {
         return view
     }()
     
-    private var movieList: [Movie] = []
     var mainViewModel: MainViewModel!
     
     private let disposeBag = DisposeBag()
@@ -28,6 +27,7 @@ class MainViewController: UIViewController {
         view = mainView
         navigationItem.title = "Main Page"
         navigationController?.navigationBar.prefersLargeTitles = true
+        navigationItem.titleView = mainView.searchBar
         setupBindings()
         mainViewModel.getPopularMovies()
     }
@@ -37,37 +37,40 @@ extension MainViewController {
     
     func setupBindings() {
         mainViewModel
-            .popularMoviesRelay
+            .data
             .observe(on: MainScheduler.instance)
             .subscribe(onNext: {[weak self] data in
                 guard let self = self else { return }
-                self.movieList = data
                 self.mainView.tableView.reloadData()
             }).disposed(by: disposeBag)
+        
+        mainView.searchBar.rx.text
+                    .orEmpty
+                    .throttle(.seconds(1), scheduler: MainScheduler.instance)
+                    .distinctUntilChanged()
+                    .subscribe(onNext: { [weak self] query in
+                        self?.mainViewModel.searchMovieAndActor(searchQuery: query)
+                    })
+                    .disposed(by: disposeBag)
     }
 }
 
 extension MainViewController: UITableViewDelegate, UITableViewDataSource {
     
+    func numberOfSections(in tableView: UITableView) -> Int {
+        return mainViewModel.data.value.count
+    }
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return movieList.count
+        return mainViewModel.data.value[section].numberOfItems
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-        if let cell = tableView.dequeueReusableCell(withIdentifier: MainTableViewCell.reuseIdentifier, for: indexPath) as? MainTableViewCell {
-
-            if movieList.count > 0 {
-                
-                let movie = movieList[indexPath.row]
-                let cellViewModel = MovieCellViewModel(movie: movie)
-                
-                cell.cellConfig(withViewModel: cellViewModel)
-                
-                return cell
-            }
-            return cell
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: MainTableViewCell.reuseIdentifier, for: indexPath) as? MainTableViewCell else {
+            return UITableViewCell()
         }
-        return UITableViewCell()
+        cell.cellConfig(withViewModel: mainViewModel.viewModel(for: indexPath))
+        return cell
     }
 }

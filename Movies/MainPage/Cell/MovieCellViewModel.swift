@@ -15,9 +15,23 @@ struct MovieCellViewModel: MainTableViewCellProtocol {
     var secondSubtitle: TextConfiguration?
     
     init(movie: Movie) {
-        self.image = ImageInfo(urlString: movie.posterPath, width: 500)
+        
+        if let imageURL = movie.posterPath {
+            self.image = ImageInfo(urlString: imageURL, width: 500)
+        }
+        
         self.title = TextConfiguration(title: movie.title, titleFont: nil, titleColor: nil)
         self.subtitle = TextConfiguration(title: movie.releaseDate, titleFont: nil, titleColor: nil)
         self.secondSubtitle = TextConfiguration(title: String(movie.voteAverage), titleFont: nil, titleColor: nil)
+    }
+    
+    init(actor: Actor) {
+        
+        if let imageURL = actor.profilePath {
+            self.image = ImageInfo(urlString: imageURL, width: 500)
+        }
+        
+        self.title = TextConfiguration(title: actor.name, titleFont: nil, titleColor: nil)
+        self.subtitle = TextConfiguration(title: String(actor.popularity), titleFont: nil, titleColor: nil)
     }
 }

@@ -7,16 +7,6 @@
 
 import Foundation
 
-enum CategoryType: String {
-    case movie = "movie"
-    case person = "person"
-}
-
-enum MovieDetailType: String {
-    case credits = "credits"
-    case videos = "videos"
-}
-
 enum Language: String {
     case US = "en-US"
 }

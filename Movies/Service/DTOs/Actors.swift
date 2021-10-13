@@ -1,5 +1,5 @@
 //
-//  Actors.swift
+//  People.swift
 //  Movies
 //
 //  Created by Ayşenur Bakırcı on 11.10.2021.
@@ -7,13 +7,11 @@
 
 import Foundation
 
-// MARK: - Actors
-struct Actors: Codable {
-    let results: [Actor]
+struct People: Codable {
+    let results: [Person]
 }
 
-// MARK: - Actor
-struct Actor: Codable {
+struct Person: Codable {
     let id: Int
     let name: String
     let popularity: Double

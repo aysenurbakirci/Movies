@@ -10,7 +10,7 @@ import RxSwift
 import RxCocoa
 
 enum Section {
-    case movie([Movie]), person([Actor])
+    case movie([Movie]), person([Person])
     
     var numberOfItems: Int {
         switch self {
@@ -24,7 +24,7 @@ enum Section {
 
 protocol MainViewModelProtocol {
     func getPopularMovies()
-    func searchMovieAndActor(searchQuery: String)
+    func searchMovieAndPerson(searchQuery: String)
 }
 
 final class MainViewModel: MainViewModelProtocol {
@@ -32,8 +32,6 @@ final class MainViewModel: MainViewModelProtocol {
     let data = BehaviorRelay<[Section]>(value: [])
     
     private var popularMovies = [Movie]()
-    let popularMoviesRelay = BehaviorRelay<[Movie]>(value: [])
-    let searchMovieAndActorRelay = BehaviorRelay<(movies: [Movie], persons: [Actor])>(value: (movies: [], persons: []))
     
     private let disposeBag = DisposeBag()
     private let mainViewService: MainApiProtocol
@@ -53,7 +51,7 @@ final class MainViewModel: MainViewModelProtocol {
             }).disposed(by: disposeBag)
     }
     
-    func searchMovieAndActor(searchQuery: String) {
+    func searchMovieAndPerson(searchQuery: String) {
         
         if searchQuery.isEmpty {
             self.data.accept([.movie(popularMovies)])
@@ -61,10 +59,10 @@ final class MainViewModel: MainViewModelProtocol {
         }
         
         mainViewService
-            .searchMoviesAndPersons(query: searchQuery)
+            .searchMoviesAndPeople(query: searchQuery)
             .subscribe(onNext: { [weak self] searchedData in
                 guard let self = self else { return }
-                self.data.accept([.movie(searchedData.movies), .person(searchedData.persons)])
+                self.data.accept([.movie(searchedData.movies), .person(searchedData.people)])
             }).disposed(by: disposeBag)
     }
     
@@ -77,7 +75,7 @@ final class MainViewModel: MainViewModelProtocol {
             return MovieCellViewModel(movie: movie)
         case .person(let people):
             let person = people[indexPath.row]
-            return MovieCellViewModel(actor: person)
+            return MovieCellViewModel(person: person)
         }
     }
 }

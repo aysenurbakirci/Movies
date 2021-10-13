@@ -11,7 +11,7 @@ import RxSwift
 protocol MainApiProtocol {
     
     func getPopularMovies() -> Observable<[Movie]>
-    func searchMoviesAndPersons(query: String) -> Observable<(movies: [Movie], persons: [Actor])>
+    func searchMoviesAndPeople(query: String) -> Observable<(movies: [Movie], people: [Person])>
 }
 
 struct MainApi: MainApiProtocol {
@@ -31,13 +31,13 @@ struct MainApi: MainApiProtocol {
             .map(\.results)
     }
     
-    func searchMoviesAndPersons(query: String) -> Observable<(movies: [Movie], persons: [Actor])> {
+    func searchMoviesAndPeople(query: String) -> Observable<(movies: [Movie], people: [Person])> {
         
         let movieURLString =  baseURL + "search/movie?api_key=\(🔑)&language=\(appLanguage)&query=\(query)"
         let personURLString =  baseURL + "search/person?api_key=\(🔑)&language=\(appLanguage)&query=\(query)"
         
         guard let movieURL = URL(string: movieURLString), let personURL = URL(string: personURLString) else {
-            return Observable<(movies: [Movie], persons: [Actor])>.empty()
+            return Observable<(movies: [Movie], people: [Person])>.empty()
         }
         
         let movieRequest = URLRequest(url: movieURL)
@@ -48,12 +48,12 @@ struct MainApi: MainApiProtocol {
             .map(\.results)
         
         let searchPersonObservable = URLSession.shared.rx
-            .decodable(request: personRequest, type: Actors.self)
+            .decodable(request: personRequest, type: People.self)
             .map(\.results)
         
         return Observable
             .zip(searchMovieObservable, searchPersonObservable)
-            .map { (movies: $0, persons: $1) }
+            .map { (movies: $0, people: $1) }
         
     }
 }

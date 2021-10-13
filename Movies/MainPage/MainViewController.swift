@@ -49,7 +49,7 @@ extension MainViewController {
                     .throttle(.seconds(1), scheduler: MainScheduler.instance)
                     .distinctUntilChanged()
                     .subscribe(onNext: { [weak self] query in
-                        self?.mainViewModel.searchMovieAndActor(searchQuery: query)
+                        self?.mainViewModel.searchMovieAndPerson(searchQuery: query)
                     })
                     .disposed(by: disposeBag)
     }

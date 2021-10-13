@@ -17,7 +17,7 @@ class MainViewController: UIViewController {
         return view
     }()
     
-    private lazy var movieList: [Movie] = []
+    private var movieList: [Movie] = []
     var mainViewModel: MainViewModel!
     
     private let disposeBag = DisposeBag()
@@ -28,17 +28,22 @@ class MainViewController: UIViewController {
         view = mainView
         navigationItem.title = "Main Page"
         navigationController?.navigationBar.prefersLargeTitles = true
+        setupBindings()
+        mainViewModel.getPopularMovies()
     }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
+}
 
+extension MainViewController {
+    
+    func setupBindings() {
         mainViewModel
             .popularMoviesRelay
             .observe(on: MainScheduler.instance)
-            .subscribe(onNext: { [weak self] data in
-                self?.movieList = data
-            }).dispose()
+            .subscribe(onNext: {[weak self] data in
+                guard let self = self else { return }
+                self.movieList = data
+                self.mainView.tableView.reloadData()
+            }).disposed(by: disposeBag)
     }
 }
 
@@ -67,5 +72,4 @@ extension MainViewController: UITableViewDelegate, UITableViewDataSource {
         }
         return UITableViewCell()
     }
-    
 }

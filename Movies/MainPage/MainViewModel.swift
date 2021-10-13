@@ -20,7 +20,6 @@ final class MainViewModel {
     let searchMovieAndActorRelay = BehaviorRelay<(movies: [Movie], persons: [Actor])>(value: (movies: [], persons: []))
     
     private let disposeBag = DisposeBag()
-    
     private let mainViewService: MainApiProtocol
     
     init(mainViewService: MainApiProtocol) {
@@ -28,7 +27,9 @@ final class MainViewModel {
     }
     
     func getPopularMovies() {
-        mainViewService.getPopularMovies()
+        
+        mainViewService
+            .getPopularMovies()
             .subscribe(onNext: { [weak self] movieList in
                 guard let self = self else { return }
                 self.popularMoviesRelay.accept(movieList)
@@ -36,7 +37,9 @@ final class MainViewModel {
     }
     
     func searchMovieAndActor(searchQuery: String) {
-        mainViewService.searchMoviesAndPersons(query: searchQuery)
+        
+        mainViewService
+            .searchMoviesAndPersons(query: searchQuery)
             .subscribe(onNext: { [weak self] searchedData in
                 guard let self = self else { return }
                 self.searchMovieAndActorRelay.accept(searchedData)

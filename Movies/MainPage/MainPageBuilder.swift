@@ -6,11 +6,11 @@
 //
 
 import Foundation
-class MainPageBuilder {
+
+final class MainPageBuilder {
     static func build() -> MainViewController {
         let viewController = MainViewController()
         viewController.mainViewModel = MainViewModel(mainViewService: MainApi())
-        viewController.mainViewModel.getPopularMovies()
         return viewController
     }
 }

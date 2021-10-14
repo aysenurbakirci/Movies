@@ -9,32 +9,7 @@ import Foundation
 import RxSwift
 import RxCocoa
 
-enum Section {
-    case movie([Movie]), person([Person])
-    
-    var numberOfItems: Int {
-        switch self {
-        case .movie(let movies):
-            return movies.count
-        case .person(let people):
-            return people.count
-        }
-    }
-}
-
-protocol MainViewModelProtocol {
-    func getPopularMovies()
-    func searchMovieAndPerson(searchQuery: String)
-    func createCellViewModel(for indexPath: IndexPath) -> MainTableViewCellProtocol
-}
-
-protocol MainViewModelDelegate: AnyObject {
-    func reloadTableViewData()
-    func startLoading()
-    func stopLoading()
-}
-
-final class MainViewModel: MainViewModelProtocol {
+final class MainViewModel {
     
     let data = BehaviorRelay<[Section]>(value: [])
     
@@ -82,6 +57,19 @@ final class MainViewModel: MainViewModelProtocol {
             }).disposed(by: disposeBag)
     }
     
+    func createCellViewModel(for indexPath: IndexPath) -> MainTableViewCellProtocol {
+        
+        let section = data.value[indexPath.section]
+        switch section {
+        case .movie(let movies):
+            let movie = movies[indexPath.row]
+            return CellViewModel(movie: movie)
+        case .person(let people):
+            let person = people[indexPath.row]
+            return CellViewModel(person: person)
+        }
+    }
+    
     func fetchOtherPages() {
         isFetching = true
         mainViewService
@@ -95,17 +83,16 @@ final class MainViewModel: MainViewModelProtocol {
                 self.currentPage += 1
             }).disposed(by: disposeBag)
     }
+}
+
+extension MainViewModel: MainViewModelProtocol {
     
-    func createCellViewModel(for indexPath: IndexPath) -> MainTableViewCellProtocol {
-        
-        let section = data.value[indexPath.section]
-        switch section {
-        case .movie(let movies):
-            let movie = movies[indexPath.row]
-            return MovieCellViewModel(movie: movie)
-        case .person(let people):
-            let person = people[indexPath.row]
-            return PersonCellViewModel(person: person)
-        }
+    func numberOfRowsInSection(for section: Int) -> Int {
+        data.value[section].numberOfItems
     }
+    
+    var numberOfSections: Int {
+        data.value.count
+    }
+    
 }

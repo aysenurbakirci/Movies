@@ -31,6 +31,7 @@
 		3760BB322716B6FD003AB11C /* MainPageBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3760BB312716B6FD003AB11C /* MainPageBuilder.swift */; };
 		3760BB702716CDAC003AB11C /* MainTableViewCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3760BB6F2716CDAC003AB11C /* MainTableViewCellViewModel.swift */; };
 		3760BB7F27181FA5003AB11C /* UITableView+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3760BB7E27181FA5003AB11C /* UITableView+Extension.swift */; };
+		3760BB84271829FB003AB11C /* MainViewContracts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3760BB83271829FB003AB11C /* MainViewContracts.swift */; };
 		37CA2FB127149B870061B7D2 /* URLSession+Rx.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37CA2FB027149B860061B7D2 /* URLSession+Rx.swift */; };
 		80238DAAB6C634A1DCAA9C92 /* Pods_MoviesTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 17130A0665245C1ECEEBE7A5 /* Pods_MoviesTests.framework */; };
 		89FD58596B5D1B4203116C6A /* Pods_Movies_MoviesUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B25EC537BD2689B2DCD6C790 /* Pods_Movies_MoviesUITests.framework */; };
@@ -89,6 +90,7 @@
 		3760BB312716B6FD003AB11C /* MainPageBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainPageBuilder.swift; sourceTree = "<group>"; };
 		3760BB6F2716CDAC003AB11C /* MainTableViewCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTableViewCellViewModel.swift; sourceTree = "<group>"; };
 		3760BB7E27181FA5003AB11C /* UITableView+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITableView+Extension.swift"; sourceTree = "<group>"; };
+		3760BB83271829FB003AB11C /* MainViewContracts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewContracts.swift; sourceTree = "<group>"; };
 		37CA2FB027149B860061B7D2 /* URLSession+Rx.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "URLSession+Rx.swift"; sourceTree = "<group>"; };
 		B25EC537BD2689B2DCD6C790 /* Pods_Movies_MoviesUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Movies_MoviesUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D70E538C2F63691BD42F8220 /* Pods-Movies-MoviesUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Movies-MoviesUITests.release.xcconfig"; path = "Target Support Files/Pods-Movies-MoviesUITests/Pods-Movies-MoviesUITests.release.xcconfig"; sourceTree = "<group>"; };
@@ -252,6 +254,7 @@
 				374E27852715869500A63D40 /* MainView.swift */,
 				374E278B27159E8900A63D40 /* MainViewModel.swift */,
 				3750D29A27141FA20016F1B5 /* MainViewController.swift */,
+				3760BB83271829FB003AB11C /* MainViewContracts.swift */,
 			);
 			path = MainPage;
 			sourceTree = "<group>";
@@ -553,6 +556,7 @@
 				3750D2EF27148CED0016F1B5 /* DetailApi.swift in Sources */,
 				374E278A2715895C00A63D40 /* UIImage+Extension.swift in Sources */,
 				3750D2DF2714699D0016F1B5 /* Base.swift in Sources */,
+				3760BB84271829FB003AB11C /* MainViewContracts.swift in Sources */,
 				3750D2EB271488E20016F1B5 /* MainApi.swift in Sources */,
 				374E27862715869500A63D40 /* MainView.swift in Sources */,
 				3750D2D827145C8F0016F1B5 /* MovieDetail.swift in Sources */,

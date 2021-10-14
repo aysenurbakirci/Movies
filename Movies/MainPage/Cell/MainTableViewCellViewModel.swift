@@ -14,7 +14,7 @@ protocol MainTableViewCellProtocol {
     var secondSubtitle: String? { get }
 }
 
-struct MovieCellViewModel: MainTableViewCellProtocol {
+struct CellViewModel: MainTableViewCellProtocol {
     
     var image: ImageInfo?
     var title: String
@@ -32,14 +32,6 @@ struct MovieCellViewModel: MainTableViewCellProtocol {
         self.title = movie.title
         self.secondSubtitle = String(movie.voteAverage)
     }
-}
-
-struct PersonCellViewModel: MainTableViewCellProtocol {
-    
-    var image: ImageInfo?
-    var title: String
-    var subtitle: String?
-    var secondSubtitle: String?
     
     init(person: Person) {
         

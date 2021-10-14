@@ -18,7 +18,7 @@ class MainViewController: UIViewController {
         return view
     }()
     
-    var mainViewModel: MainViewModel! {
+    var mainViewModel: MainViewModelProtocol! {
         didSet {
             mainViewModel.delegate = self
         }
@@ -55,11 +55,11 @@ extension MainViewController {
 extension MainViewController: UITableViewDelegate, UITableViewDataSource {
     
     func numberOfSections(in tableView: UITableView) -> Int {
-        return mainViewModel.data.value.count
+        return mainViewModel.numberOfSections
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return mainViewModel.data.value[section].numberOfItems
+        return mainViewModel.numberOfRowsInSection(for: section)
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -74,16 +74,12 @@ extension MainViewController: UITableViewDelegate, UITableViewDataSource {
 
 extension MainViewController: UITableViewDataSourcePrefetching {
     func tableView(_ tableView: UITableView, prefetchRowsAt indexPaths: [IndexPath]) {
-//        for index in indexPaths {
-//            if index.row >= mainViewModel.data.value[0].numberOfItems - 1 && !mainViewModel.isFetching{
-//                mainViewModel.fetchOtherPages()
-//                break
-//            }
-//        }
+
     }
 }
 
 extension MainViewController: MainViewModelDelegate {
+    
     func reloadTableViewData() {
         mainView.tableView.reloadData()
     }

@@ -7,15 +7,28 @@
 
 import Foundation
 
-struct Movies: Codable {
-    let results: [Movie]
+class Movies: Codable {
+    var page: Int
+    var results: [Movie]
     let totalPages: Int
     let totalResults: Int
     
     enum CodingKeys: String, CodingKey {
+        case page
         case results
         case totalPages = "total_pages"
         case totalResults = "total_results"
+    }
+    
+    func addNewPage(movies: Movies) {
+        self.page = movies.page
+        self.results.append(contentsOf: movies.results)
+    }
+}
+
+extension Movies {
+    var hasNextPage: Bool {
+        return page < totalPages
     }
 }
 

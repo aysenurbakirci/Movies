@@ -14,17 +14,13 @@ class MainViewController: UIViewController {
         var view = MainView()
         view.tableView.dataSource = self
         view.tableView.delegate = self
-        view.tableView.prefetchDataSource = self
         return view
     }()
     
-    var mainViewModel: MainViewModelProtocol! {
-        didSet {
-            mainViewModel.delegate = self
-        }
-    }
+    var mainViewModel: MainViewModel!
     
     private let disposeBag = DisposeBag()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -33,22 +29,31 @@ class MainViewController: UIViewController {
         navigationController?.navigationBar.prefersLargeTitles = true
         navigationItem.titleView = mainView.searchBar
         setupBindings()
-        mainViewModel.getPopularMovies()
+        mainViewModel.loadData.onNext(())
     }
 }
 
 extension MainViewController {
     
     func setupBindings() {
+        
+        mainViewModel
+            .data
+            .subscribe(onNext: { [weak self] _ in
+                self?.mainView.tableView.reloadData()
+            })
+            .disposed(by: disposeBag)
+        
+        mainViewModel
+            .isLoading
+            .subscribe(onNext: { [weak self] isLoading in
+                self?.mainView.tableView.loadingView(isLoading)
+            })
+            .disposed(by: disposeBag)
 
         mainView.searchBar.rx.text
-                    .orEmpty
-                    .throttle(.seconds(1), scheduler: MainScheduler.instance)
-                    .distinctUntilChanged()
-                    .subscribe(onNext: { [weak self] query in
-                        self?.mainViewModel.searchMovieAndPerson(searchQuery: query)
-                    })
-                    .disposed(by: disposeBag)
+            .bind(to: mainViewModel.searchQuery)
+            .disposed(by: disposeBag)
     }
 }
 
@@ -59,7 +64,7 @@ extension MainViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return mainViewModel.numberOfRowsInSection(for: section)
+        return mainViewModel.numberOfRowsInSection(section: section)
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -70,27 +75,20 @@ extension MainViewController: UITableViewDelegate, UITableViewDataSource {
         cell.cellConfig(withViewModel: mainViewModel.createCellViewModel(for: indexPath))
         return cell
     }
-}
-
-extension MainViewController: UITableViewDataSourcePrefetching {
-    func tableView(_ tableView: UITableView, prefetchRowsAt indexPaths: [IndexPath]) {
-
+    
+    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        
+        if mainView.searchBar.text?.isEmpty ?? true {
+            let totalCount = mainViewModel.data.value.first { section in
+                if case .movie = section {
+                    return true
+                }
+                return false
+            }?.numberOfItems ?? 0
+            
+            if indexPath.row == (totalCount - 1) {
+                mainViewModel.loadData.onNext(())
+            }
+        }
     }
-}
-
-extension MainViewController: MainViewModelDelegate {
-    
-    func reloadTableViewData() {
-        mainView.tableView.reloadData()
-    }
-    
-    func startLoading() {
-        mainView.tableView.loadingView(true)
-    }
-    
-    func stopLoading() {
-        mainView.tableView.loadingView(false)
-    }
-    
-    
 }

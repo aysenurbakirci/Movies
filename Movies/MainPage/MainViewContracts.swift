@@ -20,18 +20,3 @@ enum Section {
         }
     }
 }
-
-protocol MainViewModelProtocol {
-    func getPopularMovies()
-    func searchMovieAndPerson(searchQuery: String)
-    func createCellViewModel(for indexPath: IndexPath) -> MainTableViewCellProtocol
-    func numberOfRowsInSection(for section: Int) -> Int
-    var numberOfSections: Int { get }
-    var delegate: MainViewModelDelegate? { get set }
-}
-
-protocol MainViewModelDelegate: AnyObject {
-    func reloadTableViewData()
-    func startLoading()
-    func stopLoading()
-}

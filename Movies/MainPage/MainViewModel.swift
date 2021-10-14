@@ -12,49 +12,75 @@ import RxCocoa
 final class MainViewModel {
     
     let data = BehaviorRelay<[Section]>(value: [])
+    let isLoading = BehaviorRelay<Bool>(value: false)
+    let loadData = PublishSubject<Void>()
+    let searchQuery = BehaviorRelay<String?>(value: nil)
     
-    private var popularMovies = [Movie]()
+    private var popularMovies: Movies?
     
     private let disposeBag = DisposeBag()
     private let mainViewService: MainApiProtocol
     
-    weak var delegate: MainViewModelDelegate?
-    
-    private var currentPage = 1
-    var isFetching = false
+    private var nextPage = 1
     
     init(mainViewService: MainApiProtocol) {
         self.mainViewService = mainViewService
-    }
-    
-    func getPopularMovies() {
-        delegate?.startLoading()
-        mainViewService
-            .getPopularMovies(page: 1)
-            .observe(on: MainScheduler.instance)
-            .subscribe(onNext: { [weak self] movieList in
-                guard let self = self else { return }
-                self.popularMovies = movieList
-                self.data.accept([.movie(movieList)])
-                self.delegate?.reloadTableViewData()
-                self.delegate?.stopLoading()
-            }).disposed(by: disposeBag)
-    }
-    
-    func searchMovieAndPerson(searchQuery: String) {
         
-        if searchQuery.isEmpty {
-            self.data.accept([.movie(popularMovies)])
-            return
-        }
-        mainViewService
-            .searchMoviesAndPeople(with: searchQuery, page: 1)
+        loadData
+            .filter({ [weak self] in
+                return self?.popularMovies?.hasNextPage ?? true
+            })
+            .filter({ [isLoading] in
+                if isLoading.value {
+                    return false
+                }
+                self.isLoading.accept(true)
+                return true
+            })
+            .compactMap({ [weak self] in
+                return self?.nextPage
+            })
+            .flatMap(getPopularMovies)
             .observe(on: MainScheduler.instance)
-            .subscribe(onNext: { [weak self] searchedData in
+            .do(onNext: { [weak self] _ in
+                self?.isLoading.accept(false)
+            })
+            .subscribe(onNext: { [weak self] movies in
                 guard let self = self else { return }
-                self.data.accept([.movie(searchedData.movies), .person(searchedData.people)])
-                self.delegate?.reloadTableViewData()
-            }).disposed(by: disposeBag)
+                if self.popularMovies == nil {
+                    self.popularMovies = movies
+                } else {
+                    self.popularMovies?.addNewPage(movies: movies)
+                }
+                self.data.accept([.movie(self.popularMovies?.results ?? [])])
+                self.nextPage += 1
+            })
+            .disposed(by: disposeBag)
+        
+        searchQuery
+            .asObservable()
+            .compactMap { $0 }
+            .filter { !$0.isEmpty }
+            .throttle(.seconds(1), scheduler: MainScheduler.instance)
+            .distinctUntilChanged()
+            .do(onNext: { [weak self] _ in
+                self?.isLoading.accept(true)
+            })
+            .flatMap(searchMovieAndPerson)
+            .observe(on: MainScheduler.instance)
+            .subscribe(onNext: { [weak self] data in
+                self?.data.accept([.movie(data.movies), .person(data.people)])
+                self?.isLoading.accept(false)
+            })
+            .disposed(by: disposeBag)
+    }
+    
+    private func getPopularMovies(nextPage: Int) -> Observable<Movies> {
+        return mainViewService.getPopularMovies(page: nextPage)
+    }
+    
+    private func searchMovieAndPerson(searchQuery: String) -> Observable<(movies: [Movie], people: [Person])> {
+        return mainViewService.searchMoviesAndPeople(with: searchQuery, page: 1)
     }
     
     func createCellViewModel(for indexPath: IndexPath) -> MainTableViewCellProtocol {
@@ -69,25 +95,11 @@ final class MainViewModel {
             return CellViewModel(person: person)
         }
     }
-    
-    func fetchOtherPages() {
-        isFetching = true
-        mainViewService
-            .getPopularMovies(page: currentPage)
-            .subscribe(onNext: { [weak self] movieList in
-                guard let self = self else { return }
-                self.popularMovies += movieList
-                self.data.accept([.movie(self.popularMovies)])
-                print("PAGE: \(self.currentPage)")
-                self.isFetching = false
-                self.currentPage += 1
-            }).disposed(by: disposeBag)
-    }
 }
 
-extension MainViewModel: MainViewModelProtocol {
-    
-    func numberOfRowsInSection(for section: Int) -> Int {
+extension MainViewModel {
+
+    func numberOfRowsInSection(section: Int) -> Int {
         data.value[section].numberOfItems
     }
     

@@ -10,31 +10,30 @@ import RxSwift
 
 protocol MainApiProtocol {
     
-    func getPopularMovies(page: Int) -> Observable<[Movie]>
+    func getPopularMovies(page: Int) -> Observable<Movies>
     func searchMoviesAndPeople(with query: String, page: Int) -> Observable<(movies: [Movie], people: [Person])>
 }
 
 struct MainApi: MainApiProtocol {
     
-    func getPopularMovies(page: Int) -> Observable<[Movie]> {
+    func getPopularMovies(page: Int) -> Observable<Movies> {
         
         let urlString = baseURL + "movie/popular?api_key=\(🔑)&language=\(appLanguage)&page=\(page)"
         
         guard let url = URL(string: urlString) else {
-            return Observable<[Movie]>.empty()
+            return Observable<Movies>.empty()
         }
         
         let popularRequest = URLRequest(url: url)
         
         return URLSession.shared.rx
             .decodable(request: popularRequest, type: Movies.self)
-            .map(\.results)
     }
     
     func searchMoviesAndPeople(with query: String, page: Int) -> Observable<(movies: [Movie], people: [Person])> {
         
         let movieURLString =  baseURL + "search/movie?api_key=\(🔑)&language=\(appLanguage)&query=\(query)&page=\(page)"
-        let personURLString =  baseURL + "search/person?api_key=\(🔑)&language=\(appLanguage)&query=\(query)&page=\(page)"
+        let personURLString =  baseURL + "search/person?api_key=\(🔑)&language=\(appLanguage)&query=\(query)&page=\(page)"  
         
         guard let movieURL = URL(string: movieURLString), let personURL = URL(string: personURLString) else {
             return Observable<(movies: [Movie], people: [Person])>.empty()

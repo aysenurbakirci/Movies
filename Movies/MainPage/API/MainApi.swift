@@ -11,7 +11,7 @@ import RxSwift
 protocol MainApiProtocol {
     
     func getPopularMovies(page: Int) -> Observable<[Movie]>
-    func searchMoviesAndPeople(query: String) -> Observable<(movies: [Movie], people: [Person])>
+    func searchMoviesAndPeople(with query: String, page: Int) -> Observable<(movies: [Movie], people: [Person])>
 }
 
 struct MainApi: MainApiProtocol {
@@ -31,10 +31,10 @@ struct MainApi: MainApiProtocol {
             .map(\.results)
     }
     
-    func searchMoviesAndPeople(query: String) -> Observable<(movies: [Movie], people: [Person])> {
+    func searchMoviesAndPeople(with query: String, page: Int) -> Observable<(movies: [Movie], people: [Person])> {
         
-        let movieURLString =  baseURL + "search/movie?api_key=\(🔑)&language=\(appLanguage)&query=\(query)"
-        let personURLString =  baseURL + "search/person?api_key=\(🔑)&language=\(appLanguage)&query=\(query)"
+        let movieURLString =  baseURL + "search/movie?api_key=\(🔑)&language=\(appLanguage)&query=\(query)&page=\(page)"
+        let personURLString =  baseURL + "search/person?api_key=\(🔑)&language=\(appLanguage)&query=\(query)&page=\(page)"
         
         guard let movieURL = URL(string: movieURLString), let personURL = URL(string: personURLString) else {
             return Observable<(movies: [Movie], people: [Person])>.empty()

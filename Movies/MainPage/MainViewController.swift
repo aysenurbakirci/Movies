@@ -18,7 +18,11 @@ class MainViewController: UIViewController {
         return view
     }()
     
-    var mainViewModel: MainViewModel!
+    var mainViewModel: MainViewModel! {
+        didSet {
+            mainViewModel.delegate = self
+        }
+    }
     
     private let disposeBag = DisposeBag()
     override func viewDidLoad() {
@@ -36,14 +40,7 @@ class MainViewController: UIViewController {
 extension MainViewController {
     
     func setupBindings() {
-        mainViewModel
-            .data
-            .observe(on: MainScheduler.instance)
-            .subscribe(onNext: {[weak self] data in
-                guard let self = self else { return }
-                self.mainView.tableView.reloadData()
-            }).disposed(by: disposeBag)
-        
+
         mainView.searchBar.rx.text
                     .orEmpty
                     .throttle(.seconds(1), scheduler: MainScheduler.instance)
@@ -77,11 +74,27 @@ extension MainViewController: UITableViewDelegate, UITableViewDataSource {
 
 extension MainViewController: UITableViewDataSourcePrefetching {
     func tableView(_ tableView: UITableView, prefetchRowsAt indexPaths: [IndexPath]) {
-        for index in indexPaths {
-            if index.row >= mainViewModel.data.value[0].numberOfItems - 2 && !mainViewModel.isFetching{
-                mainViewModel.getPopularMovies()
-                break
-            }
-        }
+//        for index in indexPaths {
+//            if index.row >= mainViewModel.data.value[0].numberOfItems - 1 && !mainViewModel.isFetching{
+//                mainViewModel.fetchOtherPages()
+//                break
+//            }
+//        }
     }
+}
+
+extension MainViewController: MainViewModelDelegate {
+    func reloadTableViewData() {
+        mainView.tableView.reloadData()
+    }
+    
+    func startLoading() {
+        mainView.tableView.loadingView(true)
+    }
+    
+    func stopLoading() {
+        mainView.tableView.loadingView(false)
+    }
+    
+    
 }

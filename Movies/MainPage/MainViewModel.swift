@@ -25,6 +25,13 @@ enum Section {
 protocol MainViewModelProtocol {
     func getPopularMovies()
     func searchMovieAndPerson(searchQuery: String)
+    func createCellViewModel(for indexPath: IndexPath) -> MainTableViewCellProtocol
+}
+
+protocol MainViewModelDelegate: AnyObject {
+    func reloadTableViewData()
+    func startLoading()
+    func stopLoading()
 }
 
 final class MainViewModel: MainViewModelProtocol {
@@ -36,6 +43,8 @@ final class MainViewModel: MainViewModelProtocol {
     private let disposeBag = DisposeBag()
     private let mainViewService: MainApiProtocol
     
+    weak var delegate: MainViewModelDelegate?
+    
     private var currentPage = 1
     var isFetching = false
     
@@ -44,6 +53,36 @@ final class MainViewModel: MainViewModelProtocol {
     }
     
     func getPopularMovies() {
+        delegate?.startLoading()
+        mainViewService
+            .getPopularMovies(page: 1)
+            .observe(on: MainScheduler.instance)
+            .subscribe(onNext: { [weak self] movieList in
+                guard let self = self else { return }
+                self.popularMovies = movieList
+                self.data.accept([.movie(movieList)])
+                self.delegate?.reloadTableViewData()
+                self.delegate?.stopLoading()
+            }).disposed(by: disposeBag)
+    }
+    
+    func searchMovieAndPerson(searchQuery: String) {
+        
+        if searchQuery.isEmpty {
+            self.data.accept([.movie(popularMovies)])
+            return
+        }
+        mainViewService
+            .searchMoviesAndPeople(with: searchQuery, page: 1)
+            .observe(on: MainScheduler.instance)
+            .subscribe(onNext: { [weak self] searchedData in
+                guard let self = self else { return }
+                self.data.accept([.movie(searchedData.movies), .person(searchedData.people)])
+                self.delegate?.reloadTableViewData()
+            }).disposed(by: disposeBag)
+    }
+    
+    func fetchOtherPages() {
         isFetching = true
         mainViewService
             .getPopularMovies(page: currentPage)
@@ -54,21 +93,6 @@ final class MainViewModel: MainViewModelProtocol {
                 print("PAGE: \(self.currentPage)")
                 self.isFetching = false
                 self.currentPage += 1
-            }).disposed(by: disposeBag)
-    }
-    
-    func searchMovieAndPerson(searchQuery: String) {
-        
-        if searchQuery.isEmpty {
-            self.data.accept([.movie(popularMovies)])
-            return
-        }
-        
-        mainViewService
-            .searchMoviesAndPeople(query: searchQuery)
-            .subscribe(onNext: { [weak self] searchedData in
-                guard let self = self else { return }
-                self.data.accept([.movie(searchedData.movies), .person(searchedData.people)])
             }).disposed(by: disposeBag)
     }
     

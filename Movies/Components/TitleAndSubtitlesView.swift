@@ -8,12 +8,6 @@
 import Foundation
 import UIKit
 
-struct TextConfiguration {
-    let title: String
-    let titleFont: UIFont?
-    let titleColor: UIColor?
-}
-
 class TitleAndSubtitlesView: UIView {
     
     private lazy var title: UITextView = {
@@ -77,46 +71,20 @@ class TitleAndSubtitlesView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func apply(title: TextConfiguration, subtitle: TextConfiguration? = nil, secondSubtitle: TextConfiguration? = nil) {
+    func apply(title: String, subtitle: String? = nil, secondSubtitle: String? = nil) {
         
-        self.title.text = title.title
-        
-        if let titleFont = title.titleFont {
-            self.title.font = titleFont
-        }
-        
-        if let titleColor = title.titleColor {
-            self.title.textColor = titleColor
-        }
+        self.title.text = title
         
         guard let subtitle = subtitle else {
             subtitleOne.isHidden = true
             return
         }
-        
-        subtitleOne.text = subtitle.title
-
-        if let subtitleFont = subtitle.titleFont {
-            subtitleOne.font = subtitleFont
-        }
-        
-        if let subtitleColor = subtitle.titleColor {
-            subtitleOne.textColor = subtitleColor
-        }
+        subtitleOne.text = subtitle
         
         guard let secondSubtitle = secondSubtitle else {
             subtitleTwo.isHidden = true
             return
         }
-        
-        subtitleTwo.text = secondSubtitle.title
-
-        if let subtitleFont = secondSubtitle.titleFont {
-            subtitleTwo.font = subtitleFont
-        }
-        
-        if let subtitleColor = secondSubtitle.titleColor {
-            subtitleTwo.textColor = subtitleColor
-        }
+        subtitleTwo.text = secondSubtitle
     }
 }

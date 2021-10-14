@@ -39,13 +39,10 @@ struct Cast: Codable {
     }
 }
 
-
-// MARK: - MovieTrailers
 struct MovieTrailers: Codable {
     let results: [Trailer]
 }
 
-// MARK: - Trailer
 struct Trailer: Codable {
     let key: String
     let site: String

@@ -45,7 +45,7 @@ class ImageAndInfoCardView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func apply(stackAxis: NSLayoutConstraint.Axis, imageInfo: ImageInfo?, title: TextConfiguration, subtitle: TextConfiguration? = nil, secondSubtitle: TextConfiguration? = nil) {
+    func apply(stackAxis: NSLayoutConstraint.Axis, imageInfo: ImageInfo?, title: String, subtitle: String? = nil, secondSubtitle: String? = nil) {
         
         stack.axis = stackAxis
 

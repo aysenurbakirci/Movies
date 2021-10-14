@@ -9,46 +9,37 @@ import Foundation
 
 protocol MainTableViewCellProtocol {
     var image: ImageInfo? { get }
-    var title: TextConfiguration { get }
-    var subtitle: TextConfiguration? { get }
-    var secondSubtitle: TextConfiguration? { get }
+    var title: String { get }
+    var subtitle: String? { get }
+    var secondSubtitle: String? { get }
 }
 
 struct MovieCellViewModel: MainTableViewCellProtocol {
     
     var image: ImageInfo?
-    var title: TextConfiguration
-    var subtitle: TextConfiguration?
-    var secondSubtitle: TextConfiguration?
+    var title: String
+    var subtitle: String?
+    var secondSubtitle: String?
     
     init(movie: Movie) {
         
         if let imageURL = movie.posterPath {
             self.image = ImageInfo(urlString: imageURL, width: 500)
         }
-        
-        self.title = TextConfiguration(title: movie.title, titleFont: nil, titleColor: nil)
-        self.subtitle = TextConfiguration(title: movie.releaseDate, titleFont: nil, titleColor: nil)
-        self.secondSubtitle = TextConfiguration(title: String(movie.voteAverage), titleFont: nil, titleColor: nil)
-    }
-    
-    init(person: Person) {
-        
-        if let imageURL = person.profilePath {
-            self.image = ImageInfo(urlString: imageURL, width: 500)
+        if let releaseDate = movie.releaseDate {
+            self.subtitle = releaseDate
         }
-        
-        self.title = TextConfiguration(title: person.name, titleFont: nil, titleColor: nil)
-        self.subtitle = TextConfiguration(title: String(person.popularity), titleFont: nil, titleColor: nil)
+        self.title = movie.title
+        self.secondSubtitle = String(movie.voteAverage)
     }
 }
 
 struct PersonCellViewModel: MainTableViewCellProtocol {
     
     var image: ImageInfo?
-    var title: TextConfiguration
-    var subtitle: TextConfiguration?
-    var secondSubtitle: TextConfiguration?
+    var title: String
+    var subtitle: String?
+    var secondSubtitle: String?
     
     init(person: Person) {
         
@@ -56,7 +47,7 @@ struct PersonCellViewModel: MainTableViewCellProtocol {
             self.image = ImageInfo(urlString: imageURL, width: 500)
         }
         
-        self.title = TextConfiguration(title: person.name, titleFont: nil, titleColor: nil)
-        self.subtitle = TextConfiguration(title: String(person.popularity), titleFont: nil, titleColor: nil)
+        self.title = person.name
+        self.subtitle = String(person.popularity)
     }
 }

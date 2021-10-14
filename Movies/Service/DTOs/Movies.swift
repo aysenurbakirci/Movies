@@ -22,7 +22,7 @@ struct Movies: Codable {
 struct Movie: Codable {
     let id: Int
     let posterPath: String?
-    let releaseDate: String
+    let releaseDate: String?
     let title: String
     let voteAverage: Double
 
@@ -38,8 +38,8 @@ struct Movie: Codable {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         id = try container.decode(Int.self, forKey: .id)
         posterPath = try container.decodeIfPresent(String.self, forKey: .posterPath)
-        let date = try container.decode(String.self, forKey: .releaseDate)
-        releaseDate = dateFormatter(input: date)
+        let date = try container.decodeIfPresent(String.self, forKey: .releaseDate)
+        releaseDate = dateFormatter(input: date ?? "0000-01-00")
         title = try container.decode(String.self, forKey: .title)
         voteAverage = try container.decode(Double.self, forKey: .voteAverage)
         

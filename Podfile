@@ -14,6 +14,10 @@ target 'Movies' do
   target 'MoviesTests' do
     inherit! :search_paths
     # Pods for testing
+
+    pod 'RxBlocking', '~> 6.2'
+    pod 'RxTest', '~> 6.2'
+
   end
 
   target 'MoviesUITests' do

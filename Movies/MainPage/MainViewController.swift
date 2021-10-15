@@ -44,12 +44,12 @@ extension MainViewController {
             })
             .disposed(by: disposeBag)
         
-        mainViewModel
-            .isLoading
-            .subscribe(onNext: { [weak self] isLoading in
-                self?.mainView.tableView.loadingView(isLoading)
-            })
-            .disposed(by: disposeBag)
+//        mainViewModel
+//            .isLoading
+//            .subscribe(onNext: { [weak self] isLoading in
+//                self?.mainView.tableView.loadingView(isLoading)
+//            })
+//            .disposed(by: disposeBag)
 
         mainView.searchBar.rx.text
             .bind(to: mainViewModel.searchQuery)

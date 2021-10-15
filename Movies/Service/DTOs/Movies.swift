@@ -7,7 +7,7 @@
 
 import Foundation
 
-class Movies: Codable {
+final class Movies: Codable {
     var page: Int
     var results: [Movie]
     let totalPages: Int

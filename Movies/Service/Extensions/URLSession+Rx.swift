@@ -10,11 +10,11 @@ import RxSwift
 
 public enum RxURLSessionError: Error {
   case unknown
-  case invalidResponse(response: URLResponse)
   case requestFailed(response: HTTPURLResponse, data: Data?)
 }
 
 extension Reactive where Base: URLSession {
+    
     
     func decodable<D: Decodable>(request: URLRequest, type: D.Type) -> Observable<D> {
         

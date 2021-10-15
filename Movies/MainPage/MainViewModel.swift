@@ -9,6 +9,20 @@ import Foundation
 import RxSwift
 import RxCocoa
 
+enum Section {
+    
+    case movie([Movie]), person([Person])
+    
+    var numberOfItems: Int {
+        switch self {
+        case .movie(let movies):
+            return movies.count
+        case .person(let people):
+            return people.count
+        }
+    }
+}
+
 final class MainViewModel {
     
     let data = BehaviorRelay<[Section]>(value: [])
@@ -43,7 +57,8 @@ final class MainViewModel {
             .flatMap(getPopularMovies)
             .observe(on: MainScheduler.instance)
             .do(onNext: { [weak self] _ in
-                self?.isLoading.accept(false)
+                guard let self = self else { return }
+                self.isLoading.accept(false)
             })
             .subscribe(onNext: { [weak self] movies in
                 guard let self = self else { return }
@@ -57,29 +72,43 @@ final class MainViewModel {
             })
             .disposed(by: disposeBag)
         
-        searchQuery
+        let searchObservable = searchQuery
             .asObservable()
             .compactMap { $0 }
+            .share()
+            
+        searchObservable
             .filter { !$0.isEmpty }
-            .throttle(.seconds(1), scheduler: MainScheduler.instance)
+            .throttle(.milliseconds(500), scheduler: MainScheduler.instance)
             .distinctUntilChanged()
             .do(onNext: { [weak self] _ in
-                self?.isLoading.accept(true)
+                guard let self = self else { return }
+                self.isLoading.accept(true)
             })
             .flatMap(searchMovieAndPerson)
             .observe(on: MainScheduler.instance)
             .subscribe(onNext: { [weak self] data in
-                self?.data.accept([.movie(data.movies), .person(data.people)])
-                self?.isLoading.accept(false)
+                guard let self = self else { return }
+                self.data.accept([.movie(data.movies), .person(data.people)])
+                self.isLoading.accept(false)
             })
             .disposed(by: disposeBag)
+        
+        searchObservable
+            .filter { $0.isEmpty }
+            .subscribe(onNext: { [weak self] _ in
+                guard let self = self else { return }
+                self.data.accept([.movie(self.popularMovies?.results ?? [])])
+            })
+            .disposed(by: disposeBag)
+        
     }
     
-    private func getPopularMovies(nextPage: Int) -> Observable<Movies> {
+    func getPopularMovies(nextPage: Int) -> Observable<Movies> {
         return mainViewService.getPopularMovies(page: nextPage)
     }
     
-    private func searchMovieAndPerson(searchQuery: String) -> Observable<(movies: [Movie], people: [Person])> {
+    func searchMovieAndPerson(searchQuery: String) -> Observable<(movies: [Movie], people: [Person])> {
         return mainViewService.searchMoviesAndPeople(with: searchQuery, page: 1)
     }
     

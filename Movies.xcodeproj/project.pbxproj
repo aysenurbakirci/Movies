@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		370F845D27197F0400DF0412 /* MovieTestData.json in Resources */ = {isa = PBXBuildFile; fileRef = 3760BB852718B145003AB11C /* MovieTestData.json */; };
 		370F845E27197F5400DF0412 /* MovieTestData.json in Resources */ = {isa = PBXBuildFile; fileRef = 3760BB852718B145003AB11C /* MovieTestData.json */; };
+		370F84602719A2DB00DF0412 /* DetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 370F845F2719A2DB00DF0412 /* DetailView.swift */; };
+		370F84682719B56200DF0412 /* UIViewController+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 370F84672719B56200DF0412 /* UIViewController+Extension.swift */; };
 		374E277F2715776100A63D40 /* UIView+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 374E277E2715776100A63D40 /* UIView+Extensions.swift */; };
 		374E2782271577ED00A63D40 /* TitleAndSubtitlesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 374E2781271577ED00A63D40 /* TitleAndSubtitlesView.swift */; };
 		374E27842715820D00A63D40 /* ImageAndInfoCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 374E27832715820D00A63D40 /* ImageAndInfoCardView.swift */; };
@@ -62,6 +64,8 @@
 		10142A8FD9A6709529D32F7C /* Pods-MoviesTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MoviesTests.release.xcconfig"; path = "Target Support Files/Pods-MoviesTests/Pods-MoviesTests.release.xcconfig"; sourceTree = "<group>"; };
 		17130A0665245C1ECEEBE7A5 /* Pods_MoviesTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_MoviesTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		17B6A4F3BCB31A25FB53850E /* Pods_Movies.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Movies.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		370F845F2719A2DB00DF0412 /* DetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailView.swift; sourceTree = "<group>"; };
+		370F84672719B56200DF0412 /* UIViewController+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Extension.swift"; sourceTree = "<group>"; };
 		374E277E2715776100A63D40 /* UIView+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Extensions.swift"; sourceTree = "<group>"; };
 		374E2781271577ED00A63D40 /* TitleAndSubtitlesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TitleAndSubtitlesView.swift; sourceTree = "<group>"; };
 		374E27832715820D00A63D40 /* ImageAndInfoCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageAndInfoCardView.swift; sourceTree = "<group>"; };
@@ -147,6 +151,7 @@
 			children = (
 				374E27892715895C00A63D40 /* UIImage+Extension.swift */,
 				374E277E2715776100A63D40 /* UIView+Extensions.swift */,
+				370F84672719B56200DF0412 /* UIViewController+Extension.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -160,13 +165,13 @@
 			path = Components;
 			sourceTree = "<group>";
 		};
-		374E278D27159E9200A63D40 /* Cell */ = {
+		374E278D27159E9200A63D40 /* Cells */ = {
 			isa = PBXGroup;
 			children = (
 				374E27872715873300A63D40 /* MainTableViewCell.swift */,
 				3760BB6F2716CDAC003AB11C /* MainTableViewCellViewModel.swift */,
 			);
-			path = Cell;
+			path = Cells;
 			sourceTree = "<group>";
 		};
 		3750D28A27141FA20016F1B5 = {
@@ -195,6 +200,7 @@
 			isa = PBXGroup;
 			children = (
 				374E2780271577DC00A63D40 /* Components */,
+				374E278D27159E9200A63D40 /* Cells */,
 				374E277D2715775100A63D40 /* Extensions */,
 				3750D2DD271469930016F1B5 /* Service */,
 				3750D2E3271487CE0016F1B5 /* MainPage */,
@@ -251,7 +257,6 @@
 			isa = PBXGroup;
 			children = (
 				3750D2E9271488CD0016F1B5 /* API */,
-				374E278D27159E9200A63D40 /* Cell */,
 				3760BB312716B6FD003AB11C /* MainPageBuilder.swift */,
 				374E27852715869500A63D40 /* MainView.swift */,
 				374E278B27159E8900A63D40 /* MainViewModel.swift */,
@@ -264,6 +269,7 @@
 			isa = PBXGroup;
 			children = (
 				3750D2EC27148CD00016F1B5 /* API */,
+				370F845F2719A2DB00DF0412 /* DetailView.swift */,
 			);
 			path = DetailPage;
 			sourceTree = "<group>";
@@ -575,6 +581,7 @@
 				3750D29927141FA20016F1B5 /* SceneDelegate.swift in Sources */,
 				374E27842715820D00A63D40 /* ImageAndInfoCardView.swift in Sources */,
 				374E2782271577ED00A63D40 /* TitleAndSubtitlesView.swift in Sources */,
+				370F84682719B56200DF0412 /* UIViewController+Extension.swift in Sources */,
 				3760BB702716CDAC003AB11C /* MainTableViewCellViewModel.swift in Sources */,
 				3750D2DC271464490016F1B5 /* PersonDetail.swift in Sources */,
 				37CA2FB127149B870061B7D2 /* URLSession+Rx.swift in Sources */,
@@ -587,6 +594,7 @@
 				3750D2DF2714699D0016F1B5 /* Base.swift in Sources */,
 				3750D2EB271488E20016F1B5 /* MainApi.swift in Sources */,
 				374E27862715869500A63D40 /* MainView.swift in Sources */,
+				370F84602719A2DB00DF0412 /* DetailView.swift in Sources */,
 				3750D2D827145C8F0016F1B5 /* MovieDetail.swift in Sources */,
 				374E278C27159E8900A63D40 /* MainViewModel.swift in Sources */,
 			);

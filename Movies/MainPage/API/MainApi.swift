@@ -21,7 +21,7 @@ struct MainApi: MainApiProtocol {
         let urlString = baseURL + "movie/popular?api_key=\(🔑)&language=\(appLanguage)&page=\(page)"
         
         guard let url = URL(string: urlString) else {
-            return Observable<Movies>.empty()
+            return Observable<Movies>.error("Error" as! Error)
         }
         
         let popularRequest = URLRequest(url: url)

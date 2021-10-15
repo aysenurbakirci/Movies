@@ -8,7 +8,7 @@
 import UIKit
 import RxSwift
 
-class MainViewController: UIViewController {
+class MainViewController: UIViewController, LoadingDisplayer {
     
     private lazy var mainView: MainView = {
         var view = MainView()
@@ -44,12 +44,16 @@ extension MainViewController {
             })
             .disposed(by: disposeBag)
         
-//        mainViewModel
-//            .isLoading
-//            .subscribe(onNext: { [weak self] isLoading in
-//                self?.mainView.tableView.loadingView(isLoading)
-//            })
-//            .disposed(by: disposeBag)
+        mainViewModel
+            .isLoading
+            .subscribe(onNext: { [weak self] isLoading in
+                if isLoading {
+                    self?.showLoadingView()
+                } else {
+                    self?.hideLoadingView()
+                }
+            })
+            .disposed(by: disposeBag)
 
         mainView.searchBar.rx.text
             .bind(to: mainViewModel.searchQuery)
@@ -90,5 +94,9 @@ extension MainViewController: UITableViewDelegate, UITableViewDataSource {
                 mainViewModel.loadData.onNext(())
             }
         }
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        
     }
 }

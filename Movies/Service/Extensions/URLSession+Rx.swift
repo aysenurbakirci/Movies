@@ -15,7 +15,6 @@ public enum RxURLSessionError: Error {
 
 extension Reactive where Base: URLSession {
     
-    
     func decodable<D: Decodable>(request: URLRequest, type: D.Type) -> Observable<D> {
         
         return response(request: request).map { response, data -> Data in

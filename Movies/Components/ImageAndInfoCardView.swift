@@ -53,8 +53,6 @@ class ImageAndInfoCardView: UIView {
         
         if let imageInfo = imageInfo {
             self.image.downloadImage(imageURL: imageInfo.urlString, width: imageInfo.width)
-        } else {
-            self.image.image = UIImage(named: "emptyImage")
         }
     }
 }

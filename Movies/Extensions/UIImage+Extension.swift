@@ -14,7 +14,6 @@ extension UIImageView {
         
         let urlString = baseImageURL + "w\(width ?? 500)" + imageURL
         let url = URL(string: urlString)
-        let placeholderImage = UIImage(named: "emptyImage")
         let activityInd = UIActivityIndicatorView()
         
         activityInd.center = CGPoint(x: self.frame.size.width  / 2, y: self.frame.size.height / 2)
@@ -22,7 +21,7 @@ extension UIImageView {
         self.backgroundColor = .lightGray
         self.addSubview(activityInd)
         activityInd.startAnimating()
-        self.kf.setImage(with: url, placeholder: placeholderImage, options: nil, progressBlock: nil) { result in
+        self.kf.setImage(with: url, options: nil, progressBlock: nil) { result in
         activityInd.stopAnimating()
             
         }

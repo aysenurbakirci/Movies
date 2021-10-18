@@ -6,29 +6,76 @@
 //
 
 import UIKit
+import Kingfisher
 
 class DetailView: UIView {
     
-    private let titleAndSubtitle = TitleAndSubtitlesView()
+    let dummyText = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Vestibulum sed arcu non odio euismod lacinia at quis. Purus gravida quis blandit turpis. Sed libero enim sed faucibus turpis in. Nisi quis eleifend quam adipiscing vitae proin. Senectus et netus et malesuada fames. Sit amet porttitor eget dolor morbi non arcu. Sem fringilla ut morbi tincidunt augue interdum. Phasellus faucibus scelerisque eleifend donec pretium vulputate sapien nec. Eu non diam phasellus vestibulum lorem sed risus ultricies. Sagittis eu volutpat odio facilisis mauris sit amet massa vitae. Sit amet purus gravida quis. Elementum tempus egestas sed sed risus pretium quam. Commodo elit at imperdiet dui accumsan sit amet nulla. Blandit cursus risus at ultrices mi tempus imperdiet nulla. Justo laoreet sit amet cursus sit amet."
     
-    private lazy var movieImage: UIImageView = {
+    let scrollView: UIScrollView = {
+        let scroll = UIScrollView()
+        scroll.backgroundColor = .white
+        return scroll
+    }()
+    
+    private lazy var horizontalScrollView = HorizontalScrollView()
+    
+    private lazy var titleAndSubtitles = TitleAndSubtitlesView()
+    
+    private lazy var image: UIImageView = {
         var imageView = UIImageView()
-        imageView.frame = CGRect(x: 0, y: 0, width: frame.size.width, height: frame.size.width)
-        imageView.layer.cornerRadius = 10
+        imageView.image = UIImage(named: "defaultImage.jpg")
+        imageView.frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.width)
         imageView.clipsToBounds = true
         return imageView
     }()
     
+    private lazy var overview: UITextView = {
+        
+        var textView = UITextView()
+        textView.textAlignment = .left
+        textView.text = dummyText
+        textView.font = UIFont.systemFont(ofSize: 16)
+        textView.textColor = .gray
+        textView.isUserInteractionEnabled = false
+        textView.isEditable = false
+        return textView
+        
+    }()
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
+        detailViewConfig()
         
-        addSubview(movieImage)
-        backgroundColor = .white
+    }
+    
+    private func detailViewConfig() {
+        self.addSubview(scrollView)
+
+        scrollView.anchor(top: self.topAnchor, leading: self.leadingAnchor, bottom: self.bottomAnchor, trailing: self.trailingAnchor)
         
-        movieImage.anchorSize(size: .init(width: movieImage.frame.size.width, height: movieImage.frame.size.height))
-        movieImage.anchor(top: topAnchor, leading: leadingAnchor, bottom: nil, trailing: trailingAnchor)
-        addSubview(titleAndSubtitle)
-        titleAndSubtitle.anchor(top: movieImage.bottomAnchor, leading: leadingAnchor, bottom: bottomAnchor, trailing: trailingAnchor, padding: .init(top: 20.0, left: 20.0, bottom: 0.0, right: 20.0))
+        scrollView.addSubview(image)
+        image.anchorSize(size: .init(width: image.frame.size.width, height: image.frame.size.height))
+        image.anchor(top: scrollView.topAnchor, leading: scrollView.leadingAnchor, bottom: nil, trailing: scrollView.trailingAnchor)
+        
+        scrollView.addSubview(titleAndSubtitles)
+        titleAndSubtitles.anchor(top: image.bottomAnchor, leading: scrollView.leadingAnchor, bottom: nil, trailing: scrollView.trailingAnchor)
+        titleAndSubtitles.anchorSize(size: .init(width: titleAndSubtitles.frame.width, height: 80))
+        
+        scrollView.addSubview(overview)
+        overview.anchor(top: titleAndSubtitles.bottomAnchor, leading: scrollView.leadingAnchor, bottom: nil, trailing: scrollView.trailingAnchor)
+        overview.anchorSize(size: .init(width: overview.frame.width, height: overview.contentSize.height + 40))
+        
+        scrollView.addSubview(horizontalScrollView)
+        horizontalScrollView.anchor(top: overview.bottomAnchor, leading: scrollView.leadingAnchor, bottom: scrollView.bottomAnchor, trailing: scrollView.trailingAnchor)
+    }
+    
+    func apply(detailModel: DetailModel) {
+        
+        self.image.downloadImage(imageURL: detailModel.image?.urlString ?? "", width: detailModel.image?.width)
+        self.titleAndSubtitles.apply(title: detailModel.title, subtitle: detailModel.subtitle, secondSubtitle: nil)
+        self.overview.text = detailModel.overview
+        self.horizontalScrollView.apply(model: detailModel.castArray ?? [])
         
     }
     
@@ -36,4 +83,3 @@ class DetailView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
 }
-

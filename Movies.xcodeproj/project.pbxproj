@@ -11,6 +11,10 @@
 		370F845E27197F5400DF0412 /* MovieTestData.json in Resources */ = {isa = PBXBuildFile; fileRef = 3760BB852718B145003AB11C /* MovieTestData.json */; };
 		370F84602719A2DB00DF0412 /* DetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 370F845F2719A2DB00DF0412 /* DetailView.swift */; };
 		370F84682719B56200DF0412 /* UIViewController+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 370F84672719B56200DF0412 /* UIViewController+Extension.swift */; };
+		370F846D271C0AD500DF0412 /* DetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 370F846C271C0AD500DF0412 /* DetailViewController.swift */; };
+		370F8472271C5D0700DF0412 /* HorizontalScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 370F8471271C5D0700DF0412 /* HorizontalScrollView.swift */; };
+		370F8474271C7A1F00DF0412 /* ImageAndTitleCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 370F8473271C7A1F00DF0412 /* ImageAndTitleCardView.swift */; };
+		370F8476271D45AB00DF0412 /* DetailModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 370F8475271D45AB00DF0412 /* DetailModel.swift */; };
 		374E277F2715776100A63D40 /* UIView+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 374E277E2715776100A63D40 /* UIView+Extensions.swift */; };
 		374E2782271577ED00A63D40 /* TitleAndSubtitlesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 374E2781271577ED00A63D40 /* TitleAndSubtitlesView.swift */; };
 		374E27842715820D00A63D40 /* ImageAndInfoCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 374E27832715820D00A63D40 /* ImageAndInfoCardView.swift */; };
@@ -66,6 +70,10 @@
 		17B6A4F3BCB31A25FB53850E /* Pods_Movies.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Movies.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		370F845F2719A2DB00DF0412 /* DetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailView.swift; sourceTree = "<group>"; };
 		370F84672719B56200DF0412 /* UIViewController+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Extension.swift"; sourceTree = "<group>"; };
+		370F846C271C0AD500DF0412 /* DetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailViewController.swift; sourceTree = "<group>"; };
+		370F8471271C5D0700DF0412 /* HorizontalScrollView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HorizontalScrollView.swift; sourceTree = "<group>"; };
+		370F8473271C7A1F00DF0412 /* ImageAndTitleCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageAndTitleCardView.swift; sourceTree = "<group>"; };
+		370F8475271D45AB00DF0412 /* DetailModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailModel.swift; sourceTree = "<group>"; };
 		374E277E2715776100A63D40 /* UIView+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Extensions.swift"; sourceTree = "<group>"; };
 		374E2781271577ED00A63D40 /* TitleAndSubtitlesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TitleAndSubtitlesView.swift; sourceTree = "<group>"; };
 		374E27832715820D00A63D40 /* ImageAndInfoCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageAndInfoCardView.swift; sourceTree = "<group>"; };
@@ -161,6 +169,8 @@
 			children = (
 				374E2781271577ED00A63D40 /* TitleAndSubtitlesView.swift */,
 				374E27832715820D00A63D40 /* ImageAndInfoCardView.swift */,
+				370F8473271C7A1F00DF0412 /* ImageAndTitleCardView.swift */,
+				370F8471271C5D0700DF0412 /* HorizontalScrollView.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -270,6 +280,8 @@
 			children = (
 				3750D2EC27148CD00016F1B5 /* API */,
 				370F845F2719A2DB00DF0412 /* DetailView.swift */,
+				370F846C271C0AD500DF0412 /* DetailViewController.swift */,
+				370F8475271D45AB00DF0412 /* DetailModel.swift */,
 			);
 			path = DetailPage;
 			sourceTree = "<group>";
@@ -576,7 +588,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				3750D2D527145AB40016F1B5 /* Movies.swift in Sources */,
+				370F8472271C5D0700DF0412 /* HorizontalScrollView.swift in Sources */,
 				3750D29B27141FA20016F1B5 /* MainViewController.swift in Sources */,
+				370F846D271C0AD500DF0412 /* DetailViewController.swift in Sources */,
 				3750D29727141FA20016F1B5 /* AppDelegate.swift in Sources */,
 				3750D29927141FA20016F1B5 /* SceneDelegate.swift in Sources */,
 				374E27842715820D00A63D40 /* ImageAndInfoCardView.swift in Sources */,
@@ -587,8 +601,10 @@
 				37CA2FB127149B870061B7D2 /* URLSession+Rx.swift in Sources */,
 				3760BB322716B6FD003AB11C /* MainPageBuilder.swift in Sources */,
 				374E277F2715776100A63D40 /* UIView+Extensions.swift in Sources */,
+				370F8476271D45AB00DF0412 /* DetailModel.swift in Sources */,
 				3750D2DA2714643C0016F1B5 /* People.swift in Sources */,
 				374E27882715873300A63D40 /* MainTableViewCell.swift in Sources */,
+				370F8474271C7A1F00DF0412 /* ImageAndTitleCardView.swift in Sources */,
 				3750D2EF27148CED0016F1B5 /* DetailApi.swift in Sources */,
 				374E278A2715895C00A63D40 /* UIImage+Extension.swift in Sources */,
 				3750D2DF2714699D0016F1B5 /* Base.swift in Sources */,

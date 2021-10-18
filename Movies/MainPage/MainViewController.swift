@@ -26,7 +26,6 @@ class MainViewController: UIViewController, LoadingDisplayer {
         
         view = mainView
         navigationItem.title = "Main Page"
-        navigationController?.navigationBar.prefersLargeTitles = true
         navigationItem.titleView = mainView.searchBar
         setupBindings()
         mainViewModel.loadData.onNext(())
@@ -97,6 +96,6 @@ extension MainViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        
+        navigationController?.pushViewController(DetailViewController(), animated: true)
     }
 }

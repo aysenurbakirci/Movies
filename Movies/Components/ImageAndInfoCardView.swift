@@ -26,7 +26,11 @@ class ImageAndInfoCardView: UIView {
         return imageView
     }()
     
-    private lazy var stack = UIStackView()
+    private lazy var stack: UIStackView = {
+        var stack = UIStackView()
+        stack.axis = .horizontal
+        return stack
+    }()
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -45,9 +49,7 @@ class ImageAndInfoCardView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func apply(stackAxis: NSLayoutConstraint.Axis, imageInfo: ImageInfo?, title: String, subtitle: String? = nil, secondSubtitle: String? = nil) {
-        
-        stack.axis = stackAxis
+    func apply(imageInfo: ImageInfo?, title: String, subtitle: String? = nil, secondSubtitle: String? = nil) {
 
         titleAndSubtitle.apply(title: title, subtitle: subtitle, secondSubtitle: secondSubtitle)
         

@@ -16,6 +16,8 @@ struct HorizontalArrayModel {
 
 class HorizontalScrollView : UIView {
     
+    private var list: [HorizontalArrayModel] = []
+    
     lazy var stackView: UIStackView = {
         let stackView = UIStackView()
         stackView.axis = .horizontal
@@ -40,8 +42,9 @@ class HorizontalScrollView : UIView {
         scrollView.addSubview(stackView)
         stackView.fillSuperView()
         
-        for _ in 0..<20 {
+        for i in 0..<20 {
             let view = ImageAndTitleCardView()
+            view.tag = i
             view.apply(imageInfo: nil, title: "title")
             view.anchorSize(size: .init(width: scrollView.contentSize.height, height: scrollView.contentSize.height))
             view.backgroundColor = .gray
@@ -56,7 +59,7 @@ class HorizontalScrollView : UIView {
     }
     
     func apply(model: [HorizontalArrayModel]) {
-        
+        self.list = model
     }
     
 }

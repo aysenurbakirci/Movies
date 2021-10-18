@@ -10,6 +10,7 @@ import UIKit
 class DetailViewController: UIViewController {
     
     let detailView = DetailView()
+    var detailViewModel: DetailViewModel!
     
     override func viewDidLoad() {
         super.viewDidLoad()

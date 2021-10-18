@@ -14,23 +14,47 @@ protocol DetailApiProtocol {
 
 struct DetailApi: DetailApiProtocol {
     
+    func getMovieCast(with movieId: Int) -> Observable<MovieCast> {
+        let movieCastUrlString = baseURL + "movie/\(movieId)/credits?api_key=\(🔑)&language=\(appLanguage)"
+        guard let castURL = URL(string: movieCastUrlString) else {
+            return Observable<MovieCast>.empty()
+        }
+        
+        let castRequest = URLRequest(url: castURL)
+        
+        return URLSession.shared.rx.decodable(request: castRequest, type: MovieCast.self)
+    }
+    
+    func getMovieTrailer(with movieId: Int) -> Observable<MovieTrailers> {
+        let movieTrailersUrlString = baseURL + "movie/\(movieId)/videos?api_key=\(🔑)&language=\(appLanguage)"
+        guard let trailersURL = URL(string: movieTrailersUrlString) else {
+            return Observable<MovieTrailers>.empty()
+        }
+        
+        let trailerRequest = URLRequest(url: trailersURL)
+        
+        return URLSession.shared.rx.decodable(request: trailerRequest, type: MovieTrailers.self)
+    }
+    
     func getMovieDetail(with movieId: Int) -> Observable<MovieDetail> {
         
         let movieDetailUrlString = baseURL + "movie/\(movieId)?api_key=\(🔑)&language=\(appLanguage)"
-        let movieCastUrlString = baseURL + "movie/\(movieId)/credits?api_key=\(🔑)&language=\(appLanguage)"
-        let movieTrailersUrlString = baseURL + "movie/\(movieId)/videos?api_key=\(🔑)&language=\(appLanguage)"
         
-        guard let detailURL = URL(string: movieDetailUrlString), let castURL = URL(string: movieCastUrlString), let trailersURL = URL(string: movieTrailersUrlString) else {
+        guard let detailURL = URL(string: movieDetailUrlString) else {
             return Observable<MovieDetail>.empty()
+            
         }
         
         let detailRequest = URLRequest(url: detailURL)
-        let castRequest = URLRequest(url: castURL)
-        let trailersRequest = URLRequest(url: trailersURL)
         
-        let movieDetail = URLSession.shared.rx.decodable(request: detailRequest, type: MovieDetail.self)
-        let movieCast = URLSession.shared.rx.decodable(request: castRequest, type: MovieCast.self)
-        let movieTrailers = URLSession.shared.rx.decodable(request: trailersRequest, type: MovieTrailers.self)
+        return URLSession.shared.rx.decodable(request: detailRequest, type: MovieDetail.self)
+    }
+    
+    func getDetails(with movieId: Int) -> Observable<MovieDetail> {
+        
+        let movieDetail = getMovieDetail(with: movieId)
+        let movieCast = getMovieCast(with: movieId)
+        let movieTrailers = getMovieTrailer(with: movieId)
         
         return Observable.zip(movieDetail, movieCast, movieTrailers)
             .map { (movieDetail: $0, movieCast: $1, movieTrailers: $2) }

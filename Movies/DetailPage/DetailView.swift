@@ -31,7 +31,6 @@ class DetailView: UIView {
     }()
     
     private lazy var overview: UITextView = {
-        
         var textView = UITextView()
         textView.textAlignment = .left
         textView.text = dummyText
@@ -40,13 +39,21 @@ class DetailView: UIView {
         textView.isUserInteractionEnabled = false
         textView.isEditable = false
         return textView
-        
+    }()
+    
+    private lazy var linkButton: UIButton = {
+        var button = UIButton(type: .system)
+        button.frame = CGRect(x: 0, y: 0, width: 40, height: 40)
+        button.backgroundColor = .white
+        button.setImage(UIImage(named: "play.svg"), for: .normal)
+        button.tintColor = .black
+        button.addShadow(cornerRadius: 20)
+        return button
     }()
     
     override init(frame: CGRect) {
         super.init(frame: frame)
         detailViewConfig()
-        
     }
     
     private func detailViewConfig() {
@@ -64,10 +71,14 @@ class DetailView: UIView {
         
         scrollView.addSubview(overview)
         overview.anchor(top: titleAndSubtitles.bottomAnchor, leading: scrollView.leadingAnchor, bottom: nil, trailing: scrollView.trailingAnchor)
-        overview.anchorSize(size: .init(width: overview.frame.width, height: overview.contentSize.height + 40))
+        overview.anchorSize(size: .init(width: overview.frame.width, height: overview.contentSize.height + 80))
         
         scrollView.addSubview(horizontalScrollView)
         horizontalScrollView.anchor(top: overview.bottomAnchor, leading: scrollView.leadingAnchor, bottom: scrollView.bottomAnchor, trailing: scrollView.trailingAnchor)
+        
+        image.addSubview(linkButton)
+        linkButton.anchor(top: image.topAnchor, leading: nil, bottom: nil, trailing: image.trailingAnchor, padding: .init(top: 10, left: 0, bottom: 0, right: 10))
+        linkButton.anchorSize(size: linkButton.frame.size)
     }
     
     func apply(detailModel: DetailModel) {
@@ -76,6 +87,12 @@ class DetailView: UIView {
         self.titleAndSubtitles.apply(title: detailModel.title, subtitle: detailModel.subtitle, secondSubtitle: nil)
         self.overview.text = detailModel.overview
         self.horizontalScrollView.apply(model: detailModel.castArray ?? [])
+        
+        if let buttonImage = detailModel.buttonImageName {
+            self.linkButton.setImage(UIImage(named: buttonImage), for: .normal)
+        } else {
+            self.linkButton.isHidden = true
+        }
         
     }
     

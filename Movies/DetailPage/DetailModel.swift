@@ -12,6 +12,7 @@ protocol DetailModelProtocol {
     var title: String { get }
     var subtitle: String? { get }
     var overview: String? { get }
+    var buttonImageName: String? { get }
     var castArray: [HorizontalArrayModel]? { get }
 }
 
@@ -21,6 +22,7 @@ struct DetailModel: DetailModelProtocol {
     var title: String
     var subtitle: String?
     var overview: String?
+    var buttonImageName: String?
     var castArray: [HorizontalArrayModel]?
     
     init(movie: MovieDetail) {
@@ -29,6 +31,7 @@ struct DetailModel: DetailModelProtocol {
         self.title = movie.title
         self.subtitle = String(movie.voteAverage)
         self.overview = movie.overview
+        self.buttonImageName = "play.svg"
         
         for i in movie.cast {
             castArray?.append(HorizontalArrayModel(id: movie.id, imagePath: i.profilePath ?? "", title: i.name))
@@ -40,6 +43,7 @@ struct DetailModel: DetailModelProtocol {
         self.image = ImageInfo(urlString: person.profilePath, width: 500)
         self.title = person.name
         self.overview = person.biography
+        self.buttonImageName = nil
         
     }
 }

@@ -10,9 +10,7 @@ import RxSwift
 import RxCocoa
 
 enum Section {
-    
     case movie([Movie]), person([Person])
-    
     var numberOfItems: Int {
         switch self {
         case .movie(let movies):
@@ -136,4 +134,14 @@ extension MainViewModel {
         data.value.count
     }
     
+    func showDetailView(for indexPath: IndexPath) {
+        let dataSection = data.value[indexPath.section]
+        switch dataSection {
+        case .movie(let movies):
+            let movie = movies[indexPath.row]
+            return 
+        case .person(let people):
+            let person = people[indexPath.row]
+        }
+    }
 }

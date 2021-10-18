@@ -133,15 +133,4 @@ extension MainViewModel {
     var numberOfSections: Int {
         data.value.count
     }
-    
-    func showDetailView(for indexPath: IndexPath) {
-        let dataSection = data.value[indexPath.section]
-        switch dataSection {
-        case .movie(let movies):
-            let movie = movies[indexPath.row]
-            return 
-        case .person(let people):
-            let person = people[indexPath.row]
-        }
-    }
 }

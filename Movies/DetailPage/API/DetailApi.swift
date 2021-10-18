@@ -15,39 +15,27 @@ protocol DetailApiProtocol {
 struct DetailApi: DetailApiProtocol {
     
     func getMovieCast(with movieId: Int) -> Observable<MovieCast> {
-        let movieCastUrlString = baseURL + "movie/\(movieId)/credits?api_key=\(🔑)&language=\(appLanguage)"
-        guard let castURL = URL(string: movieCastUrlString) else {
-            return Observable<MovieCast>.empty()
-        }
         
-        let castRequest = URLRequest(url: castURL)
-        
-        return URLSession.shared.rx.decodable(request: castRequest, type: MovieCast.self)
+        return DataBuilder<MovieCast>()
+            .addBase(type: .movie)
+            .getMovieDetail(movieId: String(movieId), queryType: .cast)
+            .build()
     }
     
     func getMovieTrailer(with movieId: Int) -> Observable<MovieTrailers> {
-        let movieTrailersUrlString = baseURL + "movie/\(movieId)/videos?api_key=\(🔑)&language=\(appLanguage)"
-        guard let trailersURL = URL(string: movieTrailersUrlString) else {
-            return Observable<MovieTrailers>.empty()
-        }
         
-        let trailerRequest = URLRequest(url: trailersURL)
-        
-        return URLSession.shared.rx.decodable(request: trailerRequest, type: MovieTrailers.self)
+        return DataBuilder<MovieTrailers>()
+            .addBase(type: .movie)
+            .getMovieDetail(movieId: String(movieId), queryType: .trailer)
+            .build()
     }
     
     func getMovieDetail(with movieId: Int) -> Observable<MovieDetail> {
         
-        let movieDetailUrlString = baseURL + "movie/\(movieId)?api_key=\(🔑)&language=\(appLanguage)"
-        
-        guard let detailURL = URL(string: movieDetailUrlString) else {
-            return Observable<MovieDetail>.empty()
-            
-        }
-        
-        let detailRequest = URLRequest(url: detailURL)
-        
-        return URLSession.shared.rx.decodable(request: detailRequest, type: MovieDetail.self)
+        return DataBuilder<MovieDetail>()
+            .addBase(type: .movie)
+            .getMovieDetail(movieId: String(movieId), queryType: .detail)
+            .build()
     }
     
     func getDetails(with movieId: Int) -> Observable<MovieDetail> {

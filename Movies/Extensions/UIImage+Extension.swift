@@ -17,8 +17,8 @@ extension UIImageView {
         let activityInd = UIActivityIndicatorView()
         
         activityInd.center = CGPoint(x: self.frame.size.width  / 2, y: self.frame.size.height / 2)
-        activityInd.color = .white
-        self.backgroundColor = .lightGray
+        activityInd.color = .gray
+        self.backgroundColor = .white
         self.addSubview(activityInd)
         activityInd.startAnimating()
         self.kf.setImage(with: url, options: nil, progressBlock: nil) { result in

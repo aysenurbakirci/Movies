@@ -23,7 +23,7 @@ class MainTableViewCell: UITableViewCell {
     
     func cellConfig(withViewModel viewModel: MainTableViewCellProtocol) {
         
-        cellView.apply(imageInfo: viewModel.image, title: viewModel.title, subtitle: viewModel.subtitle, secondSubtitle: viewModel.secondSubtitle)
+        cellView.apply(imagePath: viewModel.imagePath ?? "", title: viewModel.title, subtitle: viewModel.subtitle, secondSubtitle: viewModel.secondSubtitle)
     }
     
     required init?(coder: NSCoder) {

@@ -19,16 +19,22 @@ class ImageAndInfoCardView: UIView {
     
     private lazy var image: UIImageView = {
         var imageView = UIImageView()
-        imageView.image = UIImage(named: "unnamed.png")
-        imageView.frame = CGRect(x: 0, y: 0, width: 100, height: 100)
-        imageView.layer.cornerRadius = 6
-        imageView.clipsToBounds = true
+        imageView.contentMode = .scaleAspectFit
         return imageView
+    }()
+    
+    private lazy var imageContainer: UIView = {
+        var container = UIView()
+        container.addSubview(image)
+        container.backgroundColor = .red
+        return container
     }()
     
     private lazy var stack: UIStackView = {
         var stack = UIStackView()
         stack.axis = .horizontal
+        stack.addArrangedSubview(imageContainer)
+        stack.addArrangedSubview(titleAndSubtitle)
         return stack
     }()
     
@@ -36,12 +42,9 @@ class ImageAndInfoCardView: UIView {
         super.init(frame: frame)
         
         addSubview(stack)
-        backgroundColor = .white
-
-        stack.addArrangedSubview(image)
-        image.anchorSize(size: .init(width: image.frame.size.width, height: image.frame.size.height))
-        stack.addArrangedSubview(titleAndSubtitle)
-        stack.anchor(top: topAnchor, leading: leadingAnchor, bottom: bottomAnchor, trailing: trailingAnchor, padding: .init(top: 10.0, left: 10.0, bottom: 10.0, right: 0.0))
+        image.fillSuperView()
+        imageContainer.anchorSize(size: .init(width: 100, height: 100))
+        stack.fillSuperView()
         
     }
     
@@ -49,12 +52,9 @@ class ImageAndInfoCardView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func apply(imageInfo: ImageInfo?, title: String, subtitle: String? = nil, secondSubtitle: String? = nil) {
+    func apply(imagePath: String, title: String, subtitle: String? = nil, secondSubtitle: String? = nil) {
 
         titleAndSubtitle.apply(title: title, subtitle: subtitle, secondSubtitle: secondSubtitle)
-        
-        if let imageInfo = imageInfo {
-            self.image.downloadImage(imageURL: imageInfo.urlString, width: imageInfo.width)
-        }
+        self.image.downloadImage(imageURL: imagePath, width: 200)
     }
 }

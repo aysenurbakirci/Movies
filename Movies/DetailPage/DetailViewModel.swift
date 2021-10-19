@@ -15,6 +15,7 @@ protocol DetailViewModelProtocol {
     var isLoading: BehaviorRelay<Bool> { get }
     var loadData: PublishSubject<Void> { get }
     func getDetails(id: Int)
+    func openNewDetailPage(id: Int) -> DetailViewController
 
 }
 
@@ -61,6 +62,10 @@ class MovieDetailViewModel: DetailViewModelProtocol {
     private func getMovie(movieId: Int) -> Observable<MovieDetail> {
         return detailService.getDetails(with: movieId)
     }
+    
+    func openNewDetailPage(id: Int) -> DetailViewController {
+        return DetailPageBuilder.build(viewModel: PersonDetailViewModel(personId: id))
+    }
 }
 
 class PersonDetailViewModel: DetailViewModelProtocol {
@@ -105,6 +110,10 @@ class PersonDetailViewModel: DetailViewModelProtocol {
     
     private func getPerson(personId: Int) -> Observable<PersonDetail> {
         return detailService.getDetails(with: personId)
+    }
+    
+    func openNewDetailPage(id: Int) -> DetailViewController {
+        return DetailPageBuilder.build(viewModel: MovieDetailViewModel(movieId: id))
     }
     
 }

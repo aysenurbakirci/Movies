@@ -33,8 +33,8 @@ struct DetailModel: DetailModelProtocol {
         self.overview = movie.overview
         self.buttonImageName = "play.svg"
         
-        for i in movie.cast {
-            castArray.append(HorizontalListModel(id: movie.id, imagePath: i.profilePath ?? "", title: i.name))
+        for person in movie.cast {
+            castArray.append(HorizontalListModel(id: person.id, imagePath: person.profilePath ?? "", title: person.name))
         }
     }
     
@@ -45,8 +45,8 @@ struct DetailModel: DetailModelProtocol {
         self.overview = person.biography
         self.buttonImageName = nil
         
-        for i in person.movieCredits {
-            castArray.append(HorizontalListModel(id: person.id, imagePath: i.posterPath ?? "", title: i.title))
+        for movie in person.movieCredits {
+            castArray.append(HorizontalListModel(id: movie.id, imagePath: movie.posterPath ?? "", title: movie.title))
         }
         
     }

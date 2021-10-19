@@ -14,7 +14,6 @@ class TitleAndSubtitlesView: UIView {
         
         var label = UILabel()
         label.textAlignment = .left
-        label.text = "Movie Title"
         label.font = UIFont.boldSystemFont(ofSize: 18)
         label.textColor = UIColor.black
         label.numberOfLines = 0
@@ -26,7 +25,6 @@ class TitleAndSubtitlesView: UIView {
         
         var label = UILabel()
         label.textAlignment = .left
-        label.text = "0.0"
         label.font = UIFont.systemFont(ofSize: 18)
         label.textColor = UIColor.gray
         label.numberOfLines = 0
@@ -38,7 +36,6 @@ class TitleAndSubtitlesView: UIView {
         
         var label = UILabel()
         label.textAlignment = .left
-        label.text = "0.0"
         label.font = UIFont.systemFont(ofSize: 16)
         label.textColor = UIColor.gray
         label.numberOfLines = 0
@@ -50,6 +47,9 @@ class TitleAndSubtitlesView: UIView {
         var stackView = UIStackView()
         stackView.axis = .vertical
         stackView.distribution = .fill
+        stackView.addArrangedSubview(title)
+        stackView.addArrangedSubview(subtitleOne)
+        stackView.addArrangedSubview(subtitleTwo)
         return stackView
     }()
     
@@ -57,9 +57,6 @@ class TitleAndSubtitlesView: UIView {
         super.init(frame: frame)
         
         addSubview(verticalStack)
-        verticalStack.addArrangedSubview(title)
-        verticalStack.addArrangedSubview(subtitleOne)
-        verticalStack.addArrangedSubview(subtitleTwo)
         verticalStack.fillSuperView()
         
     }

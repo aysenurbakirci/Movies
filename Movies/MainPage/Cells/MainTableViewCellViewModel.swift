@@ -8,7 +8,7 @@
 import Foundation
 
 protocol MainTableViewCellProtocol {
-    var image: ImageInfo? { get }
+    var imagePath: String? { get }
     var title: String { get }
     var subtitle: String? { get }
     var secondSubtitle: String? { get }
@@ -16,7 +16,7 @@ protocol MainTableViewCellProtocol {
 
 struct CellViewModel: MainTableViewCellProtocol {
     
-    var image: ImageInfo?
+    var imagePath: String?
     var title: String
     var subtitle: String?
     var secondSubtitle: String?
@@ -24,7 +24,7 @@ struct CellViewModel: MainTableViewCellProtocol {
     init(movie: Movie) {
         
         if let imageURL = movie.posterPath {
-            self.image = ImageInfo(urlString: imageURL, width: 500)
+            self.imagePath = imageURL
         }
         if let releaseDate = movie.releaseDate {
             self.subtitle = releaseDate
@@ -36,7 +36,7 @@ struct CellViewModel: MainTableViewCellProtocol {
     init(person: Person) {
         
         if let imageURL = person.profilePath {
-            self.image = ImageInfo(urlString: imageURL, width: 500)
+            self.imagePath = imageURL
         }
         
         self.title = person.name

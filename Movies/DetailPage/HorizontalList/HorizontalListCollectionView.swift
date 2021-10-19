@@ -12,6 +12,7 @@ import RxCocoa
 final class HorizontalListCollectionView: UIView {
     
     let dataArrayRelay = BehaviorRelay<[HorizontalListModel]>(value: [])
+    let selectedItemId = BehaviorRelay<Int>(value: 0)
     let disposeBag = DisposeBag()
     
     static let cellWidthRatio: CGFloat = 0.37
@@ -82,6 +83,7 @@ extension HorizontalListCollectionView: UICollectionViewDataSource {
 
 extension HorizontalListCollectionView: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        
+        let model = dataArrayRelay.value[indexPath.row]
+        selectedItemId.accept(model.id)
     }
 }

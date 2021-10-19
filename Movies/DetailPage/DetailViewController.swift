@@ -41,6 +41,15 @@ class DetailViewController: UIViewController, LoadingDisplayer {
             })
             .disposed(by: disposeBag)
         
+        detailView.horizontalListView
+            .selectedItemId
+            .skip(1)
+            .subscribe(onNext: { [weak self] id in
+                guard let self = self else { return }
+                self.navigationController?.pushViewController(self.detailViewModel.openNewDetailPage(id: id), animated: true)
+            })
+            .disposed(by: disposeBag)
+        
         detailViewModel.loadData.onNext(())
     }
 }

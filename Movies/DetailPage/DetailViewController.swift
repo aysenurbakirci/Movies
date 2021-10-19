@@ -6,14 +6,41 @@
 //
 
 import UIKit
+import RxSwift
 
-class DetailViewController: UIViewController {
+class DetailViewController: UIViewController, LoadingDisplayer {
     
-    let detailView = DetailView()
-    var detailViewModel: DetailViewModel!
+    private lazy var detailView: DetailView = {
+        var view = DetailView()
+        return view
+    }()
+    
+    var detailViewModel: DetailViewModelProtocol!
+    private let disposeBag = DisposeBag()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         view = detailView
+        detailViewModel
+            .data
+            .subscribe(onNext: { [weak self] data in
+                guard let data = data, let self = self else { return }
+                self.detailView.apply(detailModel: data)
+            })
+            .disposed(by: disposeBag)
+        
+        detailViewModel
+            .isLoading
+            .subscribe(onNext: { [weak self] isLoading in
+                if isLoading {
+                    self?.showLoadingView()
+                } else {
+                    self?.hideLoadingView()
+                }
+            })
+            .disposed(by: disposeBag)
+        
+        detailViewModel.loadData.onNext(())
     }
 }
+

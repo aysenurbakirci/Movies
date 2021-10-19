@@ -96,6 +96,6 @@ extension MainViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        navigationController?.pushViewController(DetailViewController(), animated: true)
+        navigationController?.pushViewController(mainViewModel.openDetailPage(for: indexPath), animated: true)
     }
 }

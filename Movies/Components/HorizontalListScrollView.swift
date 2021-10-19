@@ -7,16 +7,16 @@
 
 import UIKit
 
-struct HorizontalArrayModel {
+struct HorizontalListModel {
     var id: Int
     var imagePath: String
     var title: String
 }
 
 
-class HorizontalScrollView : UIView {
+class HorizontalListScrollView : UIView {
     
-    private var list: [HorizontalArrayModel] = []
+    private var list: [HorizontalListModel] = []
     
     lazy var stackView: UIStackView = {
         let stackView = UIStackView()
@@ -58,7 +58,7 @@ class HorizontalScrollView : UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func apply(model: [HorizontalArrayModel]) {
+    func apply(model: [HorizontalListModel]) {
         self.list = model
     }
     

@@ -53,7 +53,7 @@ class DataBuilder<D: Decodable> {
     }
     
     func getMovieDetail(movieId: String, queryType: MovieQueryType) -> DataBuilder<D> {
-        urlComponents.path += movieId
+        urlComponents.path += "/\(movieId)"
         
         if !queryType.rawValue.isEmpty {
             urlComponents.path += queryType.rawValue
@@ -63,7 +63,7 @@ class DataBuilder<D: Decodable> {
     }
     
     func getPersonDetail(personId: String, queryType: PersonQueryType) -> DataBuilder<D> {
-        urlComponents.path += personId
+        urlComponents.path += "/\(personId)"
         
         if !queryType.rawValue.isEmpty {
             urlComponents.path += queryType.rawValue

@@ -133,4 +133,16 @@ extension MainViewModel {
     var numberOfSections: Int {
         data.value.count
     }
+    
+    func openDetailPage(for indexPath: IndexPath) -> DetailViewController {
+        let section = data.value[indexPath.section]
+        switch section {
+        case .movie(let movies):
+            let movie = movies[indexPath.row]
+            return DetailPageBuilder.build(viewModel: MovieDetailViewModel(movieId: movie.id))
+        case .person(let people):
+            let person = people[indexPath.row]
+            return DetailPageBuilder.build(viewModel: PersonDetailViewModel(personId: person.id))
+        }
+    }
 }

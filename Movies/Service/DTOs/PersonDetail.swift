@@ -6,19 +6,23 @@
 //
 import Foundation
 
-struct PersonDetail: Codable {
+final class PersonDetail: Codable {
     let id: Int
     let name: String
     let profilePath: String
     let biography: String
-    let homepage: String
+    
+    var movieCredits: [MovieCredits] = []
 
     enum CodingKeys: String, CodingKey {
         case id
         case name
         case profilePath = "profile_path"
         case biography
-        case homepage
+    }
+    
+    func addMovieCast(movies: [MovieCredits]) {
+        movieCredits.append(contentsOf: movies)
     }
 }
 

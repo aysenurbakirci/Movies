@@ -10,49 +10,46 @@ import UIKit
 
 class TitleAndSubtitlesView: UIView {
     
-    private lazy var title: UITextView = {
+    private lazy var title: UILabel = {
         
-        var textView = UITextView()
-        textView.textAlignment = .left
-        textView.text = "Movie Title"
-        textView.font = UIFont.boldSystemFont(ofSize: 18)
-        textView.textColor = UIColor.black
-        textView.isUserInteractionEnabled = false
-        textView.isEditable = false
-        return textView
-        
-    }()
-    
-    private lazy var subtitleOne: UITextView = {
-        
-        var textView = UITextView()
-        textView.textAlignment = .left
-        textView.text = "0.0"
-        textView.font = UIFont.systemFont(ofSize: 18)
-        textView.textColor = UIColor.gray
-        textView.isUserInteractionEnabled = false
-        textView.isEditable = false
-        return textView
+        var label = UILabel()
+        label.textAlignment = .left
+        label.text = "Movie Title"
+        label.font = UIFont.boldSystemFont(ofSize: 18)
+        label.textColor = UIColor.black
+        label.numberOfLines = 0
+        return label
         
     }()
     
-    private lazy var subtitleTwo: UITextView = {
+    private lazy var subtitleOne: UILabel = {
         
-        var textView = UITextView()
-        textView.textAlignment = .left
-        textView.text = "0.0"
-        textView.font = UIFont.systemFont(ofSize: 16)
-        textView.textColor = UIColor.gray
-        textView.isUserInteractionEnabled = false
-        textView.isEditable = false
-        return textView
+        var label = UILabel()
+        label.textAlignment = .left
+        label.text = "0.0"
+        label.font = UIFont.systemFont(ofSize: 18)
+        label.textColor = UIColor.gray
+        label.numberOfLines = 0
+        return label
+        
+    }()
+    
+    private lazy var subtitleTwo: UILabel = {
+        
+        var label = UILabel()
+        label.textAlignment = .left
+        label.text = "0.0"
+        label.font = UIFont.systemFont(ofSize: 16)
+        label.textColor = UIColor.gray
+        label.numberOfLines = 0
+        return label
         
     }()
     
     private lazy var verticalStack: UIStackView = {
         var stackView = UIStackView()
         stackView.axis = .vertical
-        stackView.distribution = .fillEqually
+        stackView.distribution = .fill
         return stackView
     }()
     
@@ -75,16 +72,20 @@ class TitleAndSubtitlesView: UIView {
         
         self.title.text = title
         
-        guard let subtitle = subtitle else {
+        if let subtitle = subtitle {
+            subtitleOne.text = subtitle
+            subtitleOne.isHidden = false
+        } else {
             subtitleOne.isHidden = true
-            return
         }
-        subtitleOne.text = subtitle
         
-        guard let secondSubtitle = secondSubtitle else {
+        
+        if let secondSubtitle = secondSubtitle {
+            subtitleTwo.text = secondSubtitle
+            subtitleOne.isHidden = false
+        } else {
             subtitleTwo.isHidden = true
-            return
         }
-        subtitleTwo.text = secondSubtitle
+        
     }
 }

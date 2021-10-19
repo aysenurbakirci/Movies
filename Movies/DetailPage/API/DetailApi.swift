@@ -9,7 +9,8 @@ import RxSwift
 
 protocol DetailApiProtocol {
     
-    func getMovieDetail(with movieId: Int) -> Observable<MovieDetail>
+    func getDetails(with movieId: Int) -> Observable<MovieDetail>
+    func getDetails(with personId: Int) -> Observable<PersonDetail>
 }
 
 struct DetailApi: DetailApiProtocol {
@@ -38,6 +39,23 @@ struct DetailApi: DetailApiProtocol {
             .build()
     }
     
+    func getPersonDetail(with personId: Int) -> Observable<PersonDetail> {
+        
+        return DataBuilder<PersonDetail>()
+            .addBase(type: .person)
+            .getPersonDetail(personId: String(personId), queryType: .detail)
+            .build()
+    }
+    
+    func getPersonMovieCredits(with personId: Int) -> Observable<[MovieCredits]> {
+        
+        return DataBuilder<PersonMovies>()
+            .addBase(type: .person)
+            .getPersonDetail(personId: String(personId), queryType: .credits)
+            .build()
+            .map(\.cast)
+    }
+    
     func getDetails(with movieId: Int) -> Observable<MovieDetail> {
         
         let movieDetail = getMovieDetail(with: movieId)
@@ -51,5 +69,17 @@ struct DetailApi: DetailApiProtocol {
                 data.movieDetail.addTrailers(movieTrailer: data.movieTrailers)
             })
             .map { $0.movieDetail }
+    }
+    
+    func getDetails(with personId: Int) -> Observable<PersonDetail> {
+        let personDetail = getPersonDetail(with: personId)
+        let personCredits = getPersonMovieCredits(with: personId)
+        
+        return Observable.zip(personDetail, personCredits)
+            .map { (personDetail: $0, personCredits: $1) }
+            .do(onNext: { data in
+                data.personDetail.addMovieCast(movies: data.personCredits)
+            })
+            .map { $0.personDetail }
     }
 }

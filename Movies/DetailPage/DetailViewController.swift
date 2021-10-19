@@ -26,6 +26,7 @@ class DetailViewController: UIViewController, LoadingDisplayer {
             .subscribe(onNext: { [weak self] data in
                 guard let data = data, let self = self else { return }
                 self.detailView.apply(detailModel: data)
+                self.detailView.horizontalListView.dataArrayRelay.accept(data.castArray)
             })
             .disposed(by: disposeBag)
         

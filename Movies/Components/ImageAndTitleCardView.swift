@@ -11,24 +11,19 @@ class ImageAndTitleCardView: UIView {
     
     private lazy var image: UIImageView = {
         var imageView = UIImageView()
-        imageView.image = UIImage(named: "defaultImage.jpg")
-        imageView.frame = CGRect(x: 0, y: 0, width: 100, height: 100)
-        imageView.layer.cornerRadius = 6
-        imageView.clipsToBounds = true
+        imageView.contentMode = .scaleAspectFit
         return imageView
     }()
     
-    private lazy var title: UITextView = {
+    private lazy var title: UILabel = {
         
-        var textView = UITextView()
-        textView.textAlignment = .center
-        textView.text = "Title"
-        textView.backgroundColor = .clear
-        textView.font = UIFont.systemFont(ofSize: 14)
-        textView.textColor = UIColor.black
-        textView.isUserInteractionEnabled = false
-        textView.isEditable = false
-        return textView
+        var label = UILabel()
+        label.textAlignment = .center
+        label.backgroundColor = .lightGray
+        label.font = UIFont.systemFont(ofSize: 12)
+        label.textColor = UIColor.black
+        label.numberOfLines = 0
+        return label
         
     }()
     
@@ -40,7 +35,6 @@ class ImageAndTitleCardView: UIView {
         
         image.addSubview(title)
         title.anchor(top: nil, leading: image.leadingAnchor, bottom: image.bottomAnchor, trailing: image.trailingAnchor)
-        title.anchorSize(size: .init(width: frame.width, height: title.contentSize.height))
         
     }
     

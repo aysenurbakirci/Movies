@@ -25,7 +25,6 @@ class HorizontalListCollectionViewCell: UICollectionViewCell {
     }
     
     func cellConfig(imageInfo: ImageInfo, title: String) {
-        let image = ImageInfo(urlString: "", width: 500)
-        imageAndTitleView.apply(imageInfo: image, title: "title")
+        imageAndTitleView.apply(imageInfo: imageInfo, title: title)
     }
 }

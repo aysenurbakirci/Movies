@@ -6,11 +6,16 @@
 //
 
 import UIKit
+import RxSwift
+import RxCocoa
 
 final class HorizontalListCollectionView: UIView {
     
+    let dataArrayRelay = BehaviorRelay<[HorizontalListModel]>(value: [])
+    let disposeBag = DisposeBag()
+    
     static let cellWidthRatio: CGFloat = 0.37
-    static let cellHeightRatio: CGFloat = 1
+    static let cellHeightRatio: CGFloat = 1.4
 
     static let cellWidth = UIScreen.main.bounds.size.width * cellWidthRatio
     static let cellHeight = cellWidth * cellHeightRatio
@@ -26,7 +31,7 @@ final class HorizontalListCollectionView: UIView {
         return layout
     }()
     
-    private lazy var collectionView: UICollectionView = {
+    lazy var collectionView: UICollectionView = {
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: flowLayout)
         collectionView.delegate = self
         collectionView.dataSource = self
@@ -43,6 +48,13 @@ final class HorizontalListCollectionView: UIView {
         addSubview(collectionView)
         collectionView.fillSuperView()
         collectionView.heightAnchor.constraint(equalToConstant: HorizontalListCollectionView.cellHeight).isActive = true
+        
+        dataArrayRelay
+            .subscribe(onNext: { [weak self] data in
+                self?.collectionView.reloadData()
+            })
+            .disposed(by: disposeBag)
+
     }
     
     required init?(coder: NSCoder) {
@@ -53,19 +65,23 @@ final class HorizontalListCollectionView: UIView {
 
 extension HorizontalListCollectionView: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 10
+        return dataArrayRelay.value.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
+        let model = dataArrayRelay.value[indexPath.row]
+        
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: HorizontalListCollectionViewCell.reuseIdentifier, for: indexPath) as? HorizontalListCollectionViewCell else {
             fatalError("can not deque cell with identifier")
         }
-
+        cell.cellConfig(imageInfo: ImageInfo(urlString: model.imagePath, width: 500), title: model.title)
         return cell
     }
 }
 
 extension HorizontalListCollectionView: UICollectionViewDelegate {
-    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        
+    }
 }

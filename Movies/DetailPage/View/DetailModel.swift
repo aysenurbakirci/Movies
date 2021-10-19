@@ -13,7 +13,7 @@ protocol DetailModelProtocol {
     var subtitle: String? { get }
     var overview: String? { get }
     var buttonImageName: String? { get }
-    var castArray: [HorizontalListModel]? { get }
+    var castArray: [HorizontalListModel] { get }
 }
 
 struct DetailModel: DetailModelProtocol {
@@ -23,7 +23,7 @@ struct DetailModel: DetailModelProtocol {
     var subtitle: String?
     var overview: String?
     var buttonImageName: String?
-    var castArray: [HorizontalListModel]?
+    var castArray: [HorizontalListModel] = []
     
     init(movie: MovieDetail) {
         
@@ -34,7 +34,7 @@ struct DetailModel: DetailModelProtocol {
         self.buttonImageName = "play.svg"
         
         for i in movie.cast {
-            castArray?.append(HorizontalListModel(id: movie.id, imagePath: i.profilePath ?? "", title: i.name))
+            castArray.append(HorizontalListModel(id: movie.id, imagePath: i.profilePath ?? "", title: i.name))
         }
     }
     
@@ -44,6 +44,10 @@ struct DetailModel: DetailModelProtocol {
         self.title = person.name
         self.overview = person.biography
         self.buttonImageName = nil
+        
+        for i in person.movieCredits {
+            castArray.append(HorizontalListModel(id: person.id, imagePath: i.posterPath ?? "", title: i.title))
+        }
         
     }
 }

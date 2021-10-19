@@ -16,7 +16,7 @@ class DetailView: UIView {
         return scroll
     }()
     
-    private lazy var horizontalListView = HorizontalListCollectionView()
+    lazy var horizontalListView = HorizontalListCollectionView()
     
     private lazy var titleAndSubtitles = TitleAndSubtitlesView()
     

@@ -25,6 +25,7 @@ final class MainViewModel {
     
     let data = BehaviorRelay<[Section]>(value: [])
     let isLoading = BehaviorRelay<Bool>(value: false)
+    let isEmptyData = BehaviorRelay<Bool>(value: false)
     let loadData = PublishSubject<Void>()
     let searchQuery = BehaviorRelay<String?>(value: nil)
     
@@ -93,6 +94,11 @@ final class MainViewModel {
                 guard let self = self else { return }
                 self.data.accept([.movie(data.movies), .person(data.people)])
                 self.isLoading.accept(false)
+                if data.movies.count == 0 && data.people.count == 0 {
+                    self.isEmptyData.accept(true)
+                } else {
+                    self.isEmptyData.accept(false)
+                }
             })
             .disposed(by: disposeBag)
         
@@ -101,6 +107,7 @@ final class MainViewModel {
             .subscribe(onNext: { [weak self] _ in
                 guard let self = self else { return }
                 self.data.accept([.movie(self.popularMovies?.results ?? [])])
+                self.isEmptyData.accept(false)
             })
             .disposed(by: disposeBag)
     }

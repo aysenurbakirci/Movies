@@ -13,7 +13,7 @@ protocol LoadingDisplayer {
 }
 
 protocol EmptyViewDisplayer {
-    func showEmptyView(_ message: String)
+    func showEmptyView()
     func hideEmptyView()
 }
 
@@ -41,7 +41,7 @@ extension LoadingDisplayer where Self: UIViewController {
 
 extension EmptyViewDisplayer where Self: UIViewController {
     
-    func showEmptyView(_ message: String) {
+    func showEmptyView() {
         
         let messageBackgroundView = UIView(frame: self.view.bounds)
         messageBackgroundView.layer.zPosition = .greatestFiniteMagnitude
@@ -49,7 +49,7 @@ extension EmptyViewDisplayer where Self: UIViewController {
         messageBackgroundView.backgroundColor = .white
         
         let messageLabel = UILabel(frame: self.view.bounds)
-        messageLabel.text = message
+        messageLabel.text = "We couldn't find what you were looking for..."
         messageLabel.textColor = .black
         messageLabel.numberOfLines = 0
         messageLabel.textAlignment = .center

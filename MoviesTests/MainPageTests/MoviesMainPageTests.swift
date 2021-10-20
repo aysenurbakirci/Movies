@@ -19,6 +19,7 @@ class MoviesMainPageTests: XCTestCase {
     override func setUpWithError() throws {
         super.setUp()
         sut = MainViewModel(mainViewService: MockMainApi())
+        sut?.loadData.onNext(())
     }
 
     override func tearDownWithError() throws {
@@ -26,30 +27,11 @@ class MoviesMainPageTests: XCTestCase {
         super.tearDown()
     }
     
-    func testMovieObservableIsNotNill() throws {
-        let movieObservable = sut?.getPopularMovies(nextPage: 1).subscribe(on: scheduler)
-        XCTAssertNotNil(try movieObservable?.toBlocking().first(), "Observable must not be nil")
-    }
-    
-    func testDataPageNumber() throws {
-        let movieObservable = sut?.getPopularMovies(nextPage: 1).subscribe(on: scheduler)
-        
-        guard let result = try movieObservable?.toBlocking().first()?.page else {
-            XCTFail()
-            fatalError()
-        }
-        XCTAssertNotEqual(result, 2, "Page number should be 1")
-        XCTAssertEqual(result, 1, "Page number should be 1")
-    }
-    
     func testFirstMovieName() throws {
-        let movieObservable = sut?.getPopularMovies(nextPage: 1).subscribe(on: scheduler)
-        
-        guard let result = try movieObservable?.toBlocking().first()?.results else {
-            XCTFail()
-            fatalError()
-        }
-        XCTAssertNotEqual(result.first?.title, "dummy", "The title of the first movie should be -> Venom: Let There Be Carnage")
-        XCTAssertEqual(result.first?.title, "Venom: Let There Be Carnage", "The title of the first movie should be -> Venom: Let There Be Carnage")
+        sut?.data
+            .subscribe(onNext: { section in
+                XCTAssertNotNil(section, "Observable must not be nil")
+            })
+            .dispose()
     }
 }

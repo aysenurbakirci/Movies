@@ -21,6 +21,7 @@ class DetailViewController: UIViewController, LoadingDisplayer {
     override func viewDidLoad() {
         super.viewDidLoad()
         view = detailView
+        
         detailViewModel
             .data
             .subscribe(onNext: { [weak self] data in
@@ -48,6 +49,13 @@ class DetailViewController: UIViewController, LoadingDisplayer {
                 guard let self = self else { return }
                 let controller = self.detailViewModel.openNewDetailPage(id: id)
                 self.navigationController?.pushViewController(controller, animated: true)
+            })
+            .disposed(by: disposeBag)
+        
+        detailView
+            .clickLinkButton
+            .subscribe(onNext: { [weak self] link in
+                self?.detailViewModel.openLink(linkKey: link)
             })
             .disposed(by: disposeBag)
         

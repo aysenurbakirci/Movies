@@ -16,6 +16,7 @@ protocol DetailViewModelProtocol {
     var loadData: PublishSubject<Void> { get }
     func getDetails(id: Int)
     func openNewDetailPage(id: Int) -> DetailViewController
+    func openLink(linkKey: String)
 
 }
 
@@ -67,6 +68,13 @@ final class MovieDetailViewModel: DetailViewModelProtocol {
     func openNewDetailPage(id: Int) -> DetailViewController {
         return DetailPageBuilder.build(personId: id)
     }
+    
+    func openLink(linkKey: String) {
+        let url = detailService.getTrailerUrl(key: linkKey)
+        if UIApplication.shared.canOpenURL(url) {
+             UIApplication.shared.open(url, options: [:], completionHandler: nil)
+         }
+    }
 }
 
 final class PersonDetailViewModel: DetailViewModelProtocol {
@@ -116,4 +124,8 @@ final class PersonDetailViewModel: DetailViewModelProtocol {
     func openNewDetailPage(id: Int) -> DetailViewController {
         return DetailPageBuilder.build(movieId: id)
     }
+    
+    func openLink(linkKey: String) {
+    }
+    
 }

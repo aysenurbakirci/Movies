@@ -8,9 +8,14 @@
 import RxSwift
 
 protocol DetailApiProtocol {
-    
+    func getMovieCast(with movieId: Int) -> Observable<MovieCast>
+    func getMovieTrailer(with movieId: Int) -> Observable<MovieTrailers>
+    func getMovieDetail(with movieId: Int) -> Observable<MovieDetail>
+    func getPersonDetail(with personId: Int) -> Observable<PersonDetail>
+    func getPersonMovieCredits(with personId: Int) -> Observable<[MovieCredits]>
     func getDetails(movieId: Int) -> Observable<MovieDetail>
     func getDetails(personId: Int) -> Observable<PersonDetail>
+    func getTrailerUrl(key: String) -> URL
 }
 
 struct DetailApi: DetailApiProtocol {
@@ -81,5 +86,14 @@ struct DetailApi: DetailApiProtocol {
                 data.personDetail.addMovieCast(movies: data.personCredits)
             })
             .map { $0.personDetail }
+    }
+    
+    func getTrailerUrl(key: String) -> URL {
+        var urlComponents = URLComponents()
+        urlComponents.scheme = "https"
+        urlComponents.host = "www.youtube.com"
+        urlComponents.path = "/watch"
+        urlComponents.queryItems = [URLQueryItem(name: "v", value: key)]
+        return urlComponents.url!
     }
 }

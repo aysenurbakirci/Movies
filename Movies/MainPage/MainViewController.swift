@@ -53,6 +53,17 @@ extension MainViewController {
                 }
             })
             .disposed(by: disposeBag)
+        
+        mainViewModel
+            .isEmptyData
+            .subscribe(onNext: { [weak self] isEmpty in
+                if isEmpty {
+                    self?.showEmptyView()
+                } else {
+                    self?.hideEmptyView()
+                }
+            })
+            .disposed(by: disposeBag)
 
         mainView.searchBar.rx.text
             .bind(to: mainViewModel.searchQuery)

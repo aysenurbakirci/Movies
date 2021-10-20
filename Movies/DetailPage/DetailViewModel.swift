@@ -19,34 +19,39 @@ protocol DetailViewModelProtocol {
 
 }
 
-class MovieDetailViewModel: DetailViewModelProtocol {
+final class MovieDetailViewModel: DetailViewModelProtocol {
     
     var data = BehaviorRelay<DetailModel?>(value: nil)
     var isLoading = BehaviorRelay<Bool>(value: false)
     var loadData = PublishSubject<Void>()
     
     private let movieId: Int
-    private let detailService: DetailApiProtocol = DetailApi()
+    private let detailService: DetailApiProtocol
     private let disposeBag = DisposeBag()
     
-    init(movieId: Int) {
+    init(movieId: Int, service: DetailApiProtocol) {
+        self.detailService = service
         self.movieId = movieId
         getDetails(id: movieId)
     }
     
     func getDetails(id: Int) {
         loadData
-            .filter { [isLoading] in
+            .filter { [weak isLoading] in
+                guard let isLoading = isLoading else { return false }
+                
                 if isLoading.value {
                     return false
                 }
-                self.isLoading.accept(true)
+                isLoading.accept(true)
                 return true
             }
             .compactMap { [weak self] in
                 return self?.movieId
             }
-            .flatMap(getMovie)
+            .flatMap ({ [unowned self] id in
+                return self.detailService.getDetails(movieId: id)
+            })
             .observe(on: MainScheduler.instance)
             .do(onNext: { [weak self] _ in
                 self?.isLoading.accept(false)
@@ -59,61 +64,56 @@ class MovieDetailViewModel: DetailViewModelProtocol {
             .disposed(by: disposeBag)
     }
     
-    private func getMovie(movieId: Int) -> Observable<MovieDetail> {
-        return detailService.getDetails(with: movieId)
-    }
-    
     func openNewDetailPage(id: Int) -> DetailViewController {
-        return DetailPageBuilder.build(viewModel: PersonDetailViewModel(personId: id))
+        return DetailPageBuilder.build(personId: id)
     }
 }
 
-class PersonDetailViewModel: DetailViewModelProtocol {
-    
+final class PersonDetailViewModel: DetailViewModelProtocol {
+
     var data = BehaviorRelay<DetailModel?>(value: nil)
     var isLoading = BehaviorRelay<Bool>(value: false)
     var loadData = PublishSubject<Void>()
     
     private let disposeBag = DisposeBag()
     private let personId: Int
-    private let detailService: DetailApiProtocol = DetailApi()
+    private let detailService: DetailApiProtocol
     
-    init(personId: Int) {
+    init(personId: Int, service: DetailApiProtocol) {
         self.personId = personId
+        self.detailService = service
         getDetails(id: personId)
     }
     
     func getDetails(id: Int) {
         
         loadData
-            .filter { [isLoading] in
+            .filter { [weak isLoading] in
+                guard let isLoading = isLoading else { return false }
                 if isLoading.value {
                     return false
                 }
-                self.isLoading.accept(true)
+                isLoading.accept(true)
                 return true
             }
             .compactMap { [weak self] in
                 return self?.personId
             }
-            .flatMap(getPerson)
+            .flatMap ({ [unowned self] id in
+                return self.detailService.getDetails(personId: id)
+            })
             .observe(on: MainScheduler.instance)
             .do(onNext: { [weak self] _ in
                 self?.isLoading.accept(false)
             })
             .subscribe(onNext: { [weak self] person in
-                let detailModel = DetailModel.init(person: person)
+                let detailModel = DetailModel(person: person)
                 self?.data.accept(detailModel)
             })
             .disposed(by: disposeBag)
     }
     
-    private func getPerson(personId: Int) -> Observable<PersonDetail> {
-        return detailService.getDetails(with: personId)
-    }
-    
     func openNewDetailPage(id: Int) -> DetailViewController {
-        return DetailPageBuilder.build(viewModel: MovieDetailViewModel(movieId: id))
+        return DetailPageBuilder.build(movieId: id)
     }
-    
 }

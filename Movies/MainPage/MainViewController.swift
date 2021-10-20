@@ -8,8 +8,8 @@
 import UIKit
 import RxSwift
 
-class MainViewController: UIViewController, LoadingDisplayer {
-    
+class MainViewController: UIViewController, LoadingDisplayer, EmptyViewDisplayer {
+
     private lazy var mainView: MainView = {
         var view = MainView()
         view.tableView.dataSource = self

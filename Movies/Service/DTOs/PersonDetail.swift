@@ -9,7 +9,7 @@ import Foundation
 final class PersonDetail: Codable {
     let id: Int
     let name: String
-    let profilePath: String
+    let profilePath: String?
     let biography: String
     
     var movieCredits: [MovieCredits] = []

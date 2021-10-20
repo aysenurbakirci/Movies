@@ -24,7 +24,7 @@ class HorizontalListCollectionViewCell: UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func cellConfig(imageInfo: ImageInfo, title: String) {
-        imageAndTitleView.apply(imageInfo: imageInfo, title: title)
+    func cellConfig(imagePath: String, title: String) {
+        imageAndTitleView.apply(imagePath: imagePath, title: title)
     }
 }

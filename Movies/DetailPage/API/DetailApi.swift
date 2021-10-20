@@ -9,8 +9,8 @@ import RxSwift
 
 protocol DetailApiProtocol {
     
-    func getDetails(with movieId: Int) -> Observable<MovieDetail>
-    func getDetails(with personId: Int) -> Observable<PersonDetail>
+    func getDetails(movieId: Int) -> Observable<MovieDetail>
+    func getDetails(personId: Int) -> Observable<PersonDetail>
 }
 
 struct DetailApi: DetailApiProtocol {
@@ -56,7 +56,7 @@ struct DetailApi: DetailApiProtocol {
             .map(\.cast)
     }
     
-    func getDetails(with movieId: Int) -> Observable<MovieDetail> {
+    func getDetails(movieId: Int) -> Observable<MovieDetail> {
         
         let movieDetail = getMovieDetail(with: movieId)
         let movieCast = getMovieCast(with: movieId)
@@ -71,7 +71,7 @@ struct DetailApi: DetailApiProtocol {
             .map { $0.movieDetail }
     }
     
-    func getDetails(with personId: Int) -> Observable<PersonDetail> {
+    func getDetails(personId: Int) -> Observable<PersonDetail> {
         let personDetail = getPersonDetail(with: personId)
         let personCredits = getPersonMovieCredits(with: personId)
         

@@ -8,7 +8,7 @@
 import Foundation
 
 protocol DetailModelProtocol {
-    var image: ImageInfo? { get }
+    var imagePath: String? { get }
     var title: String { get }
     var subtitle: String? { get }
     var overview: String? { get }
@@ -18,7 +18,7 @@ protocol DetailModelProtocol {
 
 struct DetailModel: DetailModelProtocol {
     
-    var image: ImageInfo?
+    var imagePath: String?
     var title: String
     var subtitle: String?
     var overview: String?
@@ -27,7 +27,6 @@ struct DetailModel: DetailModelProtocol {
     
     init(movie: MovieDetail) {
         
-        self.image = ImageInfo(urlString: movie.backdropPath, width: 500)
         self.title = movie.title
         self.subtitle = String(movie.voteAverage)
         self.overview = movie.overview
@@ -36,11 +35,14 @@ struct DetailModel: DetailModelProtocol {
         for person in movie.cast {
             castArray.append(HorizontalListModel(id: person.id, imagePath: person.profilePath ?? "", title: person.name))
         }
+        
+        guard let image = movie.backdropPath else { return }
+        self.imagePath = image
     }
     
     init(person: PersonDetail) {
         
-        self.image = ImageInfo(urlString: person.profilePath, width: 500)
+        self.imagePath = person.profilePath
         self.title = person.name
         self.overview = person.biography
         self.buttonImageName = nil
@@ -48,6 +50,5 @@ struct DetailModel: DetailModelProtocol {
         for movie in person.movieCredits {
             castArray.append(HorizontalListModel(id: movie.id, imagePath: movie.posterPath ?? "", title: movie.title))
         }
-        
     }
 }

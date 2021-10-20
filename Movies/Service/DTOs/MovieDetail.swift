@@ -9,7 +9,7 @@ import Foundation
 
 class MovieDetail: Codable {
     let id: Int
-    let backdropPath: String
+    let backdropPath: String?
     let overview: String
     let title: String
     let voteAverage: Double

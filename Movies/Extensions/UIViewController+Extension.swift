@@ -12,6 +12,11 @@ protocol LoadingDisplayer {
     func hideLoadingView()
 }
 
+protocol EmptyViewDisplayer {
+    func showEmptyView(_ message: String)
+    func hideEmptyView()
+}
+
 extension LoadingDisplayer where Self: UIViewController {
     
     func showLoadingView() {
@@ -31,6 +36,33 @@ extension LoadingDisplayer where Self: UIViewController {
     
     func hideLoadingView() {
         self.view.viewWithTag(999)?.removeFromSuperview()
+    }
+}
+
+extension EmptyViewDisplayer where Self: UIViewController {
+    
+    func showEmptyView(_ message: String) {
+        
+        let messageBackgroundView = UIView(frame: self.view.bounds)
+        messageBackgroundView.layer.zPosition = .greatestFiniteMagnitude
+        messageBackgroundView.tag = 998
+        messageBackgroundView.backgroundColor = .white
+        
+        let messageLabel = UILabel(frame: self.view.bounds)
+        messageLabel.text = message
+        messageLabel.textColor = .black
+        messageLabel.numberOfLines = 0
+        messageLabel.textAlignment = .center
+        messageLabel.sizeToFit()
+        
+        messageBackgroundView.addSubview(messageLabel)
+        self.view.addSubview(messageBackgroundView)
+        messageBackgroundView.fillSuperView()
+        messageLabel.fillSuperView()
+    }
+    
+    func hideEmptyView() {
+        self.view.viewWithTag(998)?.removeFromSuperview()
     }
 }
 

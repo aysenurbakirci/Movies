@@ -72,7 +72,7 @@ class DetailView: UIView {
     
     func apply(detailModel: DetailModel) {
         
-        self.image.downloadImage(imageURL: detailModel.image?.urlString ?? "", width: detailModel.image?.width)
+        self.image.downloadImage(imageURL: detailModel.imagePath ?? "", width: 500)
         self.titleAndSubtitles.apply(title: detailModel.title, subtitle: detailModel.subtitle, secondSubtitle: nil)
         self.overview.text = detailModel.overview
         

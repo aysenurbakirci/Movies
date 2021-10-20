@@ -8,11 +8,6 @@
 import Foundation
 import UIKit
 
-struct ImageInfo {
-    let urlString: String
-    let width: Int
-}
-
 class ImageAndInfoCardView: UIView {
     
     private let titleAndSubtitle = TitleAndSubtitlesView()

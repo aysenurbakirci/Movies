@@ -42,13 +42,11 @@ class ImageAndTitleCardView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func apply(imageInfo: ImageInfo?, title: String) {
+    func apply(imagePath: String?, title: String) {
         
         self.title.text = title
-
-        if let imageInfo = imageInfo {
-            self.image.downloadImage(imageURL: imageInfo.urlString, width: imageInfo.width)
-        }
         
+        guard let imagePath = imagePath else { return }
+        self.image.downloadImage(imageURL: imagePath, width: 500)
     }
 }

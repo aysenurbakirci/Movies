@@ -52,7 +52,9 @@ final class MainViewModel {
             .compactMap({ [weak self] in
                 return self?.nextPage
             })
-            .flatMap(getPopularMovies)
+            .flatMap({ [unowned self] page in
+                return self.mainViewService.getPopularMovies(page: page)
+            })
             .observe(on: MainScheduler.instance)
             .do(onNext: { [weak self] _ in
                 guard let self = self else { return }
@@ -83,7 +85,9 @@ final class MainViewModel {
                 guard let self = self else { return }
                 self.isLoading.accept(true)
             })
-            .flatMap(searchMovieAndPerson)
+            .flatMap({ [unowned self] query in
+                return self.mainViewService.searchMoviesAndPeople(with: query, page: 1)
+            })
             .observe(on: MainScheduler.instance)
             .subscribe(onNext: { [weak self] data in
                 guard let self = self else { return }
@@ -99,15 +103,6 @@ final class MainViewModel {
                 self.data.accept([.movie(self.popularMovies?.results ?? [])])
             })
             .disposed(by: disposeBag)
-        
-    }
-    
-    func getPopularMovies(nextPage: Int) -> Observable<Movies> {
-        return mainViewService.getPopularMovies(page: nextPage)
-    }
-    
-    func searchMovieAndPerson(searchQuery: String) -> Observable<(movies: [Movie], people: [Person])> {
-        return mainViewService.searchMoviesAndPeople(with: searchQuery, page: 1)
     }
     
     func createCellViewModel(for indexPath: IndexPath) -> MainTableViewCellProtocol {
@@ -139,10 +134,10 @@ extension MainViewModel {
         switch section {
         case .movie(let movies):
             let movie = movies[indexPath.row]
-            return DetailPageBuilder.build(viewModel: MovieDetailViewModel(movieId: movie.id))
+            return DetailPageBuilder.build(movieId: movie.id)
         case .person(let people):
             let person = people[indexPath.row]
-            return DetailPageBuilder.build(viewModel: PersonDetailViewModel(personId: person.id))
+            return DetailPageBuilder.build(personId: person.id)
         }
     }
 }

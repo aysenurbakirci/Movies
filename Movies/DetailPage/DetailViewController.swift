@@ -9,7 +9,7 @@ import UIKit
 import RxSwift
 
 class DetailViewController: UIViewController, LoadingDisplayer {
-    
+
     private lazy var detailView: DetailView = {
         var view = DetailView()
         return view
@@ -33,20 +33,21 @@ class DetailViewController: UIViewController, LoadingDisplayer {
         detailViewModel
             .isLoading
             .subscribe(onNext: { [weak self] isLoading in
+                guard let self = self else { return }
                 if isLoading {
-                    self?.showLoadingView()
+                    self.showLoadingView()
                 } else {
-                    self?.hideLoadingView()
+                    self.hideLoadingView()
                 }
             })
             .disposed(by: disposeBag)
         
         detailView.horizontalListView
             .selectedItemId
-            .skip(1)
             .subscribe(onNext: { [weak self] id in
                 guard let self = self else { return }
-                self.navigationController?.pushViewController(self.detailViewModel.openNewDetailPage(id: id), animated: true)
+                let controller = self.detailViewModel.openNewDetailPage(id: id)
+                self.navigationController?.pushViewController(controller, animated: true)
             })
             .disposed(by: disposeBag)
         

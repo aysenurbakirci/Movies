@@ -45,7 +45,6 @@ class HorizontalListScrollView : UIView {
         for i in 0..<20 {
             let view = ImageAndTitleCardView()
             view.tag = i
-            view.apply(imageInfo: nil, title: "title")
             view.anchorSize(size: .init(width: scrollView.contentSize.height, height: scrollView.contentSize.height))
             view.backgroundColor = .gray
             view.layer.cornerRadius = 8

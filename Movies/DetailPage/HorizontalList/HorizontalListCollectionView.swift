@@ -12,7 +12,7 @@ import RxCocoa
 final class HorizontalListCollectionView: UIView {
     
     let dataArrayRelay = BehaviorRelay<[HorizontalListModel]>(value: [])
-    let selectedItemId = BehaviorRelay<Int>(value: 0)
+    let selectedItemId = PublishSubject<Int>()
     let disposeBag = DisposeBag()
     
     static let cellWidthRatio: CGFloat = 0.37
@@ -76,7 +76,7 @@ extension HorizontalListCollectionView: UICollectionViewDataSource {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: HorizontalListCollectionViewCell.reuseIdentifier, for: indexPath) as? HorizontalListCollectionViewCell else {
             fatalError("can not deque cell with identifier")
         }
-        cell.cellConfig(imageInfo: ImageInfo(urlString: model.imagePath, width: 500), title: model.title)
+        cell.cellConfig(imagePath: model.imagePath, title: model.title)
         return cell
     }
 }
@@ -84,6 +84,6 @@ extension HorizontalListCollectionView: UICollectionViewDataSource {
 extension HorizontalListCollectionView: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let model = dataArrayRelay.value[indexPath.row]
-        selectedItemId.accept(model.id)
+        selectedItemId.onNext(model.id)
     }
 }

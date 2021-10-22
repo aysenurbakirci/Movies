@@ -62,11 +62,4 @@ extension UIView {
             trailingAnchor.constraint(equalTo: trailing, constant: -padding.right).isActive = true
         }
     }
-    
-    func addShadow(cornerRadius: CGFloat) {
-        layer.cornerRadius = cornerRadius
-        layer.shadowColor = CGColor(red: 0, green: 0, blue: 0, alpha: 0.2)
-        layer.shadowRadius = CGFloat(10.0)
-        layer.shadowOpacity = 1
-    }
 }

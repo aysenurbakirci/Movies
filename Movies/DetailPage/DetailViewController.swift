@@ -53,13 +53,13 @@ class DetailViewController: UIViewController, LoadingDisplayer {
             .disposed(by: disposeBag)
         
         detailView
-            .clickLinkButton
-            .subscribe(onNext: { [weak self] link in
-                self?.detailViewModel.openLink(linkKey: link)
+            .linkButton.rx.tap
+            .subscribe(onNext: { [weak self]  in
+                self?.detailViewModel.openLink()
             })
             .disposed(by: disposeBag)
         
-        detailViewModel.loadData.onNext(())
+        detailViewModel.getDetails()
     }
 }
 

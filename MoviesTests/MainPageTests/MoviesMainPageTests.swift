@@ -14,10 +14,13 @@ import RxBlocking
 class MoviesMainPageTests: XCTestCase {
     
     var sut: MainViewModel?
-    let scheduler = ConcurrentDispatchQueueScheduler(qos: .default)
+    var scheduler: TestScheduler!
+    var disposeBag: DisposeBag!
 
     override func setUpWithError() throws {
         super.setUp()
+        scheduler = TestScheduler(initialClock: 0)
+        disposeBag = DisposeBag()
         sut = MainViewModel(mainViewService: MockMainApi())
         sut?.loadData.onNext(())
     }
@@ -27,11 +30,29 @@ class MoviesMainPageTests: XCTestCase {
         super.tearDown()
     }
     
-    func testFirstMovieName() throws {
-        sut?.data
-            .subscribe(onNext: { section in
-                XCTAssertNotNil(section, "Observable must not be nil")
-            })
-            .dispose()
+//    func testGetData() throws {
+//
+//        let data = scheduler.createObserver([Section].self)
+//
+//        sut?.data
+//            .bind(to: data)
+//            .disposed(by: disposeBag)
+//
+//        scheduler.createColdObservable([.next(5, ())])
+//            .bind(to: sut!.loadData)
+//            .disposed(by: disposeBag)
+//
+//        scheduler.start()
+//
+//    }
+    
+    func testNumberOfPages() throws {
+        
+        scheduler.createColdObservable([.next(1, ()), .next(5, ()), .next(8, ())])
+            .bind(to: sut!.loadData)
+            .disposed(by: disposeBag)
+        
+        scheduler.start()
+        XCTAssertEqual(sut!.nextPage, 5)
     }
 }

@@ -14,10 +14,13 @@ import RxBlocking
 class PersonDetailViewModelTest: XCTestCase {
     
     var sut: PersonDetailViewModel?
-    let scheduler = ConcurrentDispatchQueueScheduler(qos: .default)
+    var scheduler: TestScheduler!
+    var disposeBag: DisposeBag!
 
     override func setUpWithError() throws {
         super.setUp()
+        scheduler = TestScheduler(initialClock: 0)
+        disposeBag = DisposeBag()
         sut = PersonDetailViewModel(personId: 2535, service: MockDetailApi())
         sut?.loadData.onNext(())
     }
@@ -39,7 +42,7 @@ class PersonDetailViewModelTest: XCTestCase {
                 XCTAssertEqual(data?.title, "Vivica A. Fox")
                 XCTAssertNotEqual(data?.title, "Vivica")
             })
-            .dispose()
+            .disposed(by: disposeBag)
     }
     
     func testGetPersonMovies() throws {
@@ -48,6 +51,6 @@ class PersonDetailViewModelTest: XCTestCase {
                 XCTAssertEqual(data?.castArray.first?.title, "Two Can Play That Game")
                 XCTAssertNotEqual(data?.castArray.first?.title, "Two")
             })
-            .dispose()
+            .disposed(by: disposeBag)
     }
 }

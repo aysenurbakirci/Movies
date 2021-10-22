@@ -14,10 +14,13 @@ import RxBlocking
 class MovieDetailViewModelTest: XCTestCase {
     
     var sut: MovieDetailViewModel?
-    let scheduler = ConcurrentDispatchQueueScheduler(qos: .default)
+    var scheduler: TestScheduler!
+    var disposeBag: DisposeBag!
 
     override func setUpWithError() throws {
         super.setUp()
+        scheduler = TestScheduler(initialClock: 0)
+        disposeBag = DisposeBag()
         sut = MovieDetailViewModel(movieId: 839436, service: MockDetailApi())
         sut?.loadData.onNext(())
     }
@@ -34,12 +37,13 @@ class MovieDetailViewModelTest: XCTestCase {
     }
     
     func testGetMovieName() throws {
+        
         sut?.data
             .subscribe(onNext: { data in
                 XCTAssertEqual(data?.title, "Dragon Fury")
                 XCTAssertNotEqual(data?.title, "Dragon")
             })
-            .dispose()
+            .disposed(by: disposeBag)
     }
     
     func testGetMovieCast() throws {
@@ -48,7 +52,7 @@ class MovieDetailViewModelTest: XCTestCase {
                 XCTAssertEqual(data?.castArray.first?.title, "Nicola Wright")
                 XCTAssertNotEqual(data?.castArray.first?.title, "Nicola")
             })
-            .dispose()
+            .disposed(by: disposeBag)
     }
     
     func testGetMovieTrailer() throws {
@@ -57,7 +61,6 @@ class MovieDetailViewModelTest: XCTestCase {
                 XCTAssertEqual(data?.link, "kp_iCBrjeKA")
                 XCTAssertNotEqual(data?.link, "A")
             })
-            .dispose()
+            .disposed(by: disposeBag)
     }
-
 }

@@ -13,10 +13,9 @@ protocol DetailViewModelProtocol {
     
     var data: BehaviorRelay<DetailModel?> { get }
     var isLoading: BehaviorRelay<Bool> { get }
-    var loadData: PublishSubject<Void> { get }
-    func getDetails(id: Int)
+    func getDetails()
     func openNewDetailPage(id: Int) -> DetailViewController
-    func openLink(linkKey: String)
+    func openLink()
 
 }
 
@@ -24,7 +23,6 @@ final class MovieDetailViewModel: DetailViewModelProtocol {
     
     var data = BehaviorRelay<DetailModel?>(value: nil)
     var isLoading = BehaviorRelay<Bool>(value: false)
-    var loadData = PublishSubject<Void>()
     
     private let movieId: Int
     private let detailService: DetailApiProtocol
@@ -33,11 +31,11 @@ final class MovieDetailViewModel: DetailViewModelProtocol {
     init(movieId: Int, service: DetailApiProtocol) {
         self.detailService = service
         self.movieId = movieId
-        getDetails(id: movieId)
     }
     
-    func getDetails(id: Int) {
-        loadData
+    func getDetails() {
+        
+        Observable.just(())
             .filter { [weak isLoading] in
                 guard let isLoading = isLoading else { return false }
                 
@@ -59,7 +57,7 @@ final class MovieDetailViewModel: DetailViewModelProtocol {
             })
             .subscribe(onNext: { [weak self] movie in
                 guard let self = self else { return }
-                let detailModel = DetailModel.init(movie: movie)
+                let detailModel = DetailModel(movie: movie)
                 self.data.accept(detailModel)
             })
             .disposed(by: disposeBag)
@@ -69,8 +67,9 @@ final class MovieDetailViewModel: DetailViewModelProtocol {
         return DetailPageBuilder.build(personId: id)
     }
     
-    func openLink(linkKey: String) {
-        let url = detailService.getTrailerUrl(key: linkKey)
+    func openLink() {
+        guard let link = data.value?.link else { return }
+        let url = detailService.getTrailerUrl(key: link)
         if UIApplication.shared.canOpenURL(url) {
              UIApplication.shared.open(url, options: [:], completionHandler: nil)
          }
@@ -81,7 +80,6 @@ final class PersonDetailViewModel: DetailViewModelProtocol {
 
     var data = BehaviorRelay<DetailModel?>(value: nil)
     var isLoading = BehaviorRelay<Bool>(value: false)
-    var loadData = PublishSubject<Void>()
     
     private let disposeBag = DisposeBag()
     private let personId: Int
@@ -90,12 +88,11 @@ final class PersonDetailViewModel: DetailViewModelProtocol {
     init(personId: Int, service: DetailApiProtocol) {
         self.personId = personId
         self.detailService = service
-        getDetails(id: personId)
     }
     
-    func getDetails(id: Int) {
+    func getDetails() {
         
-        loadData
+        Observable.just(())
             .filter { [weak isLoading] in
                 guard let isLoading = isLoading else { return false }
                 if isLoading.value {
@@ -125,7 +122,5 @@ final class PersonDetailViewModel: DetailViewModelProtocol {
         return DetailPageBuilder.build(movieId: id)
     }
     
-    func openLink(linkKey: String) {
-    }
-    
+    func openLink() {}
 }

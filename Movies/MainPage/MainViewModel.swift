@@ -34,10 +34,28 @@ final class MainViewModel {
     private let disposeBag = DisposeBag()
     private let mainViewService: MainApiProtocol
     
-    private var nextPage = 1
+    private(set) var nextPage = 1
     
     init(mainViewService: MainApiProtocol) {
         self.mainViewService = mainViewService
+        
+        data.subscribe(onNext: { data in
+            if data.count == 1 {
+                if data[0].numberOfItems == 0 {
+                    self.isEmptyData.accept(true)
+                } else {
+                    self.isEmptyData.accept(false)
+                }
+            } else if data.count == 2 {
+                if data[0].numberOfItems == 0 && data[1].numberOfItems == 0 {
+                    self.isEmptyData.accept(true)
+                } else {
+                    self.isEmptyData.accept(false)
+                }
+            }
+        })
+        .disposed(by: disposeBag)
+        
         
         loadData
             .filter({ [weak self] in
@@ -94,11 +112,6 @@ final class MainViewModel {
                 guard let self = self else { return }
                 self.data.accept([.movie(data.movies), .person(data.people)])
                 self.isLoading.accept(false)
-                if data.movies.count == 0 && data.people.count == 0 {
-                    self.isEmptyData.accept(true)
-                } else {
-                    self.isEmptyData.accept(false)
-                }
             })
             .disposed(by: disposeBag)
         

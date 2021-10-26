@@ -7,13 +7,6 @@
 
 import UIKit
 
-struct HorizontalListModel {
-    var id: Int
-    var imagePath: String
-    var title: String
-}
-
-
 class HorizontalListScrollView : UIView {
     
     private var list: [HorizontalListModel] = []

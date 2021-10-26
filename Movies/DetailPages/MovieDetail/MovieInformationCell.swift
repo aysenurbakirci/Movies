@@ -1,25 +1,23 @@
 //
-//  DetailView.swift
+//  MovieInformationCell.swift
 //  Movies
 //
-//  Created by Ayşenur Bakırcı on 15.10.2021.
+//  Created by Ayşenur Bakırcı on 25.10.2021.
 //
 
 import UIKit
 import RxSwift
 import Kingfisher
 
-class DetailView: UIView {
+class MovieInformationCell: UITableViewCell {
     
-    private lazy var scrollView: UIScrollView = {
-        let scroll = UIScrollView()
-        scroll.backgroundColor = .white
-        return scroll
-    }()
-    
-    lazy var horizontalListView = HorizontalListCollectionView()
-    
+    static let reuseIdentifier = "movieInformationCellId"
     private lazy var titleAndSubtitles = TitleAndSubtitlesView()
+    let disposeBag = DisposeBag()
+    
+    private let imageHeightRatio: CGFloat = 0.6
+    private let imageWidth = UIScreen.main.bounds.size.width
+    private lazy var imageHeight = imageWidth * imageHeightRatio
     
     private lazy var image: UIImageView = {
         var imageView = UIImageView()
@@ -52,38 +50,29 @@ class DetailView: UIView {
         stack.addArrangedSubview(titleAndSubtitles)
         stack.addArrangedSubview(overview)
         stack.addArrangedSubview(linkButton)
-        stack.addArrangedSubview(horizontalListView)
         return stack
     }()
     
-    override init(frame: CGRect) {
-        super.init(frame: frame)
+    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+        super.init(style: style, reuseIdentifier: reuseIdentifier)
         detailViewConfig()
     }
     
     private func detailViewConfig() {
-        self.addSubview(scrollView)
-
-        scrollView.fillSuperView()
-        scrollView.addSubview(stack)
+        contentView.addSubview(stack)
         stack.fillSuperView()
+        image.anchorSize(size: .init(width: imageWidth, height: imageHeight))
         stack.widthAnchor.constraint(equalTo: self.widthAnchor).isActive = true
-        
     }
     
-    func apply(detailModel: DetailModel) {
-        
-        self.image.downloadImage(imageURL: detailModel.imagePath ?? "", width: 500)
-        self.titleAndSubtitles.apply(title: detailModel.title, subtitle: detailModel.subtitle, secondSubtitle: nil)
+    func apply(detailModel: MovieDetail) {
+        self.image.downloadImage(imageURL: detailModel.backdropPath ?? "", width: 500)
+        self.titleAndSubtitles.apply(title: detailModel.title, subtitle: String(detailModel.voteAverage), secondSubtitle: nil)
         self.overview.text = detailModel.overview
-        if let _ = detailModel.link {
-            linkButton.isHidden = false
-        } else {
-            linkButton.isHidden = true
-        }
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 }
+

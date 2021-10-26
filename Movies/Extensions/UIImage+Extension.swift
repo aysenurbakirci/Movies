@@ -11,19 +11,17 @@ import Kingfisher
 extension UIImageView {
     
     func downloadImage(imageURL: String, width: Int?){
-        
         let urlString = baseImageURL + "w\(width ?? 500)" + imageURL
         let url = URL(string: urlString)
-        let activityInd = UIActivityIndicatorView()
+        let activityIndicator = UIActivityIndicatorView()
         
-        activityInd.center = CGPoint(x: self.frame.size.width  / 2, y: self.frame.size.height / 2)
-        activityInd.color = .gray
+        activityIndicator.center = CGPoint(x: self.frame.size.width  / 2, y: self.frame.size.height / 2)
+        activityIndicator.color = .red
         self.backgroundColor = .white
-        self.addSubview(activityInd)
-        activityInd.startAnimating()
+        self.addSubview(activityIndicator)
+        activityIndicator.startAnimating()
         self.kf.setImage(with: url, options: nil, progressBlock: nil) { result in
-        activityInd.stopAnimating()
-            
+            activityIndicator.stopAnimating()
         }
     }
 }

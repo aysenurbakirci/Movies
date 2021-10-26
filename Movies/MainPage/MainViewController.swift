@@ -8,8 +8,10 @@
 import UIKit
 import RxSwift
 
-class MainViewController: UIViewController, LoadingDisplayer, EmptyViewDisplayer {
-
+class MainViewController: UIViewController, ActivityDisplayer {
+    
+    var bag: DisposeBag = DisposeBag()
+    
     private lazy var mainView: MainView = {
         var view = MainView()
         view.tableView.dataSource = self
@@ -17,7 +19,7 @@ class MainViewController: UIViewController, LoadingDisplayer, EmptyViewDisplayer
         return view
     }()
     
-    var mainViewModel: MainViewModel!
+    var viewModel = MainViewModel(mainViewService: MainApi())
     
     private let disposeBag = DisposeBag()
     
@@ -28,7 +30,18 @@ class MainViewController: UIViewController, LoadingDisplayer, EmptyViewDisplayer
         navigationItem.title = "Main Page"
         navigationItem.titleView = mainView.searchBar
         setupBindings()
-        mainViewModel.loadData.onNext(())
+        viewModel.loadData.onNext(())
+        bindLoading()
+        bindEmptyView()
+        bindErrorHandling()
+    }
+    
+    init() {
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
 }
 
@@ -36,37 +49,15 @@ extension MainViewController {
     
     func setupBindings() {
         
-        mainViewModel
+        viewModel
             .data
             .subscribe(onNext: { [weak self] _ in
                 self?.mainView.tableView.reloadData()
             })
             .disposed(by: disposeBag)
-        
-        mainViewModel
-            .isLoading
-            .subscribe(onNext: { [weak self] isLoading in
-                if isLoading {
-                    self?.showLoadingView()
-                } else {
-                    self?.hideLoadingView()
-                }
-            })
-            .disposed(by: disposeBag)
-        
-        mainViewModel
-            .isEmptyData
-            .subscribe(onNext: { [weak self] isEmpty in
-                if isEmpty {
-                    self?.showEmptyView()
-                } else {
-                    self?.hideEmptyView()
-                }
-            })
-            .disposed(by: disposeBag)
 
         mainView.searchBar.rx.text
-            .bind(to: mainViewModel.searchQuery)
+            .bind(to: viewModel.searchQuery)
             .disposed(by: disposeBag)
     }
 }
@@ -74,11 +65,11 @@ extension MainViewController {
 extension MainViewController: UITableViewDelegate, UITableViewDataSource {
     
     func numberOfSections(in tableView: UITableView) -> Int {
-        return mainViewModel.numberOfSections
+        return viewModel.numberOfSections
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return mainViewModel.numberOfRowsInSection(section: section)
+        return viewModel.numberOfRowsInSection(section: section)
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -86,14 +77,14 @@ extension MainViewController: UITableViewDelegate, UITableViewDataSource {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: MainTableViewCell.reuseIdentifier, for: indexPath) as? MainTableViewCell else {
             return UITableViewCell()
         }
-        cell.cellConfig(withViewModel: mainViewModel.createCellViewModel(for: indexPath))
+        cell.cellConfig(withViewModel: viewModel.createCellViewModel(for: indexPath))
         return cell
     }
     
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
         
         if mainView.searchBar.text?.isEmpty ?? true {
-            let totalCount = mainViewModel.data.value.first { section in
+            let totalCount = viewModel.data.value.first { section in
                 if case .movie = section {
                     return true
                 }
@@ -101,12 +92,12 @@ extension MainViewController: UITableViewDelegate, UITableViewDataSource {
             }?.numberOfItems ?? 0
             
             if indexPath.row == (totalCount - 1) {
-                mainViewModel.loadData.onNext(())
+                viewModel.loadData.onNext(())
             }
         }
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        navigationController?.pushViewController(mainViewModel.openDetailPage(for: indexPath), animated: true)
+        navigationController?.pushViewController(viewModel.openDetailPage(for: indexPath), animated: true)
     }
 }

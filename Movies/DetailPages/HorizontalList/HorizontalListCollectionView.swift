@@ -49,19 +49,20 @@ final class HorizontalListCollectionView: UIView {
         addSubview(collectionView)
         collectionView.fillSuperView()
         collectionView.heightAnchor.constraint(equalToConstant: HorizontalListCollectionView.cellHeight).isActive = true
-        
-        dataArrayRelay
-            .subscribe(onNext: { [weak self] data in
-                self?.collectionView.reloadData()
-            })
-            .disposed(by: disposeBag)
-
+        reloadCollectionView()
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
+    private func reloadCollectionView() {
+        dataArrayRelay
+            .subscribe(onNext: { [weak self] data in
+                self?.collectionView.reloadData()
+            })
+            .disposed(by: disposeBag)
+    }
 }
 
 extension HorizontalListCollectionView: UICollectionViewDataSource {
@@ -70,7 +71,6 @@ extension HorizontalListCollectionView: UICollectionViewDataSource {
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        
         let model = dataArrayRelay.value[indexPath.row]
         
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: HorizontalListCollectionViewCell.reuseIdentifier, for: indexPath) as? HorizontalListCollectionViewCell else {

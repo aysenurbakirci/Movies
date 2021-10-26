@@ -1,5 +1,5 @@
 //
-//  DetailViewController.swift
+//  PersonDetailViewController.swift
 //  Movies
 //
 //  Created by Ayşenur Bakırcı on 17.10.2021.
@@ -8,30 +8,31 @@
 import UIKit
 import RxSwift
 
-class DetailViewController: UIViewController, LoadingDisplayer {
+class PersonDetailViewController: UIViewController, LoadingDisplay {
 
-    private lazy var detailView: DetailView = {
-        var view = DetailView()
+    private lazy var detailView: PersonDetailView = {
+        var view = PersonDetailView()
         return view
     }()
     
-    var detailViewModel: DetailViewModelProtocol!
+    var viewModel: PersonDetailViewModel!
     private let disposeBag = DisposeBag()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         view = detailView
         
-        detailViewModel
+        viewModel
             .data
             .subscribe(onNext: { [weak self] data in
                 guard let data = data, let self = self else { return }
                 self.detailView.apply(detailModel: data)
-                self.detailView.horizontalListView.dataArrayRelay.accept(data.castArray)
+                let listModel = ListModel(personMovies: data.movieCredits).castArray
+                self.detailView.horizontalListView.dataArrayRelay.accept(listModel)
             })
             .disposed(by: disposeBag)
         
-        detailViewModel
+        viewModel
             .isLoading
             .subscribe(onNext: { [weak self] isLoading in
                 guard let self = self else { return }
@@ -47,19 +48,12 @@ class DetailViewController: UIViewController, LoadingDisplayer {
             .selectedItemId
             .subscribe(onNext: { [weak self] id in
                 guard let self = self else { return }
-                let controller = self.detailViewModel.openNewDetailPage(id: id)
+                let controller = self.viewModel.openNewDetailPage(id: id)
                 self.navigationController?.pushViewController(controller, animated: true)
             })
             .disposed(by: disposeBag)
         
-        detailView
-            .linkButton.rx.tap
-            .subscribe(onNext: { [weak self]  in
-                self?.detailViewModel.openLink()
-            })
-            .disposed(by: disposeBag)
-        
-        detailViewModel.getDetails()
+        viewModel.getDetails()
     }
 }
 

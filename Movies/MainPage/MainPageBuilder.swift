@@ -10,7 +10,6 @@ import Foundation
 final class MainPageBuilder {
     static func build() -> MainViewController {
         let viewController = MainViewController()
-        viewController.mainViewModel = MainViewModel(mainViewService: MainApi())
         return viewController
     }
 }

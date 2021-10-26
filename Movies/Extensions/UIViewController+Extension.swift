@@ -7,17 +7,12 @@
 
 import UIKit
 
-protocol LoadingDisplayer {
+protocol LoadingDisplay {
     func showLoadingView()
     func hideLoadingView()
 }
 
-protocol EmptyViewDisplayer {
-    func showEmptyView()
-    func hideEmptyView()
-}
-
-extension LoadingDisplayer where Self: UIViewController {
+extension LoadingDisplay where Self: UIViewController {
     
     func showLoadingView() {
         let activityIndicatorView = UIView(frame: self.view.bounds)
@@ -36,33 +31,6 @@ extension LoadingDisplayer where Self: UIViewController {
     
     func hideLoadingView() {
         self.view.viewWithTag(999)?.removeFromSuperview()
-    }
-}
-
-extension EmptyViewDisplayer where Self: UIViewController {
-    
-    func showEmptyView() {
-        
-        let messageBackgroundView = UIView(frame: self.view.bounds)
-        messageBackgroundView.layer.zPosition = .greatestFiniteMagnitude
-        messageBackgroundView.tag = 998
-        messageBackgroundView.backgroundColor = .white
-        
-        let messageLabel = UILabel(frame: self.view.bounds)
-        messageLabel.text = "We couldn't find what you were looking for..."
-        messageLabel.textColor = .black
-        messageLabel.numberOfLines = 0
-        messageLabel.textAlignment = .center
-        messageLabel.sizeToFit()
-        
-        messageBackgroundView.addSubview(messageLabel)
-        self.view.addSubview(messageBackgroundView)
-        messageBackgroundView.fillSuperView()
-        messageLabel.fillSuperView()
-    }
-    
-    func hideEmptyView() {
-        self.view.viewWithTag(998)?.removeFromSuperview()
     }
 }
 

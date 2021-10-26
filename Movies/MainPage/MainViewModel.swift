@@ -21,8 +21,9 @@ enum Section {
     }
 }
 
-final class MainViewModel {
-    
+final class MainViewModel: ActivityHandler {
+
+    var onError = BehaviorRelay<Error?>(value: nil)
     let data = BehaviorRelay<[Section]>(value: [])
     let isLoading = BehaviorRelay<Bool>(value: false)
     let isEmptyData = BehaviorRelay<Bool>(value: false)
@@ -56,7 +57,6 @@ final class MainViewModel {
         })
         .disposed(by: disposeBag)
         
-        
         loadData
             .filter({ [weak self] in
                 return self?.popularMovies?.hasNextPage ?? true
@@ -78,6 +78,10 @@ final class MainViewModel {
             .do(onNext: { [weak self] _ in
                 guard let self = self else { return }
                 self.isLoading.accept(false)
+            }, onError: { [weak self] error in
+                guard let self = self else { return }
+                self.isLoading.accept(false)
+                self.onError.accept(error)
             })
             .subscribe(onNext: { [weak self] movies in
                 guard let self = self else { return }
@@ -149,15 +153,15 @@ extension MainViewModel {
         data.value.count
     }
     
-    func openDetailPage(for indexPath: IndexPath) -> DetailViewController {
+    func openDetailPage(for indexPath: IndexPath) -> UIViewController {
         let section = data.value[indexPath.section]
         switch section {
         case .movie(let movies):
             let movie = movies[indexPath.row]
-            return DetailPageBuilder.build(movieId: movie.id)
+            return MovieDetailPageBuilder.build(movieId: movie.id)
         case .person(let people):
             let person = people[indexPath.row]
-            return DetailPageBuilder.build(personId: person.id)
+            return PersonDetailPageBuilder.build(personId: person.id)
         }
     }
 }

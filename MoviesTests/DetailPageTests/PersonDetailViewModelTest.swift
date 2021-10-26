@@ -22,7 +22,6 @@ class PersonDetailViewModelTest: XCTestCase {
         scheduler = TestScheduler(initialClock: 0)
         disposeBag = DisposeBag()
         sut = PersonDetailViewModel(personId: 2535, service: MockDetailApi())
-        sut?.loadData.onNext(())
     }
 
     override func tearDownWithError() throws {

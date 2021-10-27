@@ -16,7 +16,7 @@ final class HorizontalListCollectionView: UIView {
     let disposeBag = DisposeBag()
     
     static let cellWidthRatio: CGFloat = 0.37
-    static let cellHeightRatio: CGFloat = 1.4
+    static let cellHeightRatio: CGFloat = 1.5
 
     static let cellWidth = UIScreen.main.bounds.size.width * cellWidthRatio
     static let cellHeight = cellWidth * cellHeightRatio

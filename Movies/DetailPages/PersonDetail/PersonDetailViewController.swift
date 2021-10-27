@@ -48,8 +48,7 @@ class PersonDetailViewController: UIViewController, LoadingDisplay {
             .selectedItemId
             .subscribe(onNext: { [weak self] id in
                 guard let self = self else { return }
-                let controller = self.viewModel.openNewDetailPage(id: id)
-                self.navigationController?.pushViewController(controller, animated: true)
+                self.navigationController?.pushViewController(self.viewModel.openMoviePage(id: id), animated: true)
             })
             .disposed(by: disposeBag)
         

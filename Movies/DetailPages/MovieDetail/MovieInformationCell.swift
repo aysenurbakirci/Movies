@@ -19,6 +19,8 @@ class MovieInformationCell: UITableViewCell {
     private let imageWidth = UIScreen.main.bounds.size.width
     private lazy var imageHeight = imageWidth * imageHeightRatio
     
+    let imageIsLoad = PublishSubject<Void>()
+    
     private lazy var image: UIImageView = {
         var imageView = UIImageView()
         imageView.contentMode = .scaleAspectFill
@@ -61,12 +63,17 @@ class MovieInformationCell: UITableViewCell {
     private func detailViewConfig() {
         contentView.addSubview(stack)
         stack.fillSuperView()
-        image.anchorSize(size: .init(width: imageWidth, height: imageHeight))
+//        image.anchorSize(size: .init(width: imageWidth, height: imageHeight))
         stack.widthAnchor.constraint(equalTo: self.widthAnchor).isActive = true
     }
     
     func apply(detailModel: MovieDetail) {
-        self.image.downloadImage(imageURL: detailModel.backdropPath ?? "", width: 500)
+        guard let imagePath = detailModel.backdropPath else { return }
+        let urlString = baseImageURL + "w\(500)" + imagePath
+        let url = URL(string: urlString)
+        self.image.kf.setImage(with: url, options: nil, progressBlock: nil) { [weak self] _ in
+            self?.imageIsLoad.on(.next(()))
+        }
         self.titleAndSubtitles.apply(title: detailModel.title, subtitle: String(detailModel.voteAverage), secondSubtitle: nil)
         self.overview.text = detailModel.overview
     }

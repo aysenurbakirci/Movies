@@ -21,7 +21,6 @@ class ImageAndInfoCardView: UIView {
     private lazy var imageContainer: UIView = {
         var container = UIView()
         container.addSubview(image)
-        container.backgroundColor = .red
         return container
     }()
     

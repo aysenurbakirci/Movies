@@ -66,7 +66,7 @@ extension MovieDetailViewController: UITableViewDelegate, UITableViewDataSource 
         
         switch section {
         case .detail(let movieDetail):
-            
+
             guard let cell = tableView.dequeueReusableCell(withIdentifier: MovieInformationCell.reuseIdentifier, for: indexPath) as? MovieInformationCell else {
                 return UITableViewCell()
             }
@@ -75,9 +75,16 @@ extension MovieDetailViewController: UITableViewDelegate, UITableViewDataSource 
             cell.linkButton
                 .rx.tap
                 .subscribe(onNext: { [weak self] in
-                    self?.viewModel.openLink(key: movieDetail.trailers.first?.key ?? "")
+                    guard let key = movieDetail.trailers.first?.key, let self = self else { return }
+                    self.viewModel.openLink(key: key)
                 })
                 .disposed(by: cell.disposeBag)
+            cell.imageIsLoad
+                .subscribe(onNext: {
+                    tableView.reloadRows(at: [indexPath], with: .automatic)
+                })
+                .disposed(by: cell.disposeBag)
+            
             
             return cell
             
@@ -93,10 +100,10 @@ extension MovieDetailViewController: UITableViewDelegate, UITableViewDataSource 
                 .selectedItemId
                 .subscribe(onNext: { [weak self] id in
                     guard let self = self else { return }
-                    let controller = self.viewModel.openPersonPage(id: id)
-                    self.navigationController?.pushViewController(controller, animated: true)
+                    self.navigationController?.pushViewController(self.viewModel.openPersonPage(id: id), animated: true)
                 })
                 .disposed(by: cell.disposeBag)
+            
             return cell
         }
     }

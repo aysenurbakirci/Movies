@@ -49,7 +49,7 @@ final class PersonDetailViewModel {
             .disposed(by: disposeBag)
     }
     
-    func openNewDetailPage(id: Int) -> MovieDetailViewController {
+    func openMoviePage(id: Int) -> MovieDetailViewController {
         return MovieDetailPageBuilder.build(movieId: id)
     }
 }

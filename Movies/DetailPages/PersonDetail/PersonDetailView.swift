@@ -7,6 +7,7 @@
 
 import UIKit
 import RxSwift
+import MoviesAPI
 
 class PersonDetailView: UIView {
     

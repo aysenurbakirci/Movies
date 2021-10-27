@@ -7,15 +7,15 @@
 
 import Foundation
 
-struct People: Codable {
-    let results: [Person]
+public struct People: Codable {
+    public let results: [Person]
 }
 
-struct Person: Codable {
-    let id: Int
-    let name: String
-    let popularity: Double
-    let profilePath: String?
+public struct Person: Codable {
+    public let id: Int
+    public let name: String
+    public let popularity: Double
+    public let profilePath: String?
 
     enum CodingKeys: String, CodingKey {
         case id

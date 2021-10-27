@@ -7,6 +7,7 @@
 
 import RxSwift
 import RxCocoa
+import MoviesAPI
 
 enum MovieViewSections {
     case detail(MovieDetail), list([Cast])

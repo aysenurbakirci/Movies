@@ -6,6 +6,7 @@
 //
 
 import RxSwift
+import MoviesAPI
 
 protocol DetailApiProtocol {
     func getMovieCast(with movieId: Int) -> Observable<MovieCast>

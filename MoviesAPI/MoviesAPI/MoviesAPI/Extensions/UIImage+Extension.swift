@@ -8,7 +8,7 @@
 import Foundation
 import Kingfisher
 
-extension UIImageView {
+public extension UIImageView {
     func downloadImage(imageURL: String, width: Int?){
         let urlString = baseImageURL + "w\(width ?? 500)" + imageURL
         let url = URL(string: urlString)

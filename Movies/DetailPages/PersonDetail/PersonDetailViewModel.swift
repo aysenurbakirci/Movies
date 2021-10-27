@@ -8,6 +8,7 @@
 import Foundation
 import RxSwift
 import RxCocoa
+import MoviesAPI
 
 final class PersonDetailViewModel {
     

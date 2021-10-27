@@ -8,6 +8,7 @@
 import Foundation
 import RxSwift
 import RxCocoa
+import MoviesAPI
 
 enum Section {
     case movie([Movie]), person([Person])

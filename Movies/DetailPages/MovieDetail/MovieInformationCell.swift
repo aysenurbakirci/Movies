@@ -8,16 +8,13 @@
 import UIKit
 import RxSwift
 import Kingfisher
+import MoviesAPI
 
 class MovieInformationCell: UITableViewCell {
     
     static let reuseIdentifier = "movieInformationCellId"
     private lazy var titleAndSubtitles = TitleAndSubtitlesView()
     let disposeBag = DisposeBag()
-    
-    private let imageHeightRatio: CGFloat = 0.6
-    private let imageWidth = UIScreen.main.bounds.size.width
-    private lazy var imageHeight = imageWidth * imageHeightRatio
     
     let imageIsLoad = PublishSubject<Void>()
     
@@ -63,17 +60,18 @@ class MovieInformationCell: UITableViewCell {
     private func detailViewConfig() {
         contentView.addSubview(stack)
         stack.fillSuperView()
-//        image.anchorSize(size: .init(width: imageWidth, height: imageHeight))
         stack.widthAnchor.constraint(equalTo: self.widthAnchor).isActive = true
+        image.heightAnchor.constraint(equalTo: image.widthAnchor, multiplier: 0.6).isActive = true
     }
     
     func apply(detailModel: MovieDetail) {
         guard let imagePath = detailModel.backdropPath else { return }
-        let urlString = baseImageURL + "w\(500)" + imagePath
-        let url = URL(string: urlString)
-        self.image.kf.setImage(with: url, options: nil, progressBlock: nil) { [weak self] _ in
-            self?.imageIsLoad.on(.next(()))
-        }
+//        let urlString = baseImageURL + "w\(500)" + imagePath
+//        let url = URL(string: urlString)
+//        self.image.kf.setImage(with: url, options: nil, progressBlock: nil) { [weak self] _ in
+//            self?.imageIsLoad.on(.next(()))
+//        }
+        self.image.downloadImage(imageURL: imagePath, width: 500)
         self.titleAndSubtitles.apply(title: detailModel.title, subtitle: String(detailModel.voteAverage), secondSubtitle: nil)
         self.overview.text = detailModel.overview
     }

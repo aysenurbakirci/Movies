@@ -5,6 +5,9 @@
       location = "group:MoviesAPI/MoviesAPI/MoviesAPI.xcodeproj">
    </FileRef>
    <FileRef
+      location = "group:ListPage/ListPage/ListPage.xcodeproj">
+   </FileRef>
+   <FileRef
       location = "group:Movies.xcodeproj">
    </FileRef>
    <FileRef

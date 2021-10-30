@@ -18,11 +18,15 @@ class MovieDetailViewController: UIViewController, LoadingDisplay {
         return view
     }()
     
+    lazy var header = StrechyHeaderView(frame: .init(x: 0, y: 0, width: view.frame.size.width, height: view.frame.size.width * 0.5))
+    
     var viewModel: MovieDetailViewModel!
     private let disposeBag = DisposeBag()
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        movieDetailView.tableView.tableHeaderView = header
         
         view = movieDetailView
         
@@ -79,12 +83,14 @@ extension MovieDetailViewController: UITableViewDelegate, UITableViewDataSource 
                     self.viewModel.openLink(key: key)
                 })
                 .disposed(by: cell.disposeBag)
-            cell.imageIsLoad
-                .subscribe(onNext: {
-                    tableView.reloadRows(at: [indexPath], with: .automatic)
-                })
-                .disposed(by: cell.disposeBag)
             
+            header.apply(imagePath: movieDetail.backdropPath ?? "")
+//            
+//            cell.imageIsLoad
+//                .subscribe(onNext: {
+//                    tableView.reloadRows(at: [indexPath], with: .automatic)
+//                })
+//                .disposed(by: cell.disposeBag)
             
             return cell
             
@@ -106,5 +112,13 @@ extension MovieDetailViewController: UITableViewDelegate, UITableViewDataSource 
             
             return cell
         }
+    }
+}
+
+extension MovieDetailViewController: UIScrollViewDelegate {
+    
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        guard let header = movieDetailView.tableView.tableHeaderView as? StrechyHeaderView else { return }
+        header.scrollViewDidScroll(scrollView: movieDetailView.tableView)
     }
 }

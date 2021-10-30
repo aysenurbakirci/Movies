@@ -16,13 +16,13 @@ class MovieInformationCell: UITableViewCell {
     private lazy var titleAndSubtitles = TitleAndSubtitlesView()
     let disposeBag = DisposeBag()
     
-    let imageIsLoad = PublishSubject<Void>()
+//    let imageIsLoad = PublishSubject<Void>()
     
-    private lazy var image: UIImageView = {
-        var imageView = UIImageView()
-        imageView.contentMode = .scaleAspectFill
-        return imageView
-    }()
+//    private lazy var image: UIImageView = {
+//        var imageView = UIImageView()
+//        imageView.contentMode = .scaleAspectFill
+//        return imageView
+//    }()
     
     private lazy var overview: UILabel = {
         var label = UILabel()
@@ -45,7 +45,7 @@ class MovieInformationCell: UITableViewCell {
         var stack = UIStackView()
         stack.axis = .vertical
         stack.distribution = .fill
-        stack.addArrangedSubview(image)
+//        stack.addArrangedSubview(image)
         stack.addArrangedSubview(titleAndSubtitles)
         stack.addArrangedSubview(overview)
         stack.addArrangedSubview(linkButton)
@@ -61,17 +61,12 @@ class MovieInformationCell: UITableViewCell {
         contentView.addSubview(stack)
         stack.fillSuperView()
         stack.widthAnchor.constraint(equalTo: self.widthAnchor).isActive = true
-        image.heightAnchor.constraint(equalTo: image.widthAnchor, multiplier: 0.6).isActive = true
+//        image.heightAnchor.constraint(equalTo: image.widthAnchor, multiplier: 0.6).isActive = true
     }
     
     func apply(detailModel: MovieDetail) {
-        guard let imagePath = detailModel.backdropPath else { return }
-//        let urlString = baseImageURL + "w\(500)" + imagePath
-//        let url = URL(string: urlString)
-//        self.image.kf.setImage(with: url, options: nil, progressBlock: nil) { [weak self] _ in
-//            self?.imageIsLoad.on(.next(()))
-//        }
-        self.image.downloadImage(imageURL: imagePath, width: 500)
+//        guard let imagePath = detailModel.backdropPath else { return }
+//        self.image.downloadImage(imageURL: imagePath, width: 500)
         self.titleAndSubtitles.apply(title: detailModel.title, subtitle: String(detailModel.voteAverage), secondSubtitle: nil)
         self.overview.text = detailModel.overview
     }

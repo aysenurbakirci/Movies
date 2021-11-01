@@ -66,7 +66,7 @@ final class MovieDetailViewModel {
     }
     
     func openLink(key: String) {
-        let url = detailService.getTrailerUrl(key: key)
+        let url = detailService.createTrailerUrl(key: key)
         if UIApplication.shared.canOpenURL(url) {
              UIApplication.shared.open(url, options: [:], completionHandler: nil)
          }

@@ -7,6 +7,7 @@
 
 @testable import Movies
 import RxSwift
+import MoviesAPI
 
 class MockDetailApi: DetailApiProtocol {
     

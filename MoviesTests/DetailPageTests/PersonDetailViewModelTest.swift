@@ -22,6 +22,7 @@ class PersonDetailViewModelTest: XCTestCase {
         scheduler = TestScheduler(initialClock: 0)
         disposeBag = DisposeBag()
         sut = PersonDetailViewModel(personId: 2535, service: MockDetailApi())
+        sut?.getDetails()
     }
 
     override func tearDownWithError() throws {
@@ -34,22 +35,5 @@ class PersonDetailViewModelTest: XCTestCase {
         let result = try movieObservable?.toBlocking().first()
         XCTAssertNotNil(result!, "Observable must not be nil")
     }
-    
-    func testGetPersonName() throws {
-        sut?.data
-            .subscribe(onNext: { data in
-                XCTAssertEqual(data?.title, "Vivica A. Fox")
-                XCTAssertNotEqual(data?.title, "Vivica")
-            })
-            .disposed(by: disposeBag)
-    }
-    
-    func testGetPersonMovies() throws {
-        sut?.data
-            .subscribe(onNext: { data in
-                XCTAssertEqual(data?.castArray.first?.title, "Two Can Play That Game")
-                XCTAssertNotEqual(data?.castArray.first?.title, "Two")
-            })
-            .disposed(by: disposeBag)
-    }
+
 }

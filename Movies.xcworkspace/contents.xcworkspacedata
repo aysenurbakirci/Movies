@@ -2,7 +2,7 @@
 <Workspace
    version = "1.0">
    <FileRef
-      location = "group:MoviesAPI/MoviesAPI/MoviesAPI.xcodeproj">
+      location = "group:/Users/aysenur.bakirci/Projects/GitHub/Movies/MoviesAPI/MoviesAPI/ImdbAPI.xcodeproj">
    </FileRef>
    <FileRef
       location = "group:Extensions/Extensions/Extensions.xcodeproj">

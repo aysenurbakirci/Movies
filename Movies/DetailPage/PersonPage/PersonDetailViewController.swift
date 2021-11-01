@@ -11,17 +11,11 @@ import Utils
 import Components
 
 class PersonDetailViewController: UIViewController, LoadingDisplay {
-    
-    lazy var header = StrechyHeader(frame: .init(x: 0,
-                                                 y: 0,
-                                                 width: view.frame.size.width,
-                                                 height: view.frame.size.width * 1.5))
 
-    private lazy var detailView: DetailView = {
-        var view = DetailView()
+    private lazy var detailView: PersonDetailView = {
+        var view = PersonDetailView()
         view.tableView.delegate = self
         view.tableView.dataSource = self
-        view.tableView.tableHeaderView = header
         return view
     }()
     
@@ -86,7 +80,7 @@ extension PersonDetailViewController: UITableViewDelegate, UITableViewDataSource
             }
             
             cell.apply(personDetail: personDetail)
-            header.apply(imagePath: personDetail.profilePath ?? "")
+            detailView.header.apply(imagePath: personDetail.profilePath ?? "")
             
             return cell
             

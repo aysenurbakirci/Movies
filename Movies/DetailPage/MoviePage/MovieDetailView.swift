@@ -1,5 +1,5 @@
 //
-//  DetailView.swift
+//  MovieDetailView.swift
 //  Movies
 //
 //  Created by Ayşenur Bakırcı on 1.11.2021.
@@ -8,9 +8,18 @@
 import Foundation
 import UIKit
 
-class DetailView: UIView {
+class MovieDetailView: UIView {
     
-    let tableView = UITableView()
+    lazy var header = StrechyHeader(frame: .init(x: 0,
+                                                 y: 0,
+                                                 width: UIScreen.main.bounds.size.width,
+                                                 height: UIScreen.main.bounds.size.width * 0.4))
+    
+    lazy var tableView: UITableView = {
+        var table = UITableView()
+        table.tableHeaderView = header
+        return table
+    }()
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -29,4 +38,3 @@ class DetailView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
 }
-

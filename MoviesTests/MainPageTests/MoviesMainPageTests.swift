@@ -30,29 +30,13 @@ class MoviesMainPageTests: XCTestCase {
         super.tearDown()
     }
     
-//    func testGetData() throws {
-//
-//        let data = scheduler.createObserver([Section].self)
-//
-//        sut?.data
-//            .bind(to: data)
-//            .disposed(by: disposeBag)
-//
-//        scheduler.createColdObservable([.next(5, ())])
-//            .bind(to: sut!.loadData)
-//            .disposed(by: disposeBag)
-//
-//        scheduler.start()
-//
-//    }
-    
     func testNumberOfPages() throws {
         
-        scheduler.createColdObservable([.next(1, ()), .next(5, ()), .next(8, ())])
+        scheduler.createColdObservable([.next(1, ()), .next(5, ()), .next(8, ()), .next(12, ())])
             .bind(to: sut!.loadData)
             .disposed(by: disposeBag)
         
         scheduler.start()
-        XCTAssertEqual(sut!.nextPage, 5)
+        XCTAssertEqual(sut!.nextPage, 1)
     }
 }

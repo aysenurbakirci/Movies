@@ -13,17 +13,10 @@ import Utils
 
 class MovieDetailViewController: UIViewController, LoadingDisplay {
     
-    
-    lazy var header = StrechyHeader(frame: .init(x: 0,
-                                                 y: 0,
-                                                 width: view.frame.size.width,
-                                                 height: view.frame.size.width * 0.4))
-    
-    private lazy var detailView: DetailView = {
-        var view = DetailView()
+    private lazy var detailView: MovieDetailView = {
+        var view = MovieDetailView()
         view.tableView.delegate = self
         view.tableView.dataSource = self
-        view.tableView.tableHeaderView = header
         return view
     }()
     
@@ -97,7 +90,7 @@ extension MovieDetailViewController: UITableViewDelegate, UITableViewDataSource 
                 })
                 .disposed(by: cell.disposeBag)
             
-            header.apply(imagePath: movieDetail.backdropPath ?? "")
+            detailView.header.apply(imagePath: movieDetail.backdropPath ?? "")
             
             return cell
             

@@ -8,15 +8,17 @@
 
 /* Begin PBXBuildFile section */
 		1ED48ACF0FBE7C171599689B /* Pods_MoviesAPI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1B54CFEE83F807B8A859ED73 /* Pods_MoviesAPI.framework */; };
-		372CEDAB2729695800429526 /* MoviesAPI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 372CEDA12729695800429526 /* MoviesAPI.framework */; };
+		372CEDAB2729695800429526 /* ImdbAPI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 372CEDA12729695800429526 /* ImdbAPI.framework */; };
 		372CEDB22729695800429526 /* MoviesAPI.h in Headers */ = {isa = PBXBuildFile; fileRef = 372CEDA42729695800429526 /* MoviesAPI.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		37D6E86727296A7D002A0C53 /* DataBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37D6E85F27296A7C002A0C53 /* DataBuilder.swift */; };
+		37D6E86727296A7D002A0C53 /* URLRequestBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37D6E85F27296A7C002A0C53 /* URLRequestBuilder.swift */; };
 		37D6E87027296FC4002A0C53 /* URLSession+Rx.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37D6E86027296A7D002A0C53 /* URLSession+Rx.swift */; };
 		37D6E87127296FCB002A0C53 /* Movies.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37D6E86227296A7D002A0C53 /* Movies.swift */; };
 		37D6E87227296FCD002A0C53 /* MovieDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37D6E86327296A7D002A0C53 /* MovieDetail.swift */; };
 		37D6E87327296FD0002A0C53 /* People.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37D6E86427296A7D002A0C53 /* People.swift */; };
 		37D6E87427296FD2002A0C53 /* PersonDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37D6E86527296A7D002A0C53 /* PersonDetail.swift */; };
 		37D6E876272974ED002A0C53 /* UIImage+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37D6E875272974ED002A0C53 /* UIImage+Extension.swift */; };
+		37D6E91C273024E4002A0C53 /* ImdbAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37D6E91B273024E4002A0C53 /* ImdbAPI.swift */; };
+		37D6E92127303EDD002A0C53 /* ImdbService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37D6E92027303EDD002A0C53 /* ImdbService.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -31,17 +33,19 @@
 
 /* Begin PBXFileReference section */
 		1B54CFEE83F807B8A859ED73 /* Pods_MoviesAPI.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_MoviesAPI.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		372CEDA12729695800429526 /* MoviesAPI.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = MoviesAPI.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		372CEDA12729695800429526 /* ImdbAPI.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = ImdbAPI.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		372CEDA42729695800429526 /* MoviesAPI.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MoviesAPI.h; sourceTree = "<group>"; };
 		372CEDA52729695800429526 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		372CEDAA2729695800429526 /* MoviesAPITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MoviesAPITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		37D6E85F27296A7C002A0C53 /* DataBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataBuilder.swift; sourceTree = "<group>"; };
+		372CEDAA2729695800429526 /* ImdbAPITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ImdbAPITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		37D6E85F27296A7C002A0C53 /* URLRequestBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLRequestBuilder.swift; sourceTree = "<group>"; };
 		37D6E86027296A7D002A0C53 /* URLSession+Rx.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "URLSession+Rx.swift"; sourceTree = "<group>"; };
 		37D6E86227296A7D002A0C53 /* Movies.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Movies.swift; sourceTree = "<group>"; };
 		37D6E86327296A7D002A0C53 /* MovieDetail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieDetail.swift; sourceTree = "<group>"; };
 		37D6E86427296A7D002A0C53 /* People.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = People.swift; sourceTree = "<group>"; };
 		37D6E86527296A7D002A0C53 /* PersonDetail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonDetail.swift; sourceTree = "<group>"; };
 		37D6E875272974ED002A0C53 /* UIImage+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIImage+Extension.swift"; sourceTree = "<group>"; };
+		37D6E91B273024E4002A0C53 /* ImdbAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImdbAPI.swift; sourceTree = "<group>"; };
+		37D6E92027303EDD002A0C53 /* ImdbService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImdbService.swift; sourceTree = "<group>"; };
 		CCBC1A66D9F950308D376B9E /* Pods-MoviesAPI.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MoviesAPI.release.xcconfig"; path = "Target Support Files/Pods-MoviesAPI/Pods-MoviesAPI.release.xcconfig"; sourceTree = "<group>"; };
 		DDED61C37AC8B2A1AE999DD3 /* Pods-MoviesAPI.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MoviesAPI.debug.xcconfig"; path = "Target Support Files/Pods-MoviesAPI/Pods-MoviesAPI.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -59,7 +63,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				372CEDAB2729695800429526 /* MoviesAPI.framework in Frameworks */,
+				372CEDAB2729695800429526 /* ImdbAPI.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -79,7 +83,7 @@
 		372CED972729695800429526 = {
 			isa = PBXGroup;
 			children = (
-				372CEDA32729695800429526 /* MoviesAPI */,
+				372CEDA32729695800429526 /* ImdbAPI */,
 				372CEDA22729695800429526 /* Products */,
 				00760B9F73E17538E93F38E6 /* Pods */,
 				699E1AF25CE20E251E63DA9E /* Frameworks */,
@@ -89,22 +93,24 @@
 		372CEDA22729695800429526 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				372CEDA12729695800429526 /* MoviesAPI.framework */,
-				372CEDAA2729695800429526 /* MoviesAPITests.xctest */,
+				372CEDA12729695800429526 /* ImdbAPI.framework */,
+				372CEDAA2729695800429526 /* ImdbAPITests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
 		};
-		372CEDA32729695800429526 /* MoviesAPI */ = {
+		372CEDA32729695800429526 /* ImdbAPI */ = {
 			isa = PBXGroup;
 			children = (
 				37D6E86127296A7D002A0C53 /* Extensions */,
 				37D6E86627296A7D002A0C53 /* DTOs */,
-				37D6E85F27296A7C002A0C53 /* DataBuilder.swift */,
+				37D6E85F27296A7C002A0C53 /* URLRequestBuilder.swift */,
+				37D6E91B273024E4002A0C53 /* ImdbAPI.swift */,
+				37D6E92027303EDD002A0C53 /* ImdbService.swift */,
 				372CEDA42729695800429526 /* MoviesAPI.h */,
 				372CEDA52729695800429526 /* Info.plist */,
 			);
-			path = MoviesAPI;
+			path = ImdbAPI;
 			sourceTree = "<group>";
 		};
 		37D6E86127296A7D002A0C53 /* Extensions */ = {
@@ -149,9 +155,9 @@
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
-		372CEDA02729695800429526 /* MoviesAPI */ = {
+		372CEDA02729695800429526 /* ImdbAPI */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 372CEDB52729695800429526 /* Build configuration list for PBXNativeTarget "MoviesAPI" */;
+			buildConfigurationList = 372CEDB52729695800429526 /* Build configuration list for PBXNativeTarget "ImdbAPI" */;
 			buildPhases = (
 				FC7E058FB5BEEABF4B9A4541 /* [CP] Check Pods Manifest.lock */,
 				372CED9C2729695800429526 /* Headers */,
@@ -163,14 +169,14 @@
 			);
 			dependencies = (
 			);
-			name = MoviesAPI;
+			name = ImdbAPI;
 			productName = MoviesAPI;
-			productReference = 372CEDA12729695800429526 /* MoviesAPI.framework */;
+			productReference = 372CEDA12729695800429526 /* ImdbAPI.framework */;
 			productType = "com.apple.product-type.framework";
 		};
-		372CEDA92729695800429526 /* MoviesAPITests */ = {
+		372CEDA92729695800429526 /* ImdbAPITests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 372CEDB82729695800429526 /* Build configuration list for PBXNativeTarget "MoviesAPITests" */;
+			buildConfigurationList = 372CEDB82729695800429526 /* Build configuration list for PBXNativeTarget "ImdbAPITests" */;
 			buildPhases = (
 				372CEDA62729695800429526 /* Sources */,
 				372CEDA72729695800429526 /* Frameworks */,
@@ -181,9 +187,9 @@
 			dependencies = (
 				372CEDAD2729695800429526 /* PBXTargetDependency */,
 			);
-			name = MoviesAPITests;
+			name = ImdbAPITests;
 			productName = MoviesAPITests;
-			productReference = 372CEDAA2729695800429526 /* MoviesAPITests.xctest */;
+			productReference = 372CEDAA2729695800429526 /* ImdbAPITests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
 /* End PBXNativeTarget section */
@@ -203,7 +209,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 372CED9B2729695800429526 /* Build configuration list for PBXProject "MoviesAPI" */;
+			buildConfigurationList = 372CED9B2729695800429526 /* Build configuration list for PBXProject "ImdbAPI" */;
 			compatibilityVersion = "Xcode 9.3";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -216,8 +222,8 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				372CEDA02729695800429526 /* MoviesAPI */,
-				372CEDA92729695800429526 /* MoviesAPITests */,
+				372CEDA02729695800429526 /* ImdbAPI */,
+				372CEDA92729695800429526 /* ImdbAPITests */,
 			);
 		};
 /* End PBXProject section */
@@ -272,10 +278,12 @@
 				37D6E87027296FC4002A0C53 /* URLSession+Rx.swift in Sources */,
 				37D6E876272974ED002A0C53 /* UIImage+Extension.swift in Sources */,
 				37D6E87427296FD2002A0C53 /* PersonDetail.swift in Sources */,
-				37D6E86727296A7D002A0C53 /* DataBuilder.swift in Sources */,
+				37D6E91C273024E4002A0C53 /* ImdbAPI.swift in Sources */,
+				37D6E86727296A7D002A0C53 /* URLRequestBuilder.swift in Sources */,
 				37D6E87127296FCB002A0C53 /* Movies.swift in Sources */,
 				37D6E87227296FCD002A0C53 /* MovieDetail.swift in Sources */,
 				37D6E87327296FD0002A0C53 /* People.swift in Sources */,
+				37D6E92127303EDD002A0C53 /* ImdbService.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -291,7 +299,7 @@
 /* Begin PBXTargetDependency section */
 		372CEDAD2729695800429526 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 372CEDA02729695800429526 /* MoviesAPI */;
+			target = 372CEDA02729695800429526 /* ImdbAPI */;
 			targetProxy = 372CEDAC2729695800429526 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
@@ -510,7 +518,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		372CED9B2729695800429526 /* Build configuration list for PBXProject "MoviesAPI" */ = {
+		372CED9B2729695800429526 /* Build configuration list for PBXProject "ImdbAPI" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				372CEDB32729695800429526 /* Debug */,
@@ -519,7 +527,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		372CEDB52729695800429526 /* Build configuration list for PBXNativeTarget "MoviesAPI" */ = {
+		372CEDB52729695800429526 /* Build configuration list for PBXNativeTarget "ImdbAPI" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				372CEDB62729695800429526 /* Debug */,
@@ -528,7 +536,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		372CEDB82729695800429526 /* Build configuration list for PBXNativeTarget "MoviesAPITests" */ = {
+		372CEDB82729695800429526 /* Build configuration list for PBXNativeTarget "ImdbAPITests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				372CEDB92729695800429526 /* Debug */,

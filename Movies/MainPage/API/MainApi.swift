@@ -18,30 +18,16 @@ protocol MainApiProtocol {
 struct MainApi: MainApiProtocol {
     
     func getPopularMovies(page: Int) -> Observable<Movies> {
-        
-        return DataBuilder<Movies>()
-            .addBase(type: .movie)
-            .getPopularMovies(page: String(page))
-            .build()
+        return ImdbService.getPopularMovies(page: page)
     }
     
     func searchMoviesAndPeople(with query: String, page: Int) -> Observable<(movies: [Movie], people: [Person])> {
-        
-        let searchMovie = DataBuilder<Movies>()
-            .addBase(type: .search)
-            .getSearchData(searchQuery: query, queryType: .movie)
-            .build()
-            .map(\.results)
-        
-        let searchPerson = DataBuilder<People>()
-            .addBase(type: .search)
-            .getSearchData(searchQuery: query, queryType: .person)
-            .build()
-            .map(\.results)
+        let searchMovie = ImdbService.searchMovies(query: query)
+        let searchPerson = ImdbService.searchPeople(query: query)
         
         return Observable
             .zip(searchMovie, searchPerson)
-            .map { (movies: $0, people: $1) }
+            .map { (movies: $0.results, people: $1.results) }
     }
 }
 

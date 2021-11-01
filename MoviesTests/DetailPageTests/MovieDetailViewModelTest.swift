@@ -22,7 +22,7 @@ class MovieDetailViewModelTest: XCTestCase {
         scheduler = TestScheduler(initialClock: 0)
         disposeBag = DisposeBag()
         sut = MovieDetailViewModel(movieId: 839436, service: MockDetailApi())
-        sut?.loadData.onNext(())
+        sut?.getDetails()
     }
 
     override func tearDownWithError() throws {
@@ -34,33 +34,5 @@ class MovieDetailViewModelTest: XCTestCase {
         let movieObservable = sut?.data.asObservable()
         let result = try movieObservable?.toBlocking().first()
         XCTAssertNotNil(result!, "Observable must not be nil")
-    }
-    
-    func testGetMovieName() throws {
-        
-        sut?.data
-            .subscribe(onNext: { data in
-                XCTAssertEqual(data?.title, "Dragon Fury")
-                XCTAssertNotEqual(data?.title, "Dragon")
-            })
-            .disposed(by: disposeBag)
-    }
-    
-    func testGetMovieCast() throws {
-        sut?.data
-            .subscribe(onNext: { data in
-                XCTAssertEqual(data?.castArray.first?.title, "Nicola Wright")
-                XCTAssertNotEqual(data?.castArray.first?.title, "Nicola")
-            })
-            .disposed(by: disposeBag)
-    }
-    
-    func testGetMovieTrailer() throws {
-        sut?.data
-            .subscribe(onNext: { data in
-                XCTAssertEqual(data?.link, "kp_iCBrjeKA")
-                XCTAssertNotEqual(data?.link, "A")
-            })
-            .disposed(by: disposeBag)
     }
 }

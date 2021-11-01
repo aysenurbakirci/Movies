@@ -13,53 +13,24 @@ protocol DetailApiProtocol {
     func getMovieTrailer(with movieId: Int) -> Observable<MovieTrailers>
     func getMovieDetail(with movieId: Int) -> Observable<MovieDetail>
     func getPersonDetail(with personId: Int) -> Observable<PersonDetail>
-    func getPersonMovieCredits(with personId: Int) -> Observable<[MovieCredits]>
+    func getPersonMovieCredits(with personId: Int) -> Observable<PersonMovies>
     func getDetails(movieId: Int) -> Observable<MovieDetail>
     func getDetails(personId: Int) -> Observable<PersonDetail>
-    func getTrailerUrl(key: String) -> URL
+    func createTrailerUrl(key: String) -> URL
 }
 
 struct DetailApi: DetailApiProtocol {
     
     func getMovieCast(with movieId: Int) -> Observable<MovieCast> {
-        
-        return DataBuilder<MovieCast>()
-            .addBase(type: .movie)
-            .getMovieDetail(movieId: String(movieId), queryType: .cast)
-            .build()
+        return ImdbService.getMovieCast(movieId: movieId)
     }
     
     func getMovieTrailer(with movieId: Int) -> Observable<MovieTrailers> {
-        
-        return DataBuilder<MovieTrailers>()
-            .addBase(type: .movie)
-            .getMovieDetail(movieId: String(movieId), queryType: .trailer)
-            .build()
+        return ImdbService.getMovieTrailer(movieId: movieId)
     }
     
     func getMovieDetail(with movieId: Int) -> Observable<MovieDetail> {
-        
-        return DataBuilder<MovieDetail>()
-            .addBase(type: .movie)
-            .getMovieDetail(movieId: String(movieId), queryType: .detail)
-            .build()
-    }
-    
-    func getPersonDetail(with personId: Int) -> Observable<PersonDetail> {
-        
-        return DataBuilder<PersonDetail>()
-            .addBase(type: .person)
-            .getPersonDetail(personId: String(personId), queryType: .detail)
-            .build()
-    }
-    
-    func getPersonMovieCredits(with personId: Int) -> Observable<[MovieCredits]> {
-        
-        return DataBuilder<PersonMovies>()
-            .addBase(type: .person)
-            .getPersonDetail(personId: String(personId), queryType: .credits)
-            .build()
-            .map(\.cast)
+        return ImdbService.getMovieDetail(movieId: movieId)
     }
     
     func getDetails(movieId: Int) -> Observable<MovieDetail> {
@@ -77,6 +48,14 @@ struct DetailApi: DetailApiProtocol {
             .map { $0.movieDetail }
     }
     
+    func getPersonDetail(with personId: Int) -> Observable<PersonDetail> {
+        return ImdbService.getPersonDetail(personId: personId)
+    }
+    
+    func getPersonMovieCredits(with personId: Int) -> Observable<PersonMovies> {
+        return ImdbService.getPersonMovieCredits(personId: personId)
+    }
+    
     func getDetails(personId: Int) -> Observable<PersonDetail> {
         let personDetail = getPersonDetail(with: personId)
         let personCredits = getPersonMovieCredits(with: personId)
@@ -84,12 +63,12 @@ struct DetailApi: DetailApiProtocol {
         return Observable.zip(personDetail, personCredits)
             .map { (personDetail: $0, personCredits: $1) }
             .do(onNext: { data in
-                data.personDetail.addMovieCast(movies: data.personCredits)
+                data.personDetail.addMovieCast(movies: data.personCredits.cast)
             })
             .map { $0.personDetail }
     }
     
-    func getTrailerUrl(key: String) -> URL {
+    func createTrailerUrl(key: String) -> URL {
         var urlComponents = URLComponents()
         urlComponents.scheme = "https"
         urlComponents.host = "www.youtube.com"

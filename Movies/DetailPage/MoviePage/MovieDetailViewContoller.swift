@@ -13,14 +13,19 @@ import Utils
 
 class MovieDetailViewController: UIViewController, LoadingDisplay {
     
+    
+    lazy var header = StrechyHeader(frame: .init(x: 0,
+                                                 y: 0,
+                                                 width: view.frame.size.width,
+                                                 height: view.frame.size.width * 0.4))
+    
     private lazy var detailView: DetailView = {
         var view = DetailView()
         view.tableView.delegate = self
         view.tableView.dataSource = self
+        view.tableView.tableHeaderView = header
         return view
     }()
-    
-    lazy var header = StrechyHeader(frame: .init(x: 0, y: 0, width: view.frame.size.width, height: view.frame.size.width * 0.4))
     
     var viewModel: MovieDetailViewModel!
     private let disposeBag = DisposeBag()
@@ -30,7 +35,6 @@ class MovieDetailViewController: UIViewController, LoadingDisplay {
         
         view = detailView
         navigationBarConfig()
-        detailView.tableView.tableHeaderView = header
         
         viewModel
             .data
@@ -79,7 +83,8 @@ extension MovieDetailViewController: UITableViewDelegate, UITableViewDataSource 
         switch section {
         case .detail(let movieDetail):
 
-            guard let cell = tableView.dequeueReusableCell(withIdentifier: InformationCell.reuseIdentifier, for: indexPath) as? InformationCell else {
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: InformationCell.reuseIdentifier,
+                                                           for: indexPath) as? InformationCell else {
                 return UITableViewCell()
             }
             
@@ -98,7 +103,8 @@ extension MovieDetailViewController: UITableViewDelegate, UITableViewDataSource 
             
         case .list(let movieCastList):
             
-            guard let cell = tableView.dequeueReusableCell(withIdentifier: ListCell.reuseIdentifier, for: indexPath) as? ListCell else {
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: ListCell.reuseIdentifier,
+                                                           for: indexPath) as? ListCell else {
                 return UITableViewCell()
             }
             

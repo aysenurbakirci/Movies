@@ -11,15 +11,19 @@ import Utils
 import Components
 
 class PersonDetailViewController: UIViewController, LoadingDisplay {
+    
+    lazy var header = StrechyHeader(frame: .init(x: 0,
+                                                 y: 0,
+                                                 width: view.frame.size.width,
+                                                 height: view.frame.size.width * 1.5))
 
     private lazy var detailView: DetailView = {
         var view = DetailView()
         view.tableView.delegate = self
         view.tableView.dataSource = self
+        view.tableView.tableHeaderView = header
         return view
     }()
-    
-    lazy var header = StrechyHeader(frame: .init(x: 0, y: 0, width: view.frame.size.width, height: view.frame.size.width * 1.5))
     
     var viewModel: PersonDetailViewModel!
     private let disposeBag = DisposeBag()
@@ -29,7 +33,6 @@ class PersonDetailViewController: UIViewController, LoadingDisplay {
         
         view = detailView
         navigationBarConfig()
-        detailView.tableView.tableHeaderView = header
         
         viewModel
             .data
@@ -77,7 +80,8 @@ extension PersonDetailViewController: UITableViewDelegate, UITableViewDataSource
         switch section {
         case .detail(let personDetail):
             
-            guard let cell = tableView.dequeueReusableCell(withIdentifier: InformationCell.reuseIdentifier, for: indexPath) as? InformationCell else {
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: InformationCell.reuseIdentifier,
+                                                           for: indexPath) as? InformationCell else {
                 return UITableViewCell()
             }
             
@@ -88,7 +92,8 @@ extension PersonDetailViewController: UITableViewDelegate, UITableViewDataSource
             
         case .list(let personMovies):
             
-            guard let cell = tableView.dequeueReusableCell(withIdentifier: ListCell.reuseIdentifier, for: indexPath) as? ListCell else {
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: ListCell.reuseIdentifier,
+                                                           for: indexPath) as? ListCell else {
                 return UITableViewCell()
             }
             
@@ -108,7 +113,7 @@ extension PersonDetailViewController: UITableViewDelegate, UITableViewDataSource
 }
 
 extension PersonDetailViewController: UIScrollViewDelegate {
-    
+
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         guard let header = detailView.tableView.tableHeaderView as? StrechyHeader else { return }
         header.scrollViewDidScroll(scrollView: detailView.tableView)

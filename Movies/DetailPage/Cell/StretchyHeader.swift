@@ -10,7 +10,7 @@ import UIKit
 
 final class StrechyHeader: UIView {
     
-    let imageView: UIImageView = {
+    private let imageView: UIImageView = {
         let image = UIImageView()
         image.clipsToBounds = true
         image.contentMode = .scaleAspectFill
@@ -39,7 +39,7 @@ final class StrechyHeader: UIView {
         containerView.addSubview(imageView)
     }
     
-    func setViewConstraints() {
+    private func setViewConstraints() {
         
         NSLayoutConstraint.activate([
             widthAnchor.constraint(equalTo: containerView.widthAnchor),

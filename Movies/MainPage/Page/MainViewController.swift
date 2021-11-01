@@ -45,7 +45,6 @@ class MainViewController: UIViewController, ActivityDisplayer {
     }
     
     private func navigationBarConfig() {
-        navigationItem.backButtonTitle = ""
         navigationController?.navigationBar.tintColor = .white
         navigationItem.title = "Main Page"
         navigationItem.titleView = mainView.searchBar

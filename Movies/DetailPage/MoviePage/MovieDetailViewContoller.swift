@@ -13,30 +13,30 @@ import Utils
 
 class MovieDetailViewController: UIViewController, LoadingDisplay {
     
-    private lazy var movieDetailView: MovieDetailView = {
-        var view = MovieDetailView()
+    private lazy var detailView: DetailView = {
+        var view = DetailView()
         view.tableView.delegate = self
         view.tableView.dataSource = self
         return view
     }()
     
-    lazy var header = StrechyHeaderView(frame: .init(x: 0, y: 0, width: view.frame.size.width, height: view.frame.size.width * 0.4))
+    lazy var header = StrechyHeader(frame: .init(x: 0, y: 0, width: view.frame.size.width, height: view.frame.size.width * 0.4))
     
     var viewModel: MovieDetailViewModel!
     private let disposeBag = DisposeBag()
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
+        view = detailView
         navigationBarConfig()
-        movieDetailView.tableView.tableHeaderView = header
-        view = movieDetailView
+        detailView.tableView.tableHeaderView = header
         
         viewModel
             .data
             .observe(on: MainScheduler.instance)
             .subscribe(onNext: { [weak self] _ in
-                self?.movieDetailView.tableView.reloadData()
+                self?.detailView.tableView.reloadData()
             })
             .disposed(by: disposeBag)
         
@@ -83,7 +83,7 @@ extension MovieDetailViewController: UITableViewDelegate, UITableViewDataSource 
                 return UITableViewCell()
             }
             
-            cell.apply(detailModel: movieDetail)
+            cell.apply(movieDetail: movieDetail)
             cell.linkButton
                 .rx.tap
                 .subscribe(onNext: { [weak self] in
@@ -93,18 +93,12 @@ extension MovieDetailViewController: UITableViewDelegate, UITableViewDataSource 
                 .disposed(by: cell.disposeBag)
             
             header.apply(imagePath: movieDetail.backdropPath ?? "")
-//            
-//            cell.imageIsLoad
-//                .subscribe(onNext: {
-//                    tableView.reloadRows(at: [indexPath], with: .automatic)
-//                })
-//                .disposed(by: cell.disposeBag)
             
             return cell
             
         case .list(let movieCastList):
             
-            guard let cell = tableView.dequeueReusableCell(withIdentifier: PersonListCell.reuseIdentifier, for: indexPath) as? PersonListCell else {
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: ListCell.reuseIdentifier, for: indexPath) as? ListCell else {
                 return UITableViewCell()
             }
             
@@ -126,7 +120,7 @@ extension MovieDetailViewController: UITableViewDelegate, UITableViewDataSource 
 extension MovieDetailViewController: UIScrollViewDelegate {
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        guard let header = movieDetailView.tableView.tableHeaderView as? StrechyHeaderView else { return }
-        header.scrollViewDidScroll(scrollView: movieDetailView.tableView)
+        guard let header = detailView.tableView.tableHeaderView as? StrechyHeader else { return }
+        header.scrollViewDidScroll(scrollView: detailView.tableView)
     }
 }

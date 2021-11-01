@@ -16,13 +16,7 @@ class InformationCell: UITableViewCell {
     static let reuseIdentifier = "movieInformationCellId"
     private lazy var titleAndSubtitles = TitleAndSubtitlesView()
     let disposeBag = DisposeBag()
-    
-//    private lazy var image: UIImageView = {
-//        var imageView = UIImageView()
-//        imageView.contentMode = .scaleAspectFill
-//        return imageView
-//    }()
-    
+
     private lazy var overview: UILabel = {
         var label = UILabel()
         label.font = UIFont.systemFont(ofSize: 16)
@@ -44,7 +38,6 @@ class InformationCell: UITableViewCell {
         var stack = UIStackView()
         stack.axis = .vertical
         stack.distribution = .fill
-//        stack.addArrangedSubview(image)
         stack.addArrangedSubview(titleAndSubtitles)
         stack.addArrangedSubview(overview)
         stack.addArrangedSubview(linkButton)
@@ -60,14 +53,18 @@ class InformationCell: UITableViewCell {
         contentView.addSubview(stack)
         stack.fillSuperView()
         stack.widthAnchor.constraint(equalTo: self.widthAnchor).isActive = true
-//        image.heightAnchor.constraint(equalTo: image.widthAnchor, multiplier: 0.6).isActive = true
     }
     
-    func apply(detailModel: MovieDetail) {
-//        guard let imagePath = detailModel.backdropPath else { return }
-//        self.image.downloadImage(imageURL: imagePath, width: 500)
-        self.titleAndSubtitles.apply(title: detailModel.title, subtitle: String(detailModel.voteAverage), secondSubtitle: nil)
-        self.overview.text = detailModel.overview
+    func apply(movieDetail: MovieDetail) {
+        self.titleAndSubtitles.apply(title: movieDetail.title, subtitle: String(movieDetail.voteAverage), secondSubtitle: nil)
+        self.overview.text = movieDetail.overview
+        self.linkButton.isHidden = false
+    }
+    
+    func apply(personDetail: PersonDetail) {
+        self.titleAndSubtitles.apply(title: personDetail.name, subtitle: nil, secondSubtitle: nil)
+        self.overview.text = personDetail.biography
+        self.linkButton.isHidden = true
     }
     
     required init?(coder: NSCoder) {

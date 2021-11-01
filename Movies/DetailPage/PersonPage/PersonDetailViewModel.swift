@@ -10,14 +10,17 @@ import RxSwift
 import RxCocoa
 import MoviesAPI
 
+enum PersonViewSections {
+    case detail(PersonDetail), list([MovieCredits])
+}
+
 final class PersonDetailViewModel {
-    
-    var data = BehaviorRelay<PersonDetail?>(value: nil)
+    var data = BehaviorRelay<[PersonViewSections]>(value: [])
     var isLoading = BehaviorRelay<Bool>(value: false)
     
-    private let disposeBag = DisposeBag()
     private let personId: Int
     private let detailService: DetailApiProtocol
+    private let disposeBag = DisposeBag()
     
     init(personId: Int, service: DetailApiProtocol) {
         self.personId = personId
@@ -42,9 +45,9 @@ final class PersonDetailViewModel {
                 return self.detailService.getDetails(personId: id)
             })
             .observe(on: MainScheduler.instance)
-            .subscribe(onNext: { [weak self] data in
+            .subscribe(onNext: { [weak self] person in
                 guard let self = self else { return }
-                self.data.accept(data)
+                self.data.accept([.detail(person), .list(person.movieCredits)])
                 self.isLoading.accept(false)
             })
             .disposed(by: disposeBag)

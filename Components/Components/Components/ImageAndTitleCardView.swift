@@ -7,6 +7,7 @@
 
 import UIKit
 import Extensions
+import MoviesAPI
 
 public final class ImageAndTitleCardView: UIView {
     

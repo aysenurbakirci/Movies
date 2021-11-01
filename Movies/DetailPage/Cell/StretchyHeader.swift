@@ -1,15 +1,14 @@
 //
-//  StrechyHeaderView.swift
+//  StretchyHeader.swift
 //  Movies
 //
-//  Created by Ayşenur Bakırcı on 30.10.2021.
+//  Created by Ayşenur Bakırcı on 1.11.2021.
 //
 
 import Foundation
 import UIKit
-import MoviesAPI
 
-public final class StrechyHeaderView: UIView {
+final class StrechyHeader: UIView {
     
     let imageView: UIImageView = {
         let image = UIImageView()
@@ -24,7 +23,7 @@ public final class StrechyHeaderView: UIView {
     private var containerView = UIView()
     private var containerHeight = NSLayoutConstraint()
     
-    public override init(frame: CGRect) {
+    override init(frame: CGRect) {
         super.init(frame: frame)
         createViews()
         setViewConstraints()
@@ -49,28 +48,27 @@ public final class StrechyHeaderView: UIView {
         ])
         
         containerView.translatesAutoresizingMaskIntoConstraints = false
-        
         containerView.widthAnchor.constraint(equalTo: imageView.widthAnchor).isActive = true
+        
         containerHeight = containerView.heightAnchor.constraint(equalTo: self.heightAnchor)
         containerHeight.isActive = true
         
         imageView.translatesAutoresizingMaskIntoConstraints = false
         imageBottom = imageView.bottomAnchor.constraint(equalTo: containerView.bottomAnchor)
         imageBottom.isActive = true
+        
         imageHeight = imageView.heightAnchor.constraint(equalTo: containerView.heightAnchor)
         imageHeight.isActive = true
     }
     
-    public func apply(imagePath: String) {
+    func apply(imagePath: String) {
         self.imageView.downloadImage(imagePath: imagePath, width: 500)
     }
     
-    public func scrollViewDidScroll(scrollView: UIScrollView) {
+    func scrollViewDidScroll(scrollView: UIScrollView) {
         
         containerHeight.constant = scrollView.contentInset.top
-        
         let offsetY = -(scrollView.contentOffset.y + scrollView.contentInset.top)
-        
         containerView.clipsToBounds = offsetY <= 0
         imageBottom.constant = offsetY >= 0 ? 0 : -(offsetY / 2)
         

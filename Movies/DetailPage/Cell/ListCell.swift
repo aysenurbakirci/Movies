@@ -8,7 +8,7 @@
 import UIKit
 import RxSwift
 
-class PersonListCell: UITableViewCell {
+class ListCell: UITableViewCell {
     
     static let reuseIdentifier = "personListCellId"
     lazy var horizontalListView = HorizontalListCollectionView()

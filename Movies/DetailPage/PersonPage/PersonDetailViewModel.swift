@@ -45,6 +45,13 @@ final class PersonDetailViewModel {
                 return self.detailService.getDetails(personId: id)
             })
             .observe(on: MainScheduler.instance)
+            .do(onNext: { [weak self] _ in
+                guard let self = self else { return }
+                self.isLoading.accept(false)
+            }, onError: { [weak self] error in
+                guard let self = self else { return }
+                self.isLoading.accept(false)
+            })
             .subscribe(onNext: { [weak self] person in
                 guard let self = self else { return }
                 self.data.accept([.detail(person), .list(person.movieCredits)])

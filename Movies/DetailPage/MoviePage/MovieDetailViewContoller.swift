@@ -34,7 +34,7 @@ class MovieDetailViewController: UIViewController, LoadingDisplay {
         super.viewDidLoad()
         
         view = detailView
-        navigationBarConfig()
+        clearNavigationBarConfig()
         
         viewModel
             .data
@@ -59,7 +59,7 @@ class MovieDetailViewController: UIViewController, LoadingDisplay {
         viewModel.getDetails()
     }
     
-    private func navigationBarConfig() {
+    private func clearNavigationBarConfig() {
         navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
         navigationController?.navigationBar.shadowImage = UIImage()
         navigationController?.navigationBar.isTranslucent = true

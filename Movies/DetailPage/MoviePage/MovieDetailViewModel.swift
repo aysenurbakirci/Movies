@@ -46,6 +46,13 @@ final class MovieDetailViewModel {
                 return self.detailService.getDetails(movieId: id)
             }
             .observe(on: MainScheduler.instance)
+            .do(onNext: { [weak self] _ in
+                guard let self = self else { return }
+                self.isLoading.accept(false)
+            }, onError: { [weak self] error in
+                guard let self = self else { return }
+                self.isLoading.accept(false)
+            })
             .subscribe(onNext: { [weak self] movie in
                 guard let self = self else { return }
                 self.data.accept([.detail(movie), .list(movie.cast)])

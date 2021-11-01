@@ -8,8 +8,6 @@
 import Foundation
 import RxSwift
 
-let baseImageURL = "https://image.tmdb.org/t/p/"
-
 public enum QueryType: String {
     case movie = "/movie"
     case person = "/person"

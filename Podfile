@@ -35,3 +35,9 @@ target 'MoviesAPI' do
   pod 'RxCocoa', '~> 6.2'
   pod 'Kingfisher', '~> 6.3'
 end
+
+target 'Utils' do
+  project 'Utils/Utils/Utils.xcodeproj'
+  pod 'RxSwift', '~> 6.2'
+  pod 'RxCocoa', '~> 6.2'
+end

@@ -9,8 +9,8 @@ import Foundation
 import Kingfisher
 
 public extension UIImageView {
-    func downloadImage(imageURL: String, width: Int?){
-        let urlString = baseImageURL + "w\(width ?? 500)" + imageURL
+    func downloadImage(imagePath: String, width: Int?){
+        let urlString = "https://image.tmdb.org/t/p/" + "w\(width ?? 500)" + imagePath
         let url = URL(string: urlString)
         self.kf.setImage(with: url, placeholder: UIImage(named: "defaultImage"), options: nil, progressBlock: nil)
     }

@@ -7,7 +7,7 @@
 
 import Foundation
 import RxSwift
-import MoviesAPI
+import ImdbAPI
 
 protocol MainApiProtocol {
     

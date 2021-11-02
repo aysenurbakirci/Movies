@@ -7,7 +7,7 @@
 
 import UIKit
 import Extensions
-import MoviesAPI
+import ImdbAPI
 
 public final class ImageAndInfoCardView: UIView {
     

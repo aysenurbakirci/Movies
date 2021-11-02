@@ -8,7 +8,7 @@
 import UIKit
 import RxSwift
 import Kingfisher
-import MoviesAPI
+import ImdbAPI
 import Components
 
 class InformationCell: UITableViewCell {

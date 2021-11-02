@@ -8,7 +8,7 @@
 import Foundation
 import RxSwift
 import RxCocoa
-import MoviesAPI
+import ImdbAPI
 
 enum PersonViewSections {
     case detail(PersonDetail), list([MovieCredits])

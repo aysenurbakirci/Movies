@@ -6,7 +6,7 @@
 //
 
 import Foundation
-import MoviesAPI
+import ImdbAPI
 
 struct HorizontalListModel {
     var id: Int

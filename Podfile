@@ -29,8 +29,8 @@ target 'Movies' do
 
 end
 
-target 'MoviesAPI' do
-  project 'MoviesAPI/MoviesAPI/MoviesAPI.xcodeproj'
+target 'ImdbAPI' do
+  project 'MoviesAPI/MoviesAPI/ImdbAPI.xcodeproj'
   pod 'RxSwift', '~> 6.2'
   pod 'RxCocoa', '~> 6.2'
   pod 'Kingfisher', '~> 6.3'

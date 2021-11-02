@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		1ED48ACF0FBE7C171599689B /* Pods_MoviesAPI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1B54CFEE83F807B8A859ED73 /* Pods_MoviesAPI.framework */; };
 		372CEDAB2729695800429526 /* ImdbAPI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 372CEDA12729695800429526 /* ImdbAPI.framework */; };
 		372CEDB22729695800429526 /* MoviesAPI.h in Headers */ = {isa = PBXBuildFile; fileRef = 372CEDA42729695800429526 /* MoviesAPI.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		37D6E86727296A7D002A0C53 /* URLRequestBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37D6E85F27296A7C002A0C53 /* URLRequestBuilder.swift */; };
@@ -19,6 +18,7 @@
 		37D6E876272974ED002A0C53 /* UIImage+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37D6E875272974ED002A0C53 /* UIImage+Extension.swift */; };
 		37D6E91C273024E4002A0C53 /* ImdbAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37D6E91B273024E4002A0C53 /* ImdbAPI.swift */; };
 		37D6E92127303EDD002A0C53 /* ImdbService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37D6E92027303EDD002A0C53 /* ImdbService.swift */; };
+		F92F92DEA439708690B90F8F /* Pods_ImdbAPI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 844DA5C73E5B84311A4E691A /* Pods_ImdbAPI.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -32,7 +32,6 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		1B54CFEE83F807B8A859ED73 /* Pods_MoviesAPI.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_MoviesAPI.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		372CEDA12729695800429526 /* ImdbAPI.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = ImdbAPI.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		372CEDA42729695800429526 /* MoviesAPI.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MoviesAPI.h; sourceTree = "<group>"; };
 		372CEDA52729695800429526 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -46,8 +45,11 @@
 		37D6E875272974ED002A0C53 /* UIImage+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIImage+Extension.swift"; sourceTree = "<group>"; };
 		37D6E91B273024E4002A0C53 /* ImdbAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImdbAPI.swift; sourceTree = "<group>"; };
 		37D6E92027303EDD002A0C53 /* ImdbService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImdbService.swift; sourceTree = "<group>"; };
+		844DA5C73E5B84311A4E691A /* Pods_ImdbAPI.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ImdbAPI.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		B9EC3F96B6971FEE94EF70CA /* Pods-ImdbAPI.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ImdbAPI.release.xcconfig"; path = "Target Support Files/Pods-ImdbAPI/Pods-ImdbAPI.release.xcconfig"; sourceTree = "<group>"; };
 		CCBC1A66D9F950308D376B9E /* Pods-MoviesAPI.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MoviesAPI.release.xcconfig"; path = "Target Support Files/Pods-MoviesAPI/Pods-MoviesAPI.release.xcconfig"; sourceTree = "<group>"; };
 		DDED61C37AC8B2A1AE999DD3 /* Pods-MoviesAPI.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MoviesAPI.debug.xcconfig"; path = "Target Support Files/Pods-MoviesAPI/Pods-MoviesAPI.debug.xcconfig"; sourceTree = "<group>"; };
+		FF75473A04F63EF2831AEA66 /* Pods-ImdbAPI.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ImdbAPI.debug.xcconfig"; path = "Target Support Files/Pods-ImdbAPI/Pods-ImdbAPI.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -55,7 +57,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				1ED48ACF0FBE7C171599689B /* Pods_MoviesAPI.framework in Frameworks */,
+				F92F92DEA439708690B90F8F /* Pods_ImdbAPI.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -75,6 +77,8 @@
 			children = (
 				DDED61C37AC8B2A1AE999DD3 /* Pods-MoviesAPI.debug.xcconfig */,
 				CCBC1A66D9F950308D376B9E /* Pods-MoviesAPI.release.xcconfig */,
+				FF75473A04F63EF2831AEA66 /* Pods-ImdbAPI.debug.xcconfig */,
+				B9EC3F96B6971FEE94EF70CA /* Pods-ImdbAPI.release.xcconfig */,
 			);
 			name = Pods;
 			path = ../../Pods;
@@ -136,7 +140,7 @@
 		699E1AF25CE20E251E63DA9E /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				1B54CFEE83F807B8A859ED73 /* Pods_MoviesAPI.framework */,
+				844DA5C73E5B84311A4E691A /* Pods_ImdbAPI.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -261,7 +265,7 @@
 			outputFileListPaths = (
 			);
 			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-MoviesAPI-checkManifestLockResult.txt",
+				"$(DERIVED_FILE_DIR)/Pods-ImdbAPI-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -429,15 +433,15 @@
 		};
 		372CEDB62729695800429526 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = DDED61C37AC8B2A1AE999DD3 /* Pods-MoviesAPI.debug.xcconfig */;
+			baseConfigurationReference = FF75473A04F63EF2831AEA66 /* Pods-ImdbAPI.debug.xcconfig */;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
 				DEFINES_MODULE = YES;
-				DEVELOPMENT_TEAM = FLUF4SMKRR;
+				DEVELOPMENT_TEAM = Q7MBPB6X33;
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				INFOPLIST_FILE = MoviesAPI/Info.plist;
+				INFOPLIST_FILE = ImdbAPI/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -454,15 +458,15 @@
 		};
 		372CEDB72729695800429526 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = CCBC1A66D9F950308D376B9E /* Pods-MoviesAPI.release.xcconfig */;
+			baseConfigurationReference = B9EC3F96B6971FEE94EF70CA /* Pods-ImdbAPI.release.xcconfig */;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
 				DEFINES_MODULE = YES;
-				DEVELOPMENT_TEAM = FLUF4SMKRR;
+				DEVELOPMENT_TEAM = Q7MBPB6X33;
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				INFOPLIST_FILE = MoviesAPI/Info.plist;
+				INFOPLIST_FILE = ImdbAPI/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",

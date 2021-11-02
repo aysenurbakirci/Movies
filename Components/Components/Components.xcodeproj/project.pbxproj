@@ -11,9 +11,24 @@
 		37D6E8B5272FB29A002A0C53 /* ImageAndInfoCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37D6E8B4272FB29A002A0C53 /* ImageAndInfoCardView.swift */; };
 		37D6E8B7272FB2A2002A0C53 /* ImageAndTitleCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37D6E8B6272FB2A2002A0C53 /* ImageAndTitleCardView.swift */; };
 		37D6E8BB272FB2B7002A0C53 /* TitleAndSubtitlesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37D6E8BA272FB2B7002A0C53 /* TitleAndSubtitlesView.swift */; };
-		37D6E8DE272FB5EB002A0C53 /* MoviesAPI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 37D6E8DD272FB5EB002A0C53 /* MoviesAPI.framework */; };
 		37D6E8E2272FB671002A0C53 /* Extensions.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 37D6E8E1272FB671002A0C53 /* Extensions.framework */; };
+		490D97EA2731595700F58501 /* ImdbAPI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 490D97E92731595700F58501 /* ImdbAPI.framework */; };
+		490D97EB2731595700F58501 /* ImdbAPI.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 490D97E92731595700F58501 /* ImdbAPI.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		490D97EC2731595700F58501 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				490D97EB2731595700F58501 /* ImdbAPI.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		37D6E8A1272FB24B002A0C53 /* Components.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Components.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -24,6 +39,7 @@
 		37D6E8BA272FB2B7002A0C53 /* TitleAndSubtitlesView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TitleAndSubtitlesView.swift; sourceTree = "<group>"; };
 		37D6E8DD272FB5EB002A0C53 /* MoviesAPI.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = MoviesAPI.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		37D6E8E1272FB671002A0C53 /* Extensions.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Extensions.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		490D97E92731595700F58501 /* ImdbAPI.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = ImdbAPI.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -32,7 +48,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				37D6E8E2272FB671002A0C53 /* Extensions.framework in Frameworks */,
-				37D6E8DE272FB5EB002A0C53 /* MoviesAPI.framework in Frameworks */,
+				490D97EA2731595700F58501 /* ImdbAPI.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -71,6 +87,7 @@
 		37D6E8DC272FB5EB002A0C53 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				490D97E92731595700F58501 /* ImdbAPI.framework */,
 				37D6E8E1272FB671002A0C53 /* Extensions.framework */,
 				37D6E8DD272FB5EB002A0C53 /* MoviesAPI.framework */,
 			);
@@ -99,6 +116,7 @@
 				37D6E89D272FB24B002A0C53 /* Sources */,
 				37D6E89E272FB24B002A0C53 /* Frameworks */,
 				37D6E89F272FB24B002A0C53 /* Resources */,
+				490D97EC2731595700F58501 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);

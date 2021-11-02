@@ -6,7 +6,7 @@
 //
 
 import Foundation
-import MoviesAPI
+import ImdbAPI
 
 protocol MainTableViewCellProtocol {
     var imagePath: String? { get }

@@ -26,9 +26,10 @@ enum Section {
 final class MainViewModel: ActivityHandler {
 
     var onError = BehaviorRelay<Error?>(value: nil)
-    let data = BehaviorRelay<[Section]>(value: [])
     let isLoading = BehaviorRelay<Bool>(value: false)
     let isEmptyData = BehaviorRelay<Bool>(value: false)
+    
+    let data = BehaviorRelay<[Section]>(value: [])
     let loadData = PublishSubject<Void>()
     let searchQuery = BehaviorRelay<String?>(value: nil)
     
@@ -41,23 +42,6 @@ final class MainViewModel: ActivityHandler {
     
     init(mainViewService: MainApiProtocol) {
         self.mainViewService = mainViewService
-        
-        data.subscribe(onNext: { data in
-            if data.count == 1 {
-                if data[0].numberOfItems == 0 {
-                    self.isEmptyData.accept(true)
-                } else {
-                    self.isEmptyData.accept(false)
-                }
-            } else if data.count == 2 {
-                if data[0].numberOfItems == 0 && data[1].numberOfItems == 0 {
-                    self.isEmptyData.accept(true)
-                } else {
-                    self.isEmptyData.accept(false)
-                }
-            }
-        })
-        .disposed(by: disposeBag)
         
         loadData
             .filter({ [weak self] in
@@ -87,6 +71,11 @@ final class MainViewModel: ActivityHandler {
             })
             .subscribe(onNext: { [weak self] movies in
                 guard let self = self else { return }
+                if movies.results.isEmpty {
+                    self.isEmptyData.accept(true)
+                    return
+                }
+                self.isEmptyData.accept(false)
                 if self.popularMovies == nil {
                     self.popularMovies = movies
                 } else {
@@ -114,10 +103,22 @@ final class MainViewModel: ActivityHandler {
                 return self.mainViewService.searchMoviesAndPeople(with: query, page: 1)
             })
             .observe(on: MainScheduler.instance)
+            .do(onNext: { [weak self] _ in
+                guard let self = self else { return }
+                self.isLoading.accept(false)
+            }, onError: { [weak self] error in
+                guard let self = self else { return }
+                self.isLoading.accept(false)
+                self.onError.accept(error)
+            })
             .subscribe(onNext: { [weak self] data in
                 guard let self = self else { return }
+                if data.movies.isEmpty && data.people.isEmpty {
+                    self.isEmptyData.accept(true)
+                    return
+                }
+                self.isEmptyData.accept(false)
                 self.data.accept([.movie(data.movies), .person(data.people)])
-                self.isLoading.accept(false)
             })
             .disposed(by: disposeBag)
         

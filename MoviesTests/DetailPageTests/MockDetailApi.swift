@@ -67,7 +67,7 @@ class MockDetailApi: DetailApiProtocol {
         return Observable.just(personDetail)
     }
     
-    func getPersonMovieCredits(with personId: Int) -> Observable<[MovieCredits]> {
+    func getPersonMovieCredits(with personId: Int) -> Observable<PersonMovies> {
         guard let bundleURL = Bundle.main.url(forResource: "PersonMovies", withExtension: "json") else {
             fatalError("Not find MovieDetail.json")
         }
@@ -78,7 +78,7 @@ class MockDetailApi: DetailApiProtocol {
             fatalError()
         }
         
-        return Observable.just(personMovies).map(\.cast)
+        return Observable.just(personMovies)
     }
     
     func getDetails(movieId: Int) -> Observable<MovieDetail> {
@@ -102,12 +102,12 @@ class MockDetailApi: DetailApiProtocol {
         return Observable.zip(detail, cast)
             .map { (detail: $0, cast: $1) }
             .do(onNext: { data in
-                data.detail.addMovieCast(movies: data.cast)
+                data.detail.addMovieCast(movies: data.cast.cast)
             })
             .map { $0.detail }
     }
     
-    func getTrailerUrl(key: String) -> URL {
+    func createTrailerUrl(key: String) -> URL {
         return URL(string: key)!
     }
     

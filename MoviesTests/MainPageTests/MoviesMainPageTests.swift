@@ -32,11 +32,13 @@ class MoviesMainPageTests: XCTestCase {
     
     func testNumberOfPages() throws {
         
-        scheduler.createColdObservable([.next(1, ()), .next(5, ()), .next(8, ()), .next(12, ())])
+        scheduler.createColdObservable([.next(1, ()), .next(5, ())])
             .bind(to: sut!.loadData)
             .disposed(by: disposeBag)
         
         scheduler.start()
         XCTAssertEqual(sut!.nextPage, 1)
+        
+        
     }
 }

@@ -12,6 +12,8 @@ public protocol ImdbAPI {
     var schema: String { get }
     var host: String { get }
     var version: String { get }
+    var apiKey: String { get }
+    var language: String { get }
     var path: String { get }
     var queryItems: [String: String] { get }
 }

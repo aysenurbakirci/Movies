@@ -11,13 +11,13 @@ public class ImdbService {
 
     public class func call<T: Decodable>(api: ImdbAPI) -> Observable<T> {
         let request = URLRequestBuilder()
-            .withScheme(api.schema)
-            .withHost(api.host)
-            .withPathParam(api.version)
-            .withPathParam(api.path)
-            .withQueryParam(api.apiKey)
-            .withQueryParam(api.language)
-            .withQueryParam(api.queryItems)
+            .setScheme(api.schema)
+            .setHost(api.host)
+            .addPathParam(api.version)
+            .addPathParam(api.path)
+            .addQueryParam(api.apiKey)
+            .addQueryParam(api.language)
+            .addQueryParam(api.queryItems)
             .build()
         
         return URLSession.shared.rx.decodable(request: request, type: T.self)

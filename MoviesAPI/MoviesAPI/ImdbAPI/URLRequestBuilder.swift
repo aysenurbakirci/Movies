@@ -13,22 +13,22 @@ public class URLRequestBuilder {
     
     private var urlComponents = URLComponents()
     
-    public func withScheme(_ scheme: String) -> URLRequestBuilder {
+    public func setScheme(_ scheme: String) -> URLRequestBuilder {
         urlComponents.scheme = scheme
         return self
     }
     
-    public func withHost(_ host: String) -> URLRequestBuilder {
+    public func setHost(_ host: String) -> URLRequestBuilder {
         urlComponents.host = host
         return self
     }
     
-    public func withPathParam(_ path: String) -> URLRequestBuilder {
+    public func addPathParam(_ path: String) -> URLRequestBuilder {
         urlComponents.path += path
         return self
     }
     
-    public func withQueryParam(_ queryDict: [String : String]) -> URLRequestBuilder {
+    public func addQueryParam(_ queryDict: [String : String]) -> URLRequestBuilder {
         var queryParams = [URLQueryItem]()
         
         for (name, value) in queryDict {

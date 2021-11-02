@@ -83,6 +83,7 @@ final class MainViewModel: ActivityHandler {
                 }
                 self.data.accept([.movie(self.popularMovies?.results ?? [])])
                 self.nextPage += 1
+                print("nextPage: \(self.nextPage)")
             })
             .disposed(by: disposeBag)
         

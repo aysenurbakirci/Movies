@@ -22,7 +22,6 @@ class MoviesMainPageTests: XCTestCase {
         scheduler = TestScheduler(initialClock: 0)
         disposeBag = DisposeBag()
         sut = MainViewModel(mainViewService: MockMainApi())
-        sut?.loadData.onNext(())
     }
 
     override func tearDownWithError() throws {
@@ -32,13 +31,11 @@ class MoviesMainPageTests: XCTestCase {
     
     func testNumberOfPages() throws {
         
-        scheduler.createColdObservable([.next(1, ()), .next(5, ())])
+        scheduler.createColdObservable([.next(10, ()), .next(50, ())])
             .bind(to: sut!.loadData)
             .disposed(by: disposeBag)
         
         scheduler.start()
-        XCTAssertEqual(sut!.nextPage, 1)
-        
-        
+        XCTAssertEqual(sut!.nextPage, 4)
     }
 }

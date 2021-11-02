@@ -7,7 +7,7 @@
 
 @testable import Movies
 import RxSwift
-import MoviesAPI
+import ImdbAPI
 
 class MockMainApi: MainApiProtocol {
     

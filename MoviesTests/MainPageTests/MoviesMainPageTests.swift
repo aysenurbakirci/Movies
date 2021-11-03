@@ -31,6 +31,11 @@ class MoviesMainPageTests: XCTestCase {
     }
     
     func testNumberOfPages() throws {
+        let nextPage = scheduler.createObserver(Int.self)
+        
+        sut.nextPage
+            .bind(to: nextPage)
+            .disposed(by: disposeBag)
         
         scheduler.createColdObservable([.next(0, ()), .next(100, ())])
             .bind(to: sut.loadData)
@@ -38,6 +43,6 @@ class MoviesMainPageTests: XCTestCase {
         
         scheduler.start()
         
-        XCTAssertEqual(sut.nextPage, 3)
+        XCTAssertEqual(sut.nextPage.value, 3)
     }
 }

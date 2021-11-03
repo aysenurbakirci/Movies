@@ -50,6 +50,8 @@
 		3760BB702716CDAC003AB11C /* MainTableViewCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3760BB6F2716CDAC003AB11C /* MainTableViewCellViewModel.swift */; };
 		3760BB862718B145003AB11C /* MovieTestData.json in Sources */ = {isa = PBXBuildFile; fileRef = 3760BB852718B145003AB11C /* MovieTestData.json */; };
 		3760BB892719582C003AB11C /* MockMainApi.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3760BB882719582C003AB11C /* MockMainApi.swift */; };
+		3785B2C727327DEB00E73963 /* SearchMovie.json in Resources */ = {isa = PBXBuildFile; fileRef = 371C020D27215CC8008F13E1 /* SearchMovie.json */; };
+		3785B2C827327DF000E73963 /* SearchPerson.json in Resources */ = {isa = PBXBuildFile; fileRef = 371C020F27215CD3008F13E1 /* SearchPerson.json */; };
 		37D6E8BD272FB2DC002A0C53 /* Components.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 37D6E8BC272FB2DC002A0C53 /* Components.framework */; };
 		37D6E8BE272FB2DC002A0C53 /* Components.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 37D6E8BC272FB2DC002A0C53 /* Components.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		37D6E905272FC329002A0C53 /* Utils.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 37D6E904272FC329002A0C53 /* Utils.framework */; };
@@ -303,8 +305,8 @@
 		3750D29527141FA20016F1B5 /* Movies */ = {
 			isa = PBXGroup;
 			children = (
-				3750D2E3271487CE0016F1B5 /* MainPage */,
-				3750D2E4271487DA0016F1B5 /* DetailPage */,
+				3750D2E3271487CE0016F1B5 /* Main */,
+				3750D2E4271487DA0016F1B5 /* Detail */,
 				3750D29627141FA20016F1B5 /* AppDelegate.swift */,
 				3750D29827141FA20016F1B5 /* SceneDelegate.swift */,
 				3750D29F27141FA50016F1B5 /* Assets.xcassets */,
@@ -333,17 +335,17 @@
 			path = MoviesUITests;
 			sourceTree = "<group>";
 		};
-		3750D2E3271487CE0016F1B5 /* MainPage */ = {
+		3750D2E3271487CE0016F1B5 /* Main */ = {
 			isa = PBXGroup;
 			children = (
 				3750D2E9271488CD0016F1B5 /* API */,
 				374E278D27159E9200A63D40 /* Cell */,
 				37D6E90C272FD2B9002A0C53 /* Page */,
 			);
-			path = MainPage;
+			path = Main;
 			sourceTree = "<group>";
 		};
-		3750D2E4271487DA0016F1B5 /* DetailPage */ = {
+		3750D2E4271487DA0016F1B5 /* Detail */ = {
 			isa = PBXGroup;
 			children = (
 				3750D2EC27148CD00016F1B5 /* API */,
@@ -351,7 +353,7 @@
 				371C021F2725E4A0008F13E1 /* MoviePage */,
 				371C021C2725E46C008F13E1 /* PersonPage */,
 			);
-			path = DetailPage;
+			path = Detail;
 			sourceTree = "<group>";
 		};
 		3750D2E9271488CD0016F1B5 /* API */ = {
@@ -527,6 +529,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3785B2C827327DF000E73963 /* SearchPerson.json in Resources */,
+				3785B2C727327DEB00E73963 /* SearchMovie.json in Resources */,
 				370F84B42720431400DF0412 /* PersonMovies.json in Resources */,
 				370F84B32720430F00DF0412 /* PersonDetail.json in Resources */,
 				370F84B22720430A00DF0412 /* MovieDetail.json in Resources */,

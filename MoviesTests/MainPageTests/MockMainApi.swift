@@ -54,11 +54,6 @@ class MockMainApi: MainApiProtocol {
             fatalError()
         }
         
-        let searchMovie = Observable.just(movies).map(\.results)
-        let searchPerson = Observable.just(people).map(\.results)
-        
-        return Observable
-            .zip(searchMovie, searchPerson)
-            .map { (movies: $0, people: $1) }
+        return scheduler.createColdObservable([.next(5, (movies: movies.results, people: people.results))]).asObservable()
     }
 }

@@ -38,7 +38,7 @@ final class MainViewModel: ActivityHandler {
     private let disposeBag = DisposeBag()
     private let mainViewService: MainApiProtocol
     
-    private(set) var nextPage = BehaviorRelay<Int>(value: 1)
+    private(set) var nextPage = 1
     
     init(mainViewService: MainApiProtocol) {
         self.mainViewService = mainViewService
@@ -55,7 +55,7 @@ final class MainViewModel: ActivityHandler {
                 return true
             })
             .compactMap({ [weak self] in
-                return self?.nextPage.value
+                return self?.nextPage
             })
             .flatMap({ [unowned self] page in
                 return self.mainViewService.getPopularMovies(page: page)
@@ -81,7 +81,7 @@ final class MainViewModel: ActivityHandler {
                     self.popularMovies?.addNewPage(movies: movies)
                 }
                 self.data.accept([.movie(self.popularMovies?.results ?? [])])
-                self.nextPage.accept(self.nextPage.value + 1)
+                self.nextPage += 1
                 print("nextPage: \(self.nextPage)")
             })
             .disposed(by: disposeBag)
@@ -102,7 +102,6 @@ final class MainViewModel: ActivityHandler {
             .flatMap({ [unowned self] query in
                 return self.mainViewService.searchMoviesAndPeople(with: query, page: 1)
             })
-            .observe(on: MainScheduler.instance)
             .do(onNext: { [weak self] _ in
                 guard let self = self else { return }
                 self.isLoading.accept(false)

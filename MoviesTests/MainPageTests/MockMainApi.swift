@@ -8,8 +8,15 @@
 @testable import Movies
 import RxSwift
 import ImdbAPI
+import RxTest
 
 class MockMainApi: MainApiProtocol {
+    
+    var scheduler: TestScheduler
+    
+    init(scheduler: TestScheduler) {
+        self.scheduler = scheduler
+    }
     
     func getPopularMovies(page: Int) -> Observable<Movies> {
         
@@ -22,7 +29,7 @@ class MockMainApi: MainApiProtocol {
         guard let movies = try? JSONDecoder().decode(Movies.self, from: movieData) else {
             fatalError()
         }
-        return Observable.just(movies)
+        return scheduler.createColdObservable([.next(10, movies)]).asObservable()
     }
     
     func searchMoviesAndPeople(with query: String, page: Int) -> Observable<(movies: [Movie], people: [Person])> {

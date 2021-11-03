@@ -57,6 +57,7 @@ extension MainViewController {
         
         viewModel
             .data
+            .observe(on: MainScheduler.instance)
             .subscribe(onNext: { [weak self] _ in
                 self?.mainView.tableView.reloadData()
             })

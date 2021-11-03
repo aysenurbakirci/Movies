@@ -131,6 +131,7 @@ public extension View where Self: EmptyDisplayer, Self.VM: RemoteLoading {
     func bindEmptyView() {
         viewModel
             .isEmptyData
+            .observe(on: MainScheduler.instance)
             .bind(to: isEmptyData)
             .disposed(by: bag)
     }

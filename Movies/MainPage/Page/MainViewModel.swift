@@ -60,7 +60,6 @@ final class MainViewModel: ActivityHandler {
             .flatMap({ [unowned self] page in
                 return self.mainViewService.getPopularMovies(page: page)
             })
-            .observe(on: MainScheduler.instance)
             .do(onNext: { [weak self] _ in
                 guard let self = self else { return }
                 self.isLoading.accept(false)
@@ -83,7 +82,6 @@ final class MainViewModel: ActivityHandler {
                 }
                 self.data.accept([.movie(self.popularMovies?.results ?? [])])
                 self.nextPage += 1
-                print("nextPage: \(self.nextPage)")
             })
             .disposed(by: disposeBag)
         

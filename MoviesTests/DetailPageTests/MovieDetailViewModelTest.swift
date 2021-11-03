@@ -13,7 +13,7 @@ import RxBlocking
 
 class MovieDetailViewModelTest: XCTestCase {
     
-    var sut: MovieDetailViewModel?
+    var sut: MovieDetailViewModel!
     var scheduler: TestScheduler!
     var disposeBag: DisposeBag!
 
@@ -27,6 +27,8 @@ class MovieDetailViewModelTest: XCTestCase {
 
     override func tearDownWithError() throws {
         sut = nil
+        disposeBag = nil
+        scheduler = nil
         super.tearDown()
     }
     

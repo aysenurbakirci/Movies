@@ -13,21 +13,46 @@ enum MovieViewSections {
     case detail(MovieDetail), list([Cast])
 }
 
+struct MovieDetailViewModelInput {
+    var movieId: Int
+    var detailService: DetailApiProtocol
+    var loadDataTrigger: Driver<Void>
+    var openPersonTrigger: Driver<Int>
+    var openLinkTrigger: Driver<String>
+}
+
+struct MovieDetailViewModelOutput {
+    var data: Driver<[MovieViewSections]>
+    var isLoading: Driver<Bool>
+    var openMovieDetailController: Driver<PersonDetailViewController>
+}
+
 final class MovieDetailViewModel {
-    let data = BehaviorRelay<[MovieViewSections]>(value: [])
-    var isLoading = BehaviorRelay<Bool>(value: false)
     
+    //Outputs
+    private(set) var data = BehaviorRelay<[MovieViewSections]>(value: [])
+    private(set) var isLoading = BehaviorRelay<Bool>(value: false)
+    
+    //Inputs
     private let movieId: Int
     private let detailService: DetailApiProtocol
-    private let disposeBag = DisposeBag()
+    private var loadDataTrigger: Driver<Void>
+    private var openPersonTrigger: Driver<Int>
+    private var openLinkTrigger: Driver<String>
     
-    init(movieId: Int, service: DetailApiProtocol) {
-        self.detailService = service
-        self.movieId = movieId
+    private let disposeBag = DisposeBag()
+
+    init(input: MovieDetailViewModelInput) {
+        self.movieId = input.movieId
+        self.detailService = input.detailService
+        self.loadDataTrigger = input.loadDataTrigger
+        self.openPersonTrigger = input.openPersonTrigger
+        self.openLinkTrigger = input.openLinkTrigger
     }
     
-    func getDetails() {
-        Observable.just(())
+    func transform() -> MovieDetailViewModelOutput {
+        loadDataTrigger
+            .asObservable()
             .filter { [weak isLoading] in
                 guard let isLoading = isLoading else {
                     return false
@@ -45,7 +70,6 @@ final class MovieDetailViewModel {
             .flatMap { [unowned self] id in
                 return self.detailService.getDetails(movieId: id)
             }
-            .observe(on: MainScheduler.instance)
             .do(onNext: { [weak self] _ in
                 guard let self = self else { return }
                 self.isLoading.accept(false)
@@ -59,16 +83,27 @@ final class MovieDetailViewModel {
                 self.isLoading.accept(false)
             })
             .disposed(by: disposeBag)
-    }
-    
-    func openPersonPage(id: Int) -> PersonDetailViewController {
-        return PersonDetailPageBuilder.build(personId: id)
-    }
-    
-    func openLink(key: String) {
-        let url = detailService.createTrailerUrl(key: key)
-        if UIApplication.shared.canOpenURL(url) {
-             UIApplication.shared.open(url, options: [:], completionHandler: nil)
-         }
+        
+        let openPersonDetailDriver = openPersonTrigger
+            .asObservable()
+            .map { personId in
+                return PersonDetailViewController(personId: personId)
+            }
+            .asDriver(onErrorDriveWith: .never())
+        
+        openLinkTrigger
+            .asObservable()
+            .subscribe(onNext: { [weak self] key in
+                guard let self = self else { return }
+                let url = self.detailService.createTrailerUrl(key: key)
+                if UIApplication.shared.canOpenURL(url) {
+                     UIApplication.shared.open(url, options: [:], completionHandler: nil)
+                 }
+            })
+            .disposed(by: disposeBag)
+        
+        return MovieDetailViewModelOutput(data: self.data.asDriver(),
+                                          isLoading: self.isLoading.asDriver(),
+                                          openMovieDetailController: openPersonDetailDriver)
     }
 }

@@ -7,6 +7,7 @@
 
 import UIKit
 import RxSwift
+import RxCocoa
 import Utils
 import Components
 
@@ -22,23 +23,40 @@ class PersonDetailViewController: UIViewController, LoadingDisplay {
     var viewModel: PersonDetailViewModel!
     private let disposeBag = DisposeBag()
     
+    private var loadData = PublishSubject<Void>()
+    private var openMovieDetailPage = PublishSubject<Int>()
+    
+    init(personId: Int) {
+        self.viewModel = PersonDetailViewModel(input: PersonDetailViewModelInput(personId: personId,
+                                                                                 detailService: DetailApi(),
+                                                                                 loadDataTrigger: loadData.asDriver(onErrorDriveWith: .never()),
+                                                                                 openMovieTrigger: openMovieDetailPage.asDriver(onErrorDriveWith: .never())))
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
         view = detailView
         clearNavigationBarConfig()
         
-        viewModel
+        let output = viewModel.transform()
+        
+        output
             .data
-            .subscribe(onNext: { [weak self] _ in
+            .drive(onNext: { [weak self] _ in
                 guard let self = self else { return }
                 self.detailView.tableView.reloadData()
             })
             .disposed(by: disposeBag)
         
-        viewModel
+        output
             .isLoading
-            .subscribe(onNext: { [weak self] isLoading in
+            .drive(onNext: { [weak self] isLoading in
                 guard let self = self else { return }
                 if isLoading {
                     self.showLoadingView()
@@ -48,7 +66,14 @@ class PersonDetailViewController: UIViewController, LoadingDisplay {
             })
             .disposed(by: disposeBag)
         
-        viewModel.getDetails()
+        output
+            .openMovieDetailController
+            .drive(onNext: { [weak self] controller in
+                self?.navigationController?.pushViewController(controller, animated: true)
+            })
+            .disposed(by: disposeBag)
+        
+        loadData.onNext(())
     }
     
     private func clearNavigationBarConfig() {
@@ -65,7 +90,7 @@ extension PersonDetailViewController: UITableViewDelegate, UITableViewDataSource
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        1
+        return 1
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -97,7 +122,7 @@ extension PersonDetailViewController: UITableViewDelegate, UITableViewDataSource
                 .selectedItemId
                 .subscribe(onNext: { [weak self] id in
                     guard let self = self else { return }
-                    self.navigationController?.pushViewController(self.viewModel.openMoviePage(id: id), animated: true)
+                    self.openMovieDetailPage.onNext(id)
                 })
                 .disposed(by: cell.disposeBag)
             

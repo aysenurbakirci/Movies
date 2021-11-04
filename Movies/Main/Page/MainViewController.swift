@@ -20,7 +20,7 @@ class MainViewController: UIViewController, ActivityDisplayer {
         return view
     }()
     
-    var viewModel = MainViewModel(mainViewService: MainApi())
+    private(set) var viewModel = MainViewModel(mainViewService: MainApi())
     
     private let disposeBag = DisposeBag()
     

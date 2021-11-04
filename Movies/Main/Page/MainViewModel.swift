@@ -160,10 +160,10 @@ extension MainViewModel {
         switch section {
         case .movie(let movies):
             let movie = movies[indexPath.row]
-            return MovieDetailPageBuilder.build(movieId: movie.id)
+            return MovieDetailViewController(movieId: movie.id)
         case .person(let people):
             let person = people[indexPath.row]
-            return PersonDetailPageBuilder.build(personId: person.id)
+            return PersonDetailViewController(personId: person.id)
         }
     }
 }

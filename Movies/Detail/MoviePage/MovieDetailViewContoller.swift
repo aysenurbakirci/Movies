@@ -23,23 +23,41 @@ class MovieDetailViewController: UIViewController, LoadingDisplay {
     var viewModel: MovieDetailViewModel!
     private let disposeBag = DisposeBag()
     
+    private var loadData = PublishSubject<Void>()
+    private var openPersonDetailPage = PublishSubject<Int>()
+    private var openMovieTrailer = PublishSubject<String>()
+    
+    init(movieId: Int) {
+        self.viewModel = MovieDetailViewModel(input: MovieDetailViewModelInput(movieId: movieId,
+                                                                               detailService: DetailApi(),
+                                                                               loadDataTrigger: loadData.asDriver(onErrorDriveWith: .never()),
+                                                                               openPersonTrigger: openPersonDetailPage.asDriver(onErrorDriveWith:  .never()),
+                                                                               openLinkTrigger: openMovieTrailer.asDriver(onErrorDriveWith:  .never())))
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
         view = detailView
         clearNavigationBarConfig()
         
-        viewModel
+        let output = viewModel.transform()
+        
+        output
             .data
-            .observe(on: MainScheduler.instance)
-            .subscribe(onNext: { [weak self] _ in
+            .drive(onNext: { [weak self] _ in
                 self?.detailView.tableView.reloadData()
             })
             .disposed(by: disposeBag)
         
-        viewModel
+        output
             .isLoading
-            .subscribe(onNext: { [weak self] isLoading in
+            .drive(onNext: { [weak self] isLoading in
                 guard let self = self else { return }
                 if isLoading {
                     self.showLoadingView()
@@ -49,7 +67,15 @@ class MovieDetailViewController: UIViewController, LoadingDisplay {
             })
             .disposed(by: disposeBag)
         
-        viewModel.getDetails()
+        output
+            .openMovieDetailController
+            .drive(onNext: { [weak self] controller in
+                self?.navigationController?.pushViewController(controller, animated: true)
+            })
+            .disposed(by: disposeBag)
+        
+        loadData.onNext(())
+        
     }
     
     private func clearNavigationBarConfig() {
@@ -86,7 +112,7 @@ extension MovieDetailViewController: UITableViewDelegate, UITableViewDataSource 
                 .rx.tap
                 .subscribe(onNext: { [weak self] in
                     guard let key = movieDetail.trailers.first?.key, let self = self else { return }
-                    self.viewModel.openLink(key: key)
+                    self.openMovieTrailer.onNext(key)
                 })
                 .disposed(by: cell.disposeBag)
             
@@ -107,7 +133,7 @@ extension MovieDetailViewController: UITableViewDelegate, UITableViewDataSource 
                 .selectedItemId
                 .subscribe(onNext: { [weak self] id in
                     guard let self = self else { return }
-                    self.navigationController?.pushViewController(self.viewModel.openPersonPage(id: id), animated: true)
+                    self.openPersonDetailPage.onNext(id)
                 })
                 .disposed(by: cell.disposeBag)
             

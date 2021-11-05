@@ -80,7 +80,6 @@ final class MovieDetailViewModel {
             .subscribe(onNext: { [weak self] movie in
                 guard let self = self else { return }
                 self.data.accept([.detail(movie), .list(movie.cast)])
-                self.isLoading.accept(false)
             })
             .disposed(by: disposeBag)
         

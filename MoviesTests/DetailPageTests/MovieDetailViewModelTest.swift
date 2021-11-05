@@ -56,10 +56,6 @@ class MovieDetailViewModelTest: XCTestCase {
         
         scheduler.start()
 
-        XCTAssertEqual(loading.events, [.next(0, false), .next(10, true), .next(10, false), .next(10, false)])
-    }
-    
-    func testOpenDetailPage() throws {
-        
+        XCTAssertEqual(loading.events, [.next(0, false), .next(10, true), .next(10, false)])
     }
 }

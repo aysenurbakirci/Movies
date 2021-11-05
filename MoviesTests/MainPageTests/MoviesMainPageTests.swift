@@ -107,7 +107,7 @@ class MoviesMainPageTests: XCTestCase {
         
         scheduler.start()
         
-        XCTAssertNotNil(popularMovies.events)
+        XCTAssertFalse(popularMovies.events.isEmpty)
     }
     
     func testFirstSearchResults() throws {
@@ -124,6 +124,6 @@ class MoviesMainPageTests: XCTestCase {
         
         scheduler.start()
         
-        XCTAssertNotNil(searchResults.events)
+        XCTAssertFalse(searchResults.events.isEmpty)
     }
 }

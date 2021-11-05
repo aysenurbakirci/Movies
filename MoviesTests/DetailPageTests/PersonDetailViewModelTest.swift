@@ -8,32 +8,44 @@
 import XCTest
 import RxSwift
 import RxTest
+import RxCocoa
 import RxBlocking
 @testable import Movies
 
 class PersonDetailViewModelTest: XCTestCase {
     
-    var sut: PersonDetailViewModel?
     var scheduler: TestScheduler!
     var disposeBag: DisposeBag!
-
+    
     override func setUpWithError() throws {
         super.setUp()
         scheduler = TestScheduler(initialClock: 0)
         disposeBag = DisposeBag()
-        sut = PersonDetailViewModel(personId: 2535, service: MockDetailApi())
-        sut?.getDetails()
     }
 
     override func tearDownWithError() throws {
-        sut = nil
+        scheduler = nil
+        disposeBag = nil
         super.tearDown()
     }
     
-    func testMovieObservableIsNotNill() throws {
-        let movieObservable = sut?.data.asObservable()
-        let result = try movieObservable?.toBlocking().first()
-        XCTAssertNotNil(result!, "Observable must not be nil")
-    }
+    func testLoading() throws {
+        
+        let observer = scheduler.createObserver(Bool.self)
 
+        let loadTrigger = scheduler.createHotObservable([.next(10, ())]).asObservable()
+        let inputs = PersonDetailViewModelInput(personId: 2535, detailService: MockDetailApi(scheduler: scheduler), loadDataTrigger: loadTrigger)
+        
+        let outputs = personDetailViewModel(input: inputs)
+        
+        outputs
+            .isLoading
+            .drive(observer)
+            .disposed(by: disposeBag)
+        
+        scheduler.start()
+        
+        XCTAssertEqual(observer.events, [.next(0, false), .next(10, true), .next(10, false)])
+        
+    }
 }

@@ -8,9 +8,17 @@
 @testable import Movies
 import RxSwift
 import ImdbAPI
+import RxTest
 
 class MockDetailApi: DetailApiProtocol {
     
+    var scheduler: TestScheduler
+    
+    init(scheduler: TestScheduler) {
+        self.scheduler = scheduler
+    }
+    
+
     func getMovieCast(with movieId: Int) -> Observable<MovieCast> {
         guard let bundleURL = Bundle.main.url(forResource: "MovieCast", withExtension: "json") else {
             fatalError("Not find MovieCast.json")
@@ -93,18 +101,47 @@ class MockDetailApi: DetailApiProtocol {
                 data.detail.addTrailers(movieTrailer: data.trailer)
             })
             .map { $0.detail }
+        
     }
     
-    func getDetails(personId: Int) -> Observable<PersonDetail> {
-        let detail = getPersonDetail(with: personId)
-        let cast = getPersonMovieCredits(with: personId)
+    func readPersonDetail(with personId: Int) -> PersonDetail {
+        guard let bundleURL = Bundle.main.url(forResource: "PersonDetail", withExtension: "json") else {
+            fatalError("Not find MovieDetail.json")
+        }
+        guard let personData = try? Data(contentsOf: bundleURL) else {
+            fatalError()
+        }
+        guard let personDetail = try? JSONDecoder().decode(PersonDetail.self, from: personData) else {
+            fatalError()
+        }
         
-        return Observable.zip(detail, cast)
-            .map { (detail: $0, cast: $1) }
-            .do(onNext: { data in
-                data.detail.addMovieCast(movies: data.cast.cast)
-            })
-            .map { $0.detail }
+        return personDetail
+    }
+    
+    func readPersonMovieCredits(with personId: Int) -> PersonMovies {
+        guard let bundleURL = Bundle.main.url(forResource: "PersonMovies", withExtension: "json") else {
+            fatalError("Not find MovieDetail.json")
+        }
+        guard let personData = try? Data(contentsOf: bundleURL) else {
+            fatalError()
+        }
+        guard let personMovies = try? JSONDecoder().decode(PersonMovies.self, from: personData) else {
+            fatalError()
+        }
+        
+        return personMovies
+    }
+    
+
+    
+    func getDetails(personId: Int) -> Observable<PersonDetail> {
+
+        let detail = readPersonDetail(with: personId)
+        let cast = readPersonMovieCredits(with: personId)
+        
+        detail.addMovieCast(movies: cast.cast)
+        print("Detail: \(detail)")
+        return scheduler.createColdObservable([.next(10, detail)]).asObservable()
     }
     
     func createTrailerUrl(key: String) -> URL {

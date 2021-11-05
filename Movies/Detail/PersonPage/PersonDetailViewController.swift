@@ -20,17 +20,15 @@ class PersonDetailViewController: UIViewController, LoadingDisplay {
         return view
     }()
     
-    var viewModel: PersonDetailViewModel!
     private let disposeBag = DisposeBag()
     
+    private var personId: Int
     private var loadData = PublishSubject<Void>()
     private var openMovieDetailPage = PublishSubject<Int>()
+    private var data = BehaviorRelay<[PersonViewSections]>(value: [])
     
     init(personId: Int) {
-        self.viewModel = PersonDetailViewModel(input: PersonDetailViewModelInput(personId: personId,
-                                                                                 detailService: DetailApi(),
-                                                                                 loadDataTrigger: loadData.asDriver(onErrorDriveWith: .never()),
-                                                                                 openMovieTrigger: openMovieDetailPage.asDriver(onErrorDriveWith: .never())))
+        self.personId = personId
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -44,10 +42,19 @@ class PersonDetailViewController: UIViewController, LoadingDisplay {
         view = detailView
         clearNavigationBarConfig()
         
-        let output = viewModel.transform()
+        let inputs = PersonDetailViewModelInput(personId: personId,
+                                                detailService: DetailApi(),
+                                                loadDataTrigger: loadData,
+                                                openMovieTrigger: openMovieDetailPage)
+        
+        let output = personDetailViewModel(input: inputs)
         
         output
             .data
+            .do(onNext: { [weak self] person in
+                guard let self = self else { return }
+                self.data.accept(person)
+            })
             .drive(onNext: { [weak self] _ in
                 guard let self = self else { return }
                 self.detailView.tableView.reloadData()
@@ -86,7 +93,7 @@ class PersonDetailViewController: UIViewController, LoadingDisplay {
 extension PersonDetailViewController: UITableViewDelegate, UITableViewDataSource {
     
     func numberOfSections(in tableView: UITableView) -> Int {
-        return viewModel.data.value.count
+        return data.value.count
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -94,7 +101,7 @@ extension PersonDetailViewController: UITableViewDelegate, UITableViewDataSource
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let section = viewModel.data.value[indexPath.section]
+        let section = data.value[indexPath.section]
         
         switch section {
         case .detail(let personDetail):

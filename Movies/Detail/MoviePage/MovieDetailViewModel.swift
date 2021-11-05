@@ -30,8 +30,8 @@ struct MovieDetailViewModelOutput {
 final class MovieDetailViewModel {
     
     //Outputs
-    private(set) var data = BehaviorRelay<[MovieViewSections]>(value: [])
-    private(set) var isLoading = BehaviorRelay<Bool>(value: false)
+    private var data = BehaviorRelay<[MovieViewSections]>(value: [])
+    private var isLoading = BehaviorRelay<Bool>(value: false)
     
     //Inputs
     private let movieId: Int

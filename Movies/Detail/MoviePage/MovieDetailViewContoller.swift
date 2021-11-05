@@ -26,6 +26,7 @@ class MovieDetailViewController: UIViewController, LoadingDisplay {
     private var loadData = PublishSubject<Void>()
     private var openPersonDetailPage = PublishSubject<Int>()
     private var openMovieTrailer = PublishSubject<String>()
+    private var data = BehaviorRelay<[MovieViewSections]>(value: [])
     
     init(movieId: Int) {
         self.viewModel = MovieDetailViewModel(input: MovieDetailViewModelInput(movieId: movieId,
@@ -50,6 +51,9 @@ class MovieDetailViewController: UIViewController, LoadingDisplay {
         
         output
             .data
+            .do(onNext: { [weak self] movie in
+                self?.data.accept(movie)
+            })
             .drive(onNext: { [weak self] _ in
                 self?.detailView.tableView.reloadData()
             })
@@ -88,7 +92,7 @@ class MovieDetailViewController: UIViewController, LoadingDisplay {
 extension MovieDetailViewController: UITableViewDelegate, UITableViewDataSource {
     
     func numberOfSections(in tableView: UITableView) -> Int {
-        return viewModel.data.value.count
+        return data.value.count
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -97,7 +101,7 @@ extension MovieDetailViewController: UITableViewDelegate, UITableViewDataSource 
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-        let section = viewModel.data.value[indexPath.section]
+        let section = data.value[indexPath.section]
         
         switch section {
         case .detail(let movieDetail):

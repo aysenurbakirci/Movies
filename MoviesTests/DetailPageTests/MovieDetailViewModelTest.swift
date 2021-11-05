@@ -7,22 +7,30 @@
 
 import XCTest
 import RxSwift
+import RxCocoa
 import RxTest
 import RxBlocking
 @testable import Movies
 
 class MovieDetailViewModelTest: XCTestCase {
     
+    var loadData = PublishSubject<Void>()
+    var openPersonDetailPage = PublishSubject<Int>()
+    var openMovieTrailer = PublishSubject<String>()
     var sut: MovieDetailViewModel!
     var scheduler: TestScheduler!
     var disposeBag: DisposeBag!
-
+    
     override func setUpWithError() throws {
         super.setUp()
         scheduler = TestScheduler(initialClock: 0)
         disposeBag = DisposeBag()
-        sut = MovieDetailViewModel(movieId: 839436, service: MockDetailApi())
-        sut?.getDetails()
+        let inputs = MovieDetailViewModelInput(movieId: 839436,
+                                               detailService: MockDetailApi(scheduler: scheduler),
+                                           loadDataTrigger: loadData.asDriver(onErrorDriveWith: .never()),
+                                           openPersonTrigger: openPersonDetailPage.asDriver(onErrorDriveWith: .never()),
+                                           openLinkTrigger: openMovieTrailer.asDriver(onErrorDriveWith: .never()))
+        sut = MovieDetailViewModel(input: inputs)
     }
 
     override func tearDownWithError() throws {
@@ -32,9 +40,26 @@ class MovieDetailViewModelTest: XCTestCase {
         super.tearDown()
     }
     
-    func testMovieObservableIsNotNill() throws {
-        let movieObservable = sut?.data.asObservable()
-        let result = try movieObservable?.toBlocking().first()
-        XCTAssertNotNil(result!, "Observable must not be nil")
+    func testLoading() throws {
+        let output = sut.transform()
+        let loading = scheduler.createObserver(Bool.self)
+        
+        output
+            .isLoading
+            .asObservable()
+            .bind(to: loading)
+            .disposed(by: disposeBag)
+        
+        scheduler.createColdObservable([.next(10, ())])
+            .bind(to: loadData)
+            .disposed(by: disposeBag)
+        
+        scheduler.start()
+
+        XCTAssertEqual(loading.events, [.next(0, false), .next(10, true), .next(10, false), .next(10, false)])
+    }
+    
+    func testOpenDetailPage() throws {
+        
     }
 }

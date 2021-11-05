@@ -17,8 +17,8 @@ enum PersonViewSections {
 struct PersonDetailViewModelInput {
     var personId: Int
     var detailService: DetailApiProtocol
-    var loadDataTrigger: Driver<Void>
-    var openMovieTrigger: Driver<Int>
+    var loadDataTrigger: Observable<Void> = .never()
+    var openMovieTrigger: Observable<Int> = .never()
 }
 
 struct PersonDetailViewModelOutput {
@@ -27,62 +27,45 @@ struct PersonDetailViewModelOutput {
     var openMovieDetailController: Driver<MovieDetailViewController>
 }
 
-final class PersonDetailViewModel {
+func personDetailViewModel(input: PersonDetailViewModelInput) -> PersonDetailViewModelOutput {
     
-    //Outputs
-    private(set) var data = BehaviorRelay<[PersonViewSections]>(value: [])
-    private(set) var isLoading = BehaviorRelay<Bool>(value: false)
-    
-    //Inputs
-    private let personId: Int
-    private let detailService: DetailApiProtocol
-    private var loadDataTrigger: Driver<Void>
-    private var openMovieTrigger: Driver<Int>
-    
-    private let disposeBag = DisposeBag()
-
-    init(input: PersonDetailViewModelInput) {
-        self.personId = input.personId
-        self.detailService = input.detailService
-        self.loadDataTrigger = input.loadDataTrigger
-        self.openMovieTrigger = input.openMovieTrigger
-    }
-    
-    func transform() -> PersonDetailViewModelOutput {
-        loadDataTrigger
-            .asObservable()
-            .filter { [weak isLoading] in
-                guard let isLoading = isLoading else {
-                    return false
-                }
-                if isLoading.value {
-                    return false
-                }
-                isLoading.accept(true)
-                return true
+    let isLoading = BehaviorRelay<Bool>(value: false)
+   
+    let dataDriver = input.loadDataTrigger
+        .asObservable()
+        .filter { [isLoading] in
+            if isLoading.value {
+                return false
             }
-            .compactMap { [weak self] in
-                return self?.personId
-            }
-            .flatMap ({ [unowned self] id in
-                return self.detailService.getDetails(personId: id)
-            })
-            .subscribe(onNext: { [weak self] person in
-                guard let self = self else { return }
-                self.data.accept([.detail(person), .list(person.movieCredits)])
-                self.isLoading.accept(false)
-            })
-            .disposed(by: disposeBag)
-        
-        let openMovieDetailDriver = openMovieTrigger
-            .asObservable()
-            .map { movieId in
-                return MovieDetailViewController(movieId: movieId)
-            }
-            .asDriver(onErrorDriveWith: .never())
-        
-        return PersonDetailViewModelOutput(data: self.data.asDriver(),
-                                           isLoading: self.isLoading.asDriver(),
-                                           openMovieDetailController: openMovieDetailDriver)
-    }
+            isLoading.accept(true)
+            return true
+        }
+        .compactMap { _ in
+            return input.personId
+        }
+        .flatMap { id in
+            return input.detailService.getDetails(personId: id)
+        }
+        .map({ personDetail in
+            return [PersonViewSections.detail(personDetail),
+                    PersonViewSections.list(personDetail.movieCredits)]
+        })
+        .do(onNext: { personDetail in
+            print("personDetail: \(personDetail)")
+            isLoading.accept(false)
+        })
+        .asDriver(onErrorDriveWith: .never())
+    
+    let openMovieDetailDriver = input.openMovieTrigger
+        .asObservable()
+        .map { movieId in
+            return MovieDetailViewController(movieId: movieId)
+        }
+        .asDriver(onErrorDriveWith: .never())
+    
+    return PersonDetailViewModelOutput(data: dataDriver,
+                                       isLoading: isLoading.asDriver(),
+                                       openMovieDetailController: openMovieDetailDriver)
+    
+    
 }

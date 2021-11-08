@@ -24,12 +24,14 @@ struct PersonDetailViewModelInput {
 struct PersonDetailViewModelOutput {
     var data: Driver<[PersonViewSections]>
     var isLoading: Driver<Bool>
+    var onError: Driver<Error?>
     var openMovieDetailController: Driver<MovieDetailViewController>
 }
 
 func personDetailViewModel(input: PersonDetailViewModelInput) -> PersonDetailViewModelOutput {
     
     let isLoading = BehaviorRelay<Bool>(value: false)
+    let onError = PublishRelay<Error?>()
    
     let dataDriver = input.loadDataTrigger
         .asObservable()
@@ -52,6 +54,9 @@ func personDetailViewModel(input: PersonDetailViewModelInput) -> PersonDetailVie
         })
         .do(onNext: { _ in
             isLoading.accept(false)
+        }, onError: { error in
+            onError.accept(error)
+            isLoading.accept(false)
         })
         .asDriver(onErrorDriveWith: .never())
     
@@ -64,5 +69,6 @@ func personDetailViewModel(input: PersonDetailViewModelInput) -> PersonDetailVie
     
     return PersonDetailViewModelOutput(data: dataDriver,
                                        isLoading: isLoading.asDriver(),
+                                       onError: onError.asDriver(onErrorDriveWith: .never()),
                                        openMovieDetailController: openMovieDetailDriver)
 }

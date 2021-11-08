@@ -11,7 +11,7 @@ import RxCocoa
 import Components
 import Utils
 
-class MovieDetailViewController: UIViewController, LoadingDisplay {
+class MovieDetailViewController: UIViewController, LoadingDisplay, ErrorDisplayer {
     
     private lazy var detailView: MovieDetailView = {
         var view = MovieDetailView()
@@ -68,6 +68,13 @@ class MovieDetailViewController: UIViewController, LoadingDisplay {
                 } else {
                     self.hideLoadingView()
                 }
+            })
+            .disposed(by: disposeBag)
+        
+        output
+            .onError
+            .drive(onNext: { error in
+                self.errorObject.onNext(error)
             })
             .disposed(by: disposeBag)
         

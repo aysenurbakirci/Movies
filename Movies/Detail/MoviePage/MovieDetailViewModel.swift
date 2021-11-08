@@ -24,6 +24,7 @@ struct MovieDetailViewModelInput {
 struct MovieDetailViewModelOutput {
     var data: Driver<[MovieViewSections]>
     var isLoading: Driver<Bool>
+    var onError: Driver<Error?>
     var openMovieDetailController: Driver<PersonDetailViewController>
 }
 
@@ -32,6 +33,7 @@ final class MovieDetailViewModel {
     //Outputs
     private var data = BehaviorRelay<[MovieViewSections]>(value: [])
     private var isLoading = BehaviorRelay<Bool>(value: false)
+    private var onError = PublishRelay<Error?>()
     
     //Inputs
     private let movieId: Int
@@ -75,6 +77,7 @@ final class MovieDetailViewModel {
                 self.isLoading.accept(false)
             }, onError: { [weak self] error in
                 guard let self = self else { return }
+                self.onError.accept(error)
                 self.isLoading.accept(false)
             })
             .subscribe(onNext: { [weak self] movie in
@@ -103,6 +106,7 @@ final class MovieDetailViewModel {
         
         return MovieDetailViewModelOutput(data: self.data.asDriver(),
                                           isLoading: self.isLoading.asDriver(),
+                                          onError: self.onError.asDriver(onErrorDriveWith: .never()),
                                           openMovieDetailController: openPersonDetailDriver)
     }
 }

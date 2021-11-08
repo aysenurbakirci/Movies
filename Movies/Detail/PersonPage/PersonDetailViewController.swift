@@ -11,7 +11,7 @@ import RxCocoa
 import Utils
 import Components
 
-class PersonDetailViewController: UIViewController, LoadingDisplay {
+class PersonDetailViewController: UIViewController, LoadingDisplay, ErrorDisplayer {
 
     private lazy var detailView: PersonDetailView = {
         var view = PersonDetailView()
@@ -70,6 +70,13 @@ class PersonDetailViewController: UIViewController, LoadingDisplay {
                 } else {
                     self.hideLoadingView()
                 }
+            })
+            .disposed(by: disposeBag)
+        
+        output
+            .onError
+            .drive(onNext: { [weak self] error in
+                self?.errorObject.onNext(error)
             })
             .disposed(by: disposeBag)
         

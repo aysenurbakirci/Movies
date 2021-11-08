@@ -101,9 +101,18 @@ public extension EmptyDisplayer where Self: UIViewController {
 
 public extension ErrorDisplayer where Self: UIViewController {
     var errorObject: Binder<Error?> {
-        return Binder(self) { _, error in
-            print("ERROR")
+        return Binder(self) { [weak self] _, error in
+            self?.makeErrorAlert(error?.localizedDescription ?? "invalid error.")
         }
+    }
+    
+    func makeErrorAlert(_ message: String) {
+        let alert = UIAlertController(title: "Error", message: message, preferredStyle: .alert)
+        let okButton = UIAlertAction(title: "Ok", style: .cancel) { [weak self] _ in
+            self?.navigationController?.popViewController(animated: true)
+        }
+        alert.addAction(okButton)
+        present(alert, animated: true, completion: nil)
     }
 }
 

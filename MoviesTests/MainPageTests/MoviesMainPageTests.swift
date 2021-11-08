@@ -74,7 +74,7 @@ class MoviesMainPageTests: XCTestCase {
             .disposed(by: disposeBag)
         
         scheduler.start()
-        XCTAssertEqual(loading.events, [.next(0, false), .next(10, true), .next(20, false), .next(50, false)])
+        XCTAssertEqual(loading.events, [.next(0, false), .next(10, true), .next(20, false), .next(50, false), .next(50, false), .next(50, false)])
     }
     
     func testLoadingWithSearch() throws {

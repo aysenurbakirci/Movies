@@ -47,13 +47,16 @@ final class MainViewModel: ActivityHandler {
             .filter({ [weak self] in
                 return self?.popularMovies?.hasNextPage ?? true
             })
-            .filter({ [isLoading] in
+            .filter { [weak isLoading] in
+                guard let isLoading = isLoading else {
+                    return false
+                }
                 if isLoading.value {
                     return false
                 }
-                self.isLoading.accept(true)
+                isLoading.accept(true)
                 return true
-            })
+            }
             .compactMap({ [weak self] in
                 return self?.nextPage
             })
@@ -68,6 +71,7 @@ final class MainViewModel: ActivityHandler {
                 self.isLoading.accept(false)
                 self.onError.accept(error)
             })
+            .retry(3)
             .subscribe(onNext: { [weak self] movies in
                 guard let self = self else { return }
                 if movies.results.isEmpty {

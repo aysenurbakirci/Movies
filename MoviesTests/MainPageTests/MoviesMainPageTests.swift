@@ -107,7 +107,14 @@ class MoviesMainPageTests: XCTestCase {
         
         scheduler.start()
         
-        XCTAssertFalse(popularMovies.events.isEmpty)
+        switch popularMovies.events.last?.value.element?[0] {
+        case .movie(let movies):
+            XCTAssertEqual(movies.first?.title, "Venom: Let There Be Carnage")
+        case .person(_):
+            XCTFail("Popular movies do not include people")
+        case .none:
+            XCTFail("Data is empty")
+        }
     }
     
     func testFirstSearchResults() throws {
@@ -124,6 +131,15 @@ class MoviesMainPageTests: XCTestCase {
         
         scheduler.start()
         
-        XCTAssertFalse(searchResults.events.isEmpty)
+        for i in 0...1 {
+            switch searchResults.events.last?.value.element?[i] {
+            case .movie(let movie):
+                XCTAssertEqual(movie.first?.title, "The Witcher: Nightmare of the Wolf")
+            case .person(let people):
+                XCTAssertEqual(people.first?.name, "Jeff Witcher")
+            case .none:
+                XCTFail("Data is empty")
+            }
+        }
     }
 }

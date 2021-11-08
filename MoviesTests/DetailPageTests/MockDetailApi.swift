@@ -12,13 +12,6 @@ import RxTest
 
 class MockDetailApi: DetailApiProtocol {
     
-    var scheduler: TestScheduler
-    
-    init(scheduler: TestScheduler) {
-        self.scheduler = scheduler
-    }
-    
-
     func getMovieCast(with movieId: Int) -> Observable<MovieCast> {
         guard let bundleURL = Bundle.main.url(forResource: "MovieCast", withExtension: "json") else {
             fatalError("Not find MovieCast.json")
@@ -108,8 +101,6 @@ class MockDetailApi: DetailApiProtocol {
 
         let detail = getPersonDetail(with: personId)
         let cast = getPersonMovieCredits(with: personId)
-        
-        print("Detail: \(detail)")
         
         return Observable.zip(detail, cast)
             .map { (detail: $0, cast: $1) }

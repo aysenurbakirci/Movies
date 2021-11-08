@@ -35,7 +35,7 @@ class PersonDetailViewModelTest: XCTestCase {
         
         let loadTrigger = scheduler.createHotObservable([.next(10, ())])
         let inputs = PersonDetailViewModelInput(personId: 2535,
-                                            detailService: MockDetailApi(scheduler: scheduler),
+                                            detailService: MockDetailApi(),
                                             loadDataTrigger: loadTrigger.asDriver(onErrorDriveWith: .never()))
         let outputs = personDetailViewModel(input: inputs)
         
@@ -52,5 +52,53 @@ class PersonDetailViewModelTest: XCTestCase {
         scheduler.start()
         
         XCTAssertEqual(observer.events, [.next(0, false), .next(10, true), .next(10, false)])
+    }
+    
+    func testData() throws {
+        
+        let observer = scheduler.createObserver([PersonViewSections].self)
+        
+        let loadTrigger = scheduler.createHotObservable([.next(10, ())])
+        let inputs = PersonDetailViewModelInput(personId: 2535,
+                                            detailService: MockDetailApi(),
+                                            loadDataTrigger: loadTrigger.asDriver(onErrorDriveWith: .never()))
+        let outputs = personDetailViewModel(input: inputs)
+        
+        outputs
+            .data
+            .drive(observer)
+            .disposed(by: disposeBag)
+        
+        scheduler.start()
+        
+        for i in 0...1 {
+            switch observer.events.last?.value.element?[i] {
+            case .detail(let detail):
+                XCTAssertEqual(detail.name, "Vivica A. Fox")
+            case .list(let list):
+                XCTAssertEqual(list.first?.title, "Two Can Play That Game")
+            case .none:
+                XCTFail("Data is empty.")
+            }
+        }
+    }
+    
+    func testOpenDetailPage() throws {
+        
+        let observer = scheduler.createObserver(MovieDetailViewController.self)
+        
+        let openTrigger = scheduler.createHotObservable([.next(10, 0)])
+        let inputs = PersonDetailViewModelInput(personId: 2535,
+                                            detailService: MockDetailApi(),
+                                            openMovieTrigger: openTrigger.asDriver(onErrorDriveWith: .never()))
+        let outputs = personDetailViewModel(input: inputs)
+        
+        outputs
+            .openMovieDetailController
+            .drive(observer)
+            .disposed(by: disposeBag)
+
+        scheduler.start()
+        XCTAssertFalse(observer.events.isEmpty)
     }
 }

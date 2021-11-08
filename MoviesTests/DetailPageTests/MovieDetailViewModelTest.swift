@@ -46,8 +46,7 @@ class MovieDetailViewModelTest: XCTestCase {
         
         output
             .isLoading
-            .asObservable()
-            .bind(to: loading)
+            .drive(loading)
             .disposed(by: disposeBag)
         
         scheduler.createColdObservable([.next(10, ())])

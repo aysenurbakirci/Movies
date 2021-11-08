@@ -44,8 +44,8 @@ class PersonDetailViewController: UIViewController, LoadingDisplay {
         
         let inputs = PersonDetailViewModelInput(personId: personId,
                                                 detailService: DetailApi(),
-                                                loadDataTrigger: loadData,
-                                                openMovieTrigger: openMovieDetailPage)
+                                                loadDataTrigger: loadData.asDriver(onErrorDriveWith: .never()),
+                                                openMovieTrigger: openMovieDetailPage.asDriver(onErrorDriveWith: .never()))
         
         let output = personDetailViewModel(input: inputs)
         

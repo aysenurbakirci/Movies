@@ -32,10 +32,11 @@ class PersonDetailViewModelTest: XCTestCase {
     func testLoading() throws {
         
         let observer = scheduler.createObserver(Bool.self)
-
-        let loadTrigger = scheduler.createHotObservable([.next(10, ())]).asObservable()
-        let inputs = PersonDetailViewModelInput(personId: 2535, detailService: MockDetailApi(scheduler: scheduler), loadDataTrigger: loadTrigger)
         
+        let loadTrigger = scheduler.createHotObservable([.next(10, ())])
+        let inputs = PersonDetailViewModelInput(personId: 2535,
+                                            detailService: MockDetailApi(scheduler: scheduler),
+                                            loadDataTrigger: loadTrigger.asDriver(onErrorDriveWith: .never()))
         let outputs = personDetailViewModel(input: inputs)
         
         outputs
@@ -43,9 +44,13 @@ class PersonDetailViewModelTest: XCTestCase {
             .drive(observer)
             .disposed(by: disposeBag)
         
+        outputs
+            .data
+            .drive()
+            .disposed(by: disposeBag)
+        
         scheduler.start()
         
         XCTAssertEqual(observer.events, [.next(0, false), .next(10, true), .next(10, false)])
-        
     }
 }

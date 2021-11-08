@@ -17,8 +17,8 @@ enum PersonViewSections {
 struct PersonDetailViewModelInput {
     var personId: Int
     var detailService: DetailApiProtocol
-    var loadDataTrigger: Observable<Void> = .never()
-    var openMovieTrigger: Observable<Int> = .never()
+    var loadDataTrigger: Driver<Void> = .never()
+    var openMovieTrigger: Driver<Int> = .never()
 }
 
 struct PersonDetailViewModelOutput {
@@ -50,8 +50,7 @@ func personDetailViewModel(input: PersonDetailViewModelInput) -> PersonDetailVie
             return [PersonViewSections.detail(personDetail),
                     PersonViewSections.list(personDetail.movieCredits)]
         })
-        .do(onNext: { personDetail in
-            print("personDetail: \(personDetail)")
+        .do(onNext: { _ in
             isLoading.accept(false)
         })
         .asDriver(onErrorDriveWith: .never())
@@ -66,6 +65,4 @@ func personDetailViewModel(input: PersonDetailViewModelInput) -> PersonDetailVie
     return PersonDetailViewModelOutput(data: dataDriver,
                                        isLoading: isLoading.asDriver(),
                                        openMovieDetailController: openMovieDetailDriver)
-    
-    
 }

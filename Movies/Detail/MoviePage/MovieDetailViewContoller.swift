@@ -24,7 +24,6 @@ class MovieDetailViewController: UIViewController, LoadingDisplay, ErrorDisplaye
     private let disposeBag = DisposeBag()
     
     private var loadData = PublishSubject<Void>()
-    private var openPersonDetailPage = PublishSubject<Int>()
     private var openMovieTrailer = PublishSubject<String>()
     private var data = BehaviorRelay<[MovieViewSections]>(value: [])
     
@@ -34,7 +33,6 @@ class MovieDetailViewController: UIViewController, LoadingDisplay, ErrorDisplaye
                 movieId: movieId,
                 detailService: DetailApi(),
                 loadDataTrigger: loadData.asDriver(onErrorDriveWith: .never()),
-                openPersonTrigger: openPersonDetailPage.asDriver(onErrorDriveWith:  .never()),
                 openLinkTrigger: openMovieTrailer.asDriver(onErrorDriveWith:  .never())
             )
         )
@@ -81,13 +79,6 @@ class MovieDetailViewController: UIViewController, LoadingDisplay, ErrorDisplaye
                 self.errorObject.onNext(error)
             })
             .disposed(by: disposeBag)
-        
-        viewModel.openPersonTrigger
-            .drive (onNext: { [weak self] value in
-                guard let self = self else { return }
-                let controller = PersonDetailPageBuilder.build(with: value)
-                self.navigationController?.pushViewController(controller, animated: true)
-            }).disposed(by: disposeBag)
         
         loadData.onNext(())
     }
@@ -147,7 +138,8 @@ extension MovieDetailViewController: UITableViewDelegate, UITableViewDataSource 
                 .selectedItemId
                 .subscribe(onNext: { [weak self] id in
                     guard let self = self else { return }
-                    self.openPersonDetailPage.onNext(id)
+                    let controller = PersonDetailPageBuilder.build(with: id)
+                    self.navigationController?.pushViewController(controller, animated: true)
                 })
                 .disposed(by: cell.disposeBag)
             

@@ -17,7 +17,6 @@ struct MovieDetailViewModelInput {
     var movieId: Int
     var detailService: DetailApiProtocol
     var loadDataTrigger: Driver<Void>
-    var openPersonTrigger: Driver<Int>
     var openLinkTrigger: Driver<String>
 }
 
@@ -25,7 +24,6 @@ struct MovieDetailViewModelOutput {
     var data: Driver<[MovieViewSections]>
     var isLoading: Driver<Bool>
     var onError: Driver<Error?>
-    var openMovieDetailController: Driver<PersonDetailViewController>
 }
 
 final class MovieDetailViewModel {
@@ -36,7 +34,6 @@ final class MovieDetailViewModel {
     private var onError = PublishRelay<Error?>()
     
     // Inputs
-    public var openPersonTrigger: Driver<Int>
     private let movieId: Int
     private let detailService: DetailApiProtocol
     private var loadDataTrigger: Driver<Void>
@@ -48,7 +45,6 @@ final class MovieDetailViewModel {
         self.movieId = input.movieId
         self.detailService = input.detailService
         self.loadDataTrigger = input.loadDataTrigger
-        self.openPersonTrigger = input.openPersonTrigger
         self.openLinkTrigger = input.openLinkTrigger
     }
     
@@ -86,13 +82,6 @@ final class MovieDetailViewModel {
             })
             .disposed(by: disposeBag)
         
-        let openPersonDetailDriver = openPersonTrigger
-            .asObservable()
-            .map { personId in
-                return PersonDetailViewController(personId: personId)
-            }
-            .asDriver(onErrorDriveWith: .never())
-        
         openLinkTrigger
             .asObservable()
             .subscribe(onNext: { [weak self] key in
@@ -106,7 +95,6 @@ final class MovieDetailViewModel {
         
         return MovieDetailViewModelOutput(data: self.data.asDriver(),
                                           isLoading: self.isLoading.asDriver(),
-                                          onError: self.onError.asDriver(onErrorDriveWith: .never()),
-                                          openMovieDetailController: openPersonDetailDriver)
+                                          onError: self.onError.asDriver(onErrorDriveWith: .never()))
     }
 }

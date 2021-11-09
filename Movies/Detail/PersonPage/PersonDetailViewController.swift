@@ -24,7 +24,6 @@ class PersonDetailViewController: UIViewController, LoadingDisplay, ErrorDisplay
     
     private var personId: Int
     private var loadData = PublishSubject<Void>()
-    private var openMovieDetailPage = PublishSubject<Int>()
     private var data = BehaviorRelay<[PersonViewSections]>(value: [])
     
     init(personId: Int) {
@@ -44,8 +43,7 @@ class PersonDetailViewController: UIViewController, LoadingDisplay, ErrorDisplay
         
         let inputs = PersonDetailViewModelInput(personId: personId,
                                                 detailService: DetailApi(),
-                                                loadDataTrigger: loadData.asDriver(onErrorDriveWith: .never()),
-                                                openMovieTrigger: openMovieDetailPage.asDriver(onErrorDriveWith: .never()))
+                                                loadDataTrigger: loadData.asDriver(onErrorDriveWith: .never()))
         
         let output = personDetailViewModel(input: inputs)
         
@@ -79,15 +77,6 @@ class PersonDetailViewController: UIViewController, LoadingDisplay, ErrorDisplay
                 self?.errorObject.onNext(error)
             })
             .disposed(by: disposeBag)
-        
-        output
-            .openMovieDetailController
-            .drive(onNext: { [weak self] controller in
-                self?.navigationController?.pushViewController(controller, animated: true)
-            })
-            .disposed(by: disposeBag)
-        
-        
         
         loadData.onNext(())
     }
@@ -138,7 +127,8 @@ extension PersonDetailViewController: UITableViewDelegate, UITableViewDataSource
                 .selectedItemId
                 .subscribe(onNext: { [weak self] id in
                     guard let self = self else { return }
-                    self.openMovieDetailPage.onNext(id)
+                    let controller = MovieDetailPageBuilder.build(with: id)
+                    self.navigationController?.pushViewController(controller, animated: true)
                 })
                 .disposed(by: cell.disposeBag)
             

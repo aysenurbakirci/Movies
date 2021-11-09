@@ -29,11 +29,15 @@ class MovieDetailViewController: UIViewController, LoadingDisplay, ErrorDisplaye
     private var data = BehaviorRelay<[MovieViewSections]>(value: [])
     
     init(movieId: Int) {
-        self.viewModel = MovieDetailViewModel(input: MovieDetailViewModelInput(movieId: movieId,
-                                                                               detailService: DetailApi(),
-                                                                               loadDataTrigger: loadData.asDriver(onErrorDriveWith: .never()),
-                                                                               openPersonTrigger: openPersonDetailPage.asDriver(onErrorDriveWith:  .never()),
-                                                                               openLinkTrigger: openMovieTrailer.asDriver(onErrorDriveWith:  .never())))
+        self.viewModel = MovieDetailViewModel(
+            input: MovieDetailViewModelInput(
+                movieId: movieId,
+                detailService: DetailApi(),
+                loadDataTrigger: loadData.asDriver(onErrorDriveWith: .never()),
+                openPersonTrigger: openPersonDetailPage.asDriver(onErrorDriveWith:  .never()),
+                openLinkTrigger: openMovieTrailer.asDriver(onErrorDriveWith:  .never())
+            )
+        )
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -78,15 +82,14 @@ class MovieDetailViewController: UIViewController, LoadingDisplay, ErrorDisplaye
             })
             .disposed(by: disposeBag)
         
-        output
-            .openMovieDetailController
-            .drive(onNext: { [weak self] controller in
-                self?.navigationController?.pushViewController(controller, animated: true)
-            })
-            .disposed(by: disposeBag)
+        viewModel.openPersonTrigger
+            .drive (onNext: { [weak self] value in
+                guard let self = self else { return }
+                let controller = PersonDetailPageBuilder.build(with: value)
+                self.navigationController?.pushViewController(controller, animated: true)
+            }).disposed(by: disposeBag)
         
         loadData.onNext(())
-        
     }
     
     private func clearNavigationBarConfig() {
@@ -112,7 +115,7 @@ extension MovieDetailViewController: UITableViewDelegate, UITableViewDataSource 
         
         switch section {
         case .detail(let movieDetail):
-
+            
             guard let cell = tableView.dequeueReusableCell(withIdentifier: InformationCell.reuseIdentifier,
                                                            for: indexPath) as? InformationCell else {
                 return UITableViewCell()

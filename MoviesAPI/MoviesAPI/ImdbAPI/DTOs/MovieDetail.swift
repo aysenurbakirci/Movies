@@ -32,7 +32,6 @@ public class MovieDetail: Codable {
     public func addTrailers(movieTrailer: MovieTrailers) {
         trailers.append(contentsOf: movieTrailer.results)
     }
-    
 }
 
 public struct MovieCast: Codable {
@@ -58,8 +57,4 @@ public struct MovieTrailers: Codable {
 public struct Trailer: Codable {
     public let key: String
     public let site: String
-
 }
-
-
-

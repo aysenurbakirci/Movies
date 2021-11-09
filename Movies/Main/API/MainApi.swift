@@ -5,12 +5,10 @@
 //  Created by Ayşenur Bakırcı on 11.10.2021.
 //
 
-import Foundation
 import RxSwift
 import ImdbAPI
 
 protocol MainApiProtocol {
-    
     func getPopularMovies(page: Int) -> Observable<Movies>
     func searchMoviesAndPeople(with query: String, page: Int) -> Observable<(movies: [Movie], people: [Person])>
 }
@@ -30,4 +28,3 @@ struct MainApi: MainApiProtocol {
             .map { (movies: $0.results, people: $1.results) }
     }
 }
-

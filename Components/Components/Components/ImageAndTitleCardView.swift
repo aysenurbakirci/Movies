@@ -45,10 +45,10 @@ public final class ImageAndTitleCardView: UIView {
     }
     
     public func apply(imagePath: String?, title: String) {
-        
         self.title.text = title
         
-        guard let imagePath = imagePath else { return }
-        self.image.downloadImage(imagePath: imagePath, width: 500)
+        if let imagePath = imagePath {
+            self.image.downloadImage(imagePath: imagePath, width: 500)
+        }
     }
 }

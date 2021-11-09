@@ -10,22 +10,19 @@ import RxSwift
 import RxCocoa
 
 public enum RxURLSessionError: Error {
-  case unknown
-  case requestFailed(response: HTTPURLResponse, data: Data?)
+    case unknown
+    case requestFailed(response: HTTPURLResponse, data: Data?)
 }
 
 extension Reactive where Base: URLSession {
     
     func decodable<D: Decodable>(request: URLRequest, type: D.Type) -> Observable<D> {
-        
         return response(request: request).map { response, data -> Data in
+            guard 200 ..< 300 ~= response.statusCode else {
+                throw RxURLSessionError.requestFailed(response: response, data: data)
+            }
             
-          guard 200 ..< 300 ~= response.statusCode else {
-            throw RxURLSessionError.requestFailed(response: response, data: data)
-          }
-
-          return data
-            
+            return data
         }
         .map { data in
             let decoder = JSONDecoder()

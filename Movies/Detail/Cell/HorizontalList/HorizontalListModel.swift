@@ -19,8 +19,13 @@ struct ListModel {
     
     init(movieCast: [Cast]) {
         
-        for person in movieCast {
-            castArray.append(HorizontalListModel(id: person.id, imagePath: person.profilePath ?? "", title: person.name))
+        movieCast.forEach { person in
+            let model = HorizontalListModel(
+                id: person.id,
+                imagePath: person.profilePath ?? "",
+                title: person.name
+            )
+            castArray.append(model)
         }
     }
     

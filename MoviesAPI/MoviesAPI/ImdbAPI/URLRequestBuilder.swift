@@ -9,7 +9,7 @@ import RxSwift
 
 public class URLRequestBuilder {
     
-    public init() { }
+    public init() {}
     
     private var urlComponents = URLComponents()
     

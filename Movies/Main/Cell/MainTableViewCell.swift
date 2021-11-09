@@ -19,16 +19,19 @@ class MainTableViewCell: UITableViewCell {
         
         addSubview(cellView)
         cellView.fillSuperView()
-        
     }
     
     func cellConfig(withViewModel viewModel: MainTableViewCellProtocol) {
-        
-        cellView.apply(imagePath: viewModel.imagePath ?? "", title: viewModel.title, subtitle: viewModel.subtitle, secondSubtitle: viewModel.secondSubtitle)
+        let model = ViewModelProperties(
+            imagePath: viewModel.imagePath ?? "",
+            title: viewModel.title,
+            subTitle: viewModel.subtitle ?? "",
+            secondSubtitle: viewModel.secondSubtitle ?? ""
+        )
+        cellView.apply(with: model)
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
 }

@@ -5,7 +5,6 @@
 //  Created by Ayşenur Bakırcı on 12.10.2021.
 //
 
-import Foundation
 import UIKit
 import Extensions
 

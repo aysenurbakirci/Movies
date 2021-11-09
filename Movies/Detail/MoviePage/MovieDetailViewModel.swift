@@ -30,16 +30,16 @@ struct MovieDetailViewModelOutput {
 
 final class MovieDetailViewModel {
     
-    //Outputs
+    // Outputs
     private var data = BehaviorRelay<[MovieViewSections]>(value: [])
     private var isLoading = BehaviorRelay<Bool>(value: false)
     private var onError = PublishRelay<Error?>()
     
-    //Inputs
+    // Inputs
+    public var openPersonTrigger: Driver<Int>
     private let movieId: Int
     private let detailService: DetailApiProtocol
     private var loadDataTrigger: Driver<Void>
-    private var openPersonTrigger: Driver<Int>
     private var openLinkTrigger: Driver<String>
     
     private let disposeBag = DisposeBag()

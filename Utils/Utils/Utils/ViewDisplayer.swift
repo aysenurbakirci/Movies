@@ -46,6 +46,7 @@ public extension LoadingDisplayer where Self: UIViewController {
             loadingData ? self.showLoadingView() : self.hideLoadingView()
         }
     }
+    
     private func showLoadingView() {
         let activityIndicatorView = UIView(frame: self.view.bounds)
         activityIndicatorView.layer.zPosition = .greatestFiniteMagnitude
@@ -75,7 +76,6 @@ public extension EmptyDisplayer where Self: UIViewController {
     }
     
     private func showEmptyView() {
-        
         let messageBackgroundView = UIView(frame: self.view.bounds)
         messageBackgroundView.layer.zPosition = .greatestFiniteMagnitude
         messageBackgroundView.tag = 998

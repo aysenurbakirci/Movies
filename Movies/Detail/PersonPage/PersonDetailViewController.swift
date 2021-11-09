@@ -87,6 +87,8 @@ class PersonDetailViewController: UIViewController, LoadingDisplay, ErrorDisplay
             })
             .disposed(by: disposeBag)
         
+        
+        
         loadData.onNext(())
     }
     

@@ -10,6 +10,12 @@ import RxSwift
 import RxCocoa
 import ImdbAPI
 
+#warning("""
+    * MovieDetailViewModel gibi bir class oluşturulsun.
+    * Propertyler ihtiyaca göre public bırakılsın.
+    * openMovieTrigger kodları kaldırılığ pagebuilderlar kullanılsın.
+""")
+
 enum PersonViewSections {
     case detail(PersonDetail), list([MovieCredits])
 }

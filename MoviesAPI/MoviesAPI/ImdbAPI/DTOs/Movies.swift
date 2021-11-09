@@ -69,5 +69,3 @@ public struct Movie: Codable {
         }
     }
 }
-
-

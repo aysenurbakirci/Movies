@@ -9,10 +9,25 @@ import UIKit
 import Extensions
 import ImdbAPI
 
+public struct ViewModelProperties {
+    var imagePath: String
+    var title: String
+    var subTitle: String
+    var secondSubtitle: String
+    
+    public init(imagePath: String, title: String, subTitle: String, secondSubtitle: String) {
+        self.imagePath = imagePath
+        self.title = title
+        self.subTitle = subTitle
+        self.secondSubtitle = secondSubtitle
+    }
+}
+
 public final class ImageAndInfoCardView: UIView {
     
     private let titleAndSubtitle = TitleAndSubtitlesView()
     
+    // MARK: - UI Components
     private lazy var image: UIImageView = {
         var imageView = UIImageView()
         imageView.contentMode = .scaleAspectFit
@@ -33,6 +48,7 @@ public final class ImageAndInfoCardView: UIView {
         return stack
     }()
     
+    // MARK: - Init
     override init(frame: CGRect) {
         super.init(frame: frame)
         
@@ -40,16 +56,14 @@ public final class ImageAndInfoCardView: UIView {
         image.fillSuperView()
         imageContainer.anchorSize(size: .init(width: 100, height: 100))
         stack.fillSuperView()
-        
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    public func apply(imagePath: String, title: String, subtitle: String? = nil, secondSubtitle: String? = nil) {
-
-        titleAndSubtitle.apply(title: title, subtitle: subtitle, secondSubtitle: secondSubtitle)
-        self.image.downloadImage(imagePath: imagePath, width: 200)
+    public func apply(with model: ViewModelProperties) {
+        titleAndSubtitle.apply(title: model.title, subtitle: model.subTitle, secondSubtitle: model.secondSubtitle)
+        self.image.downloadImage(imagePath: model.imagePath, width: 200)
     }
 }

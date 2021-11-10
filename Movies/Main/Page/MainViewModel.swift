@@ -25,6 +25,7 @@ enum Section {
 
 final class MainViewModel: ActivityHandler {
 
+    // MARK: - Properties
     var onError = BehaviorRelay<Error?>(value: nil)
     let isLoading = BehaviorRelay<Bool>(value: false)
     let isEmptyData = BehaviorRelay<Bool>(value: false)
@@ -33,13 +34,13 @@ final class MainViewModel: ActivityHandler {
     let loadData = PublishSubject<Void>()
     let searchQuery = BehaviorRelay<String?>(value: nil)
     
-    private var popularMovies: Movies?
-    
-    private let disposeBag = DisposeBag()
     private let mainViewService: MainApiProtocol
-    
+    private(set) var popularMovies: Movies?
     private(set) var nextPage = 1
     
+    private let disposeBag = DisposeBag()
+    
+    // MARK: - Initialization
     init(mainViewService: MainApiProtocol) {
         self.mainViewService = mainViewService
         
@@ -134,29 +135,16 @@ final class MainViewModel: ActivityHandler {
             })
             .disposed(by: disposeBag)
     }
-    
-    func createCellViewModel(for indexPath: IndexPath) -> MainTableViewCellProtocol {
-        
-        let section = data.value[indexPath.section]
-        switch section {
-        case .movie(let movies):
-            let movie = movies[indexPath.row]
-            return CellViewModel(movie: movie)
-        case .person(let people):
-            let person = people[indexPath.row]
-            return CellViewModel(person: person)
-        }
-    }
 }
-
+// MARK: - Section DataSource
 extension MainViewModel {
-
-    func numberOfRowsInSection(section: Int) -> Int {
-        data.value[section].numberOfItems
-    }
     
     var numberOfSections: Int {
         data.value.count
+    }
+    
+    func numberOfRowsInSection(section: Int) -> Int {
+        data.value[section].numberOfItems
     }
     
     func openDetailPage(for indexPath: IndexPath) -> UIViewController {
@@ -168,6 +156,19 @@ extension MainViewModel {
         case .person(let people):
             let person = people[indexPath.row]
             return PersonDetailViewController(personId: person.id)
+        }
+    }
+    
+    func createCellViewModel(for indexPath: IndexPath) -> MainTableViewCellProtocol {
+        
+        let section = data.value[indexPath.section]
+        switch section {
+        case .movie(let movies):
+            let movie = movies[indexPath.row]
+            return CellViewModel(movie: movie)
+        case .person(let people):
+            let person = people[indexPath.row]
+            return CellViewModel(person: person)
         }
     }
 }

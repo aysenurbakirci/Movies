@@ -10,9 +10,11 @@ import UIKit
 
 class MainView: UIView {
     
+    //MARK: - Properties
     let tableView = UITableView()
     let searchBar = UISearchBar()
     
+    // MARK: - Initialization
     override init(frame: CGRect) {
         super.init(frame: frame)
         

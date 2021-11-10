@@ -10,9 +10,8 @@ import RxSwift
 import Utils
 
 class MainViewController: UIViewController, ActivityDisplayer {
-    
-    var bag: DisposeBag = DisposeBag()
-    
+
+    // MARK: - Properties
     private lazy var mainView: MainView = {
         var view = MainView()
         view.tableView.dataSource = self
@@ -20,9 +19,8 @@ class MainViewController: UIViewController, ActivityDisplayer {
         return view
     }()
     
-    private(set) var viewModel = MainViewModel(mainViewService: MainApi())
-    
-    private let disposeBag = DisposeBag()
+    private(set) var viewModel: MainViewModel = .init(mainViewService: MainApi())
+    var bag: DisposeBag = .init()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -35,7 +33,7 @@ class MainViewController: UIViewController, ActivityDisplayer {
         bindEmptyView()
         bindErrorHandling()
     }
-    
+    // MARK: - Initialization
     init() {
         super.init(nibName: nil, bundle: nil)
     }
@@ -43,14 +41,9 @@ class MainViewController: UIViewController, ActivityDisplayer {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
-    private func navigationBarConfig() {
-        navigationController?.navigationBar.tintColor = .white
-        navigationItem.title = "Main Page"
-        navigationItem.titleView = mainView.searchBar
-    }
 }
 
+//MARK: - Setup funtions
 extension MainViewController {
     
     func setupBindings() {
@@ -61,14 +54,21 @@ extension MainViewController {
             .subscribe(onNext: { [weak self] _ in
                 self?.mainView.tableView.reloadData()
             })
-            .disposed(by: disposeBag)
+            .disposed(by: bag)
 
         mainView.searchBar.rx.text
             .bind(to: viewModel.searchQuery)
-            .disposed(by: disposeBag)
+            .disposed(by: bag)
+    }
+    
+    private func navigationBarConfig() {
+        navigationController?.navigationBar.tintColor = .white
+        navigationItem.title = "Main Page"
+        navigationItem.titleView = mainView.searchBar
     }
 }
 
+//MARK: - UITableViewDelegate, UITableViewDataSource
 extension MainViewController: UITableViewDelegate, UITableViewDataSource {
     
     func numberOfSections(in tableView: UITableView) -> Int {

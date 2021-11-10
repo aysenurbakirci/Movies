@@ -10,6 +10,7 @@ import UIKit
 
 class MovieDetailView: UIView {
     
+    //MARK: - Properties
     lazy var header = StrechyHeader(frame: .init(x: 0,
                                                  y: 0,
                                                  width: UIScreen.main.bounds.size.width,
@@ -21,6 +22,7 @@ class MovieDetailView: UIView {
         return table
     }()
     
+    //MARK: - Initalization
     override init(frame: CGRect) {
         super.init(frame: frame)
         addSubview(tableView)

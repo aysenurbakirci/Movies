@@ -13,6 +13,7 @@ import Components
 
 class InformationCell: UITableViewCell {
     
+    //MARK: - Properties
     static let reuseIdentifier = "movieInformationCellId"
     private lazy var titleAndSubtitles = TitleAndSubtitlesView()
     let disposeBag = DisposeBag()
@@ -44,15 +45,16 @@ class InformationCell: UITableViewCell {
         return stack
     }()
     
+    //MARK: - Initalization
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-        detailViewConfig()
-    }
-    
-    private func detailViewConfig() {
         contentView.addSubview(stack)
         stack.fillSuperView()
         stack.widthAnchor.constraint(equalTo: self.widthAnchor).isActive = true
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
     
     func apply(movieDetail: MovieDetail) {
@@ -65,10 +67,6 @@ class InformationCell: UITableViewCell {
         self.titleAndSubtitles.apply(title: personDetail.name, subtitle: nil, secondSubtitle: nil)
         self.overview.text = personDetail.biography
         self.linkButton.isHidden = true
-    }
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
     }
 }
 

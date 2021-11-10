@@ -15,10 +15,10 @@ struct HorizontalListModel {
 }
 
 struct ListModel {
+    
     var castArray: [HorizontalListModel] = []
     
     init(movieCast: [Cast]) {
-        
         movieCast.forEach { person in
             let model = HorizontalListModel(
                 id: person.id,
@@ -30,9 +30,13 @@ struct ListModel {
     }
     
     init(personMovies: [MovieCredits]) {
-        
-        for movie in personMovies {
-            castArray.append(HorizontalListModel(id: movie.id, imagePath: movie.posterPath ?? "", title: movie.title))
+        personMovies.forEach { movie in
+            let model = HorizontalListModel(
+                id: movie.id,
+                imagePath: movie.posterPath ?? "",
+                title: movie.title
+            )
+            castArray.append(model)
         }
     }
 }

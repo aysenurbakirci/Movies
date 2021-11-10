@@ -10,10 +10,12 @@ import RxSwift
 
 class ListCell: UITableViewCell {
     
+    //MARK: - Properties
     static let reuseIdentifier = "personListCellId"
     lazy var horizontalListView = HorizontalListCollectionView()
     let disposeBag = DisposeBag()
     
+    //MARK: - Initalization
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         contentView.addSubview(horizontalListView)

@@ -28,12 +28,12 @@ struct MovieDetailViewModelOutput {
 
 final class MovieDetailViewModel {
     
-    // Outputs
+    //MARK: - Outputs
     private var data = BehaviorRelay<[MovieViewSections]>(value: [])
     private var isLoading = BehaviorRelay<Bool>(value: false)
     private var onError = PublishRelay<Error?>()
     
-    // Inputs
+    //MARK: - Inputs
     private let movieId: Int
     private let detailService: DetailApiProtocol
     private var loadDataTrigger: Driver<Void>
@@ -41,6 +41,7 @@ final class MovieDetailViewModel {
     
     private let disposeBag = DisposeBag()
 
+    //MARK: - Initalization
     init(input: MovieDetailViewModelInput) {
         self.movieId = input.movieId
         self.detailService = input.detailService
@@ -48,6 +49,7 @@ final class MovieDetailViewModel {
         self.openLinkTrigger = input.openLinkTrigger
     }
     
+    //MARK: - Input to output
     func transform() -> MovieDetailViewModelOutput {
         loadDataTrigger
             .asObservable()

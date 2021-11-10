@@ -13,6 +13,7 @@ import Components
 
 class PersonDetailViewController: UIViewController, LoadingDisplay, ErrorDisplayer {
 
+    //MARK: - Properties
     private lazy var detailView: PersonDetailView = {
         var view = PersonDetailView()
         view.tableView.delegate = self
@@ -20,12 +21,13 @@ class PersonDetailViewController: UIViewController, LoadingDisplay, ErrorDisplay
         return view
     }()
     
-    private let disposeBag = DisposeBag()
-    
     private var personId: Int
     private var loadData = PublishSubject<Void>()
     private var data = BehaviorRelay<[PersonViewSections]>(value: [])
     
+    private let disposeBag = DisposeBag()
+    
+    //MARK: - Initalization
     init(personId: Int) {
         self.personId = personId
         super.init(nibName: nil, bundle: nil)
@@ -35,6 +37,7 @@ class PersonDetailViewController: UIViewController, LoadingDisplay, ErrorDisplay
         fatalError("init(coder:) has not been implemented")
     }
     
+    //MARK: - Bindings
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -88,6 +91,7 @@ class PersonDetailViewController: UIViewController, LoadingDisplay, ErrorDisplay
     }
 }
 
+//MARK: - UITableViewDelegate, UITableViewDataSource
 extension PersonDetailViewController: UITableViewDelegate, UITableViewDataSource {
     
     func numberOfSections(in tableView: UITableView) -> Int {
@@ -137,6 +141,7 @@ extension PersonDetailViewController: UITableViewDelegate, UITableViewDataSource
     }
 }
 
+//MARK: UIScrollViewDelegate
 extension PersonDetailViewController: UIScrollViewDelegate {
 
     func scrollViewDidScroll(_ scrollView: UIScrollView) {

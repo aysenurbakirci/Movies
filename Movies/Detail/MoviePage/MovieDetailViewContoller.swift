@@ -13,6 +13,7 @@ import Utils
 
 class MovieDetailViewController: UIViewController, LoadingDisplay, ErrorDisplayer {
     
+    //MARK: - Properties
     private lazy var detailView: MovieDetailView = {
         var view = MovieDetailView()
         view.tableView.delegate = self
@@ -27,6 +28,7 @@ class MovieDetailViewController: UIViewController, LoadingDisplay, ErrorDisplaye
     private var openMovieTrailer = PublishSubject<String>()
     private var data = BehaviorRelay<[MovieViewSections]>(value: [])
     
+    //MARK: - Initaization
     init(movieId: Int) {
         self.viewModel = MovieDetailViewModel(
             input: MovieDetailViewModelInput(
@@ -43,6 +45,7 @@ class MovieDetailViewController: UIViewController, LoadingDisplay, ErrorDisplaye
         fatalError("init(coder:) has not been implemented")
     }
     
+    //MARK: - Bindings
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -90,6 +93,7 @@ class MovieDetailViewController: UIViewController, LoadingDisplay, ErrorDisplaye
     }
 }
 
+//MARK: - UITableViewDelegate, UITableViewDataSource
 extension MovieDetailViewController: UITableViewDelegate, UITableViewDataSource {
     
     func numberOfSections(in tableView: UITableView) -> Int {
@@ -148,6 +152,7 @@ extension MovieDetailViewController: UITableViewDelegate, UITableViewDataSource 
     }
 }
 
+//MARK: - UIScrollViewDelegate
 extension MovieDetailViewController: UIScrollViewDelegate {
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {

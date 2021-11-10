@@ -10,6 +10,7 @@ import UIKit
 
 final class StrechyHeader: UIView {
     
+    //MARK: - Properties
     private let imageView: UIImageView = {
         let image = UIImageView()
         image.clipsToBounds = true
@@ -23,9 +24,12 @@ final class StrechyHeader: UIView {
     private var containerView = UIView()
     private var containerHeight = NSLayoutConstraint()
     
+    // MARK: - Initialization
     override init(frame: CGRect) {
         super.init(frame: frame)
-        createViews()
+        
+        addSubview(containerView)
+        containerView.addSubview(imageView)
         setViewConstraints()
     }
     
@@ -34,11 +38,7 @@ final class StrechyHeader: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    private func createViews() {
-        addSubview(containerView)
-        containerView.addSubview(imageView)
-    }
-    
+    //MARK: - Functions
     private func setViewConstraints() {
         
         NSLayoutConstraint.activate([
@@ -61,10 +61,6 @@ final class StrechyHeader: UIView {
         imageHeight.isActive = true
     }
     
-    func apply(imagePath: String) {
-        self.imageView.downloadImage(imagePath: imagePath, width: 500)
-    }
-    
     func scrollViewDidScroll(scrollView: UIScrollView) {
         
         containerHeight.constant = scrollView.contentInset.top
@@ -73,5 +69,9 @@ final class StrechyHeader: UIView {
         imageBottom.constant = offsetY >= 0 ? 0 : -(offsetY / 2)
         
         imageHeight.constant = max(offsetY + scrollView.contentInset.top, scrollView.contentInset.top)
+    }
+    
+    func apply(imagePath: String) {
+        self.imageView.downloadImage(imagePath: imagePath, width: 500)
     }
 }

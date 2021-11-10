@@ -11,13 +11,13 @@ import RxCocoa
 
 final class HorizontalListCollectionView: UIView {
     
+    //MARK: - Properties
     let dataArrayRelay = BehaviorRelay<[HorizontalListModel]>(value: [])
     let selectedItemId = PublishSubject<Int>()
     let disposeBag = DisposeBag()
     
     static let cellWidthRatio: CGFloat = 0.37
     static let cellHeightRatio: CGFloat = 1.5
-
     static let cellWidth = UIScreen.main.bounds.size.width * cellWidthRatio
     static let cellHeight = cellWidth * cellHeightRatio
     
@@ -43,6 +43,7 @@ final class HorizontalListCollectionView: UIView {
         return collectionView
     }()
     
+    //MARK: - Initalization
     override init(frame: CGRect) {
         super.init(frame: frame)
         

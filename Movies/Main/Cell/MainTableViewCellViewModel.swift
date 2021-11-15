@@ -24,8 +24,8 @@ struct CellViewModel: MainTableViewCellProtocol {
     
     init(movie: Movie) {
         
-        if let imageURL = movie.posterPath {
-            self.imagePath = imageURL
+        if let imagePath = movie.posterPath {
+            self.imagePath = imagePath
         }
         if let releaseDate = movie.releaseDate {
             self.subtitle = releaseDate
@@ -36,8 +36,8 @@ struct CellViewModel: MainTableViewCellProtocol {
     
     init(person: Person) {
         
-        if let imageURL = person.profilePath {
-            self.imagePath = imageURL
+        if let imagePath = person.profilePath {
+            self.imagePath = imagePath
         }
         
         self.title = person.name

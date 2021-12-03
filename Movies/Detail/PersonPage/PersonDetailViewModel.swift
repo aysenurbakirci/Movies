@@ -16,7 +16,7 @@ enum PersonViewSections {
 struct PersonDetailViewModelInput {
     var personId: Int
     var detailService: DetailApiProtocol
-    var loadDataTrigger: Driver<Void> = .never()
+    var loadDataTrigger: BehaviorRelay<Void>
 }
 
 struct PersonDetailViewModelOutput {
@@ -31,7 +31,6 @@ func personDetailViewModel(input: PersonDetailViewModelInput) -> PersonDetailVie
     let onError = PublishRelay<Error?>()
    
     let dataDriver = input.loadDataTrigger
-        .asObservable()
         .filter { [isLoading] in
             if isLoading.value {
                 return false

@@ -22,7 +22,7 @@ class PersonDetailViewController: UIViewController, LoadingDisplay, ErrorDisplay
     }()
     
     private var personId: Int
-    private var loadData = PublishSubject<Void>()
+    private var loadData = BehaviorRelay<Void>(value: ())
     private var data = BehaviorRelay<[PersonViewSections]>(value: [])
     
     private let disposeBag = DisposeBag()
@@ -46,7 +46,7 @@ class PersonDetailViewController: UIViewController, LoadingDisplay, ErrorDisplay
         
         let inputs = PersonDetailViewModelInput(personId: personId,
                                                 detailService: DetailApi(),
-                                                loadDataTrigger: loadData.asDriver(onErrorDriveWith: .never()))
+                                                loadDataTrigger: loadData)
         
         let output = personDetailViewModel(input: inputs)
         
@@ -81,7 +81,7 @@ class PersonDetailViewController: UIViewController, LoadingDisplay, ErrorDisplay
             })
             .disposed(by: disposeBag)
         
-        loadData.onNext(())
+        loadData.accept(())
     }
     
     private func clearNavigationBarConfig() {

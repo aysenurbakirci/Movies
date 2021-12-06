@@ -31,13 +31,9 @@ func personDetailViewModel(input: PersonDetailViewModelInput) -> PersonDetailVie
     let onError = PublishRelay<Error?>()
    
     let dataDriver = input.loadDataTrigger
-        .filter { [isLoading] in
-            if isLoading.value {
-                return false
-            }
+        .do(onNext: { _ in
             isLoading.accept(true)
-            return true
-        }
+        })
         .compactMap { _ in
             return input.personId
         }
